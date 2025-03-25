@@ -1,0 +1,34 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: The GET request, the HTML document, the css file and the JavaScript file are all fetched and loaded
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    deactivate server
+
+    Note right of browser: The browser executes the neccessary code to fetch data.json and display comments
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    Note right of browser: The payload for the POST request includes the comment under Form Data (note: test01)
+    activate server
+    server-->>browser: Redirect to /note
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: The GET request, the HTML document, the css file and the JavaScript file are all fetched and loaded
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, {"content": test01, "date": "2025-1-1"}... ]
+    deactivate server
+    Note right of browser: Our POST request updated the data.json, we were redirected to /notes, where we fetched and display the updated  data.json
+
+
