@@ -1,0 +1,24 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: The GET request, the HTML document, the css file and the JavaScript file are all fetched and loaded
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    deactivate server
+
+    Note right of browser: The browser (spa.js) executes the neccessary code to fetch data.json and display comments. data.json is stored at "notes" variable
+    
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    Note right of browser: The payload for the POST request includes the comment under Request Payload (note: test01)
+    Note right of browser: Clicking the submit button saves our note as "note", adds it to "notes" and re-renders the comments with updated "notes"
+    activate server
+    server-->>browser: {"message":"note created"}
+    deactivate server
+    Note right of browser: Then, it updates the data.json at server. The spa.js displays updated "notes" first with redrawNotes and THEN updates the data.json at server 
+
