@@ -1,3 +1,7 @@
+const Button = ({ text, handleButton }) => {
+  return <button onClick={() => handleButton()}>{text}</button>;
+};
+
 const Feedback = ({ setGood, setNeutral, setBad }) => {
   const handleSetGood = () => {
     setGood((prev) => prev + 1);
@@ -14,9 +18,9 @@ const Feedback = ({ setGood, setNeutral, setBad }) => {
   return (
     <div>
       <h1>give feedback</h1>
-      <button onClick={() => handleSetGood()}>good </button>
-      <button onClick={() => handleSetNeutral()}>neutral</button>
-      <button onClick={() => handleSetBad()}>bad</button>
+      <Button text={"good"} handleButton={handleSetGood} />
+      <Button text={"neutral"} handleButton={handleSetNeutral} />
+      <Button text={"bad"} handleButton={handleSetBad} />
     </div>
   );
 };
