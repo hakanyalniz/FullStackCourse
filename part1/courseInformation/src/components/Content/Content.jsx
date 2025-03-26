@@ -1,8 +1,8 @@
-const Content = ({ parts, exercises }) => {
+const Content = ({ course }) => {
   const Part = ({ index }) => {
     return (
       <p>
-        {parts[index]} {exercises[index]}
+        {course.parts[index].name} {course.parts[index].exercises}
       </p>
     );
   };
