@@ -1,17 +1,17 @@
-const Content = ({ course }) => {
-  const Part = ({ index }) => {
-    return (
-      <p>
-        {course.parts[index].name} {course.parts[index].exercises}
-      </p>
-    );
-  };
+const Part = ({ index, course }) => {
+  return (
+    <p>
+      {course.parts[index].name} {course.parts[index].exercises}
+    </p>
+  );
+};
 
+const Content = ({ course }) => {
   return (
     <>
-      <Part index={0} />
-      <Part index={1} />
-      <Part index={2} />
+      <Part course={course} index={0} />
+      <Part course={course} index={1} />
+      <Part course={course} index={2} />
     </>
   );
 };
