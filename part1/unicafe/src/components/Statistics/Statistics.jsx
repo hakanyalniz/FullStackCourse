@@ -6,12 +6,18 @@ const Statistics = ({ good, neutral, bad }) => {
   return (
     <div>
       <h1>statistics</h1>
-      <div>good {good}</div>
-      <div>neutral {neutral}</div>
-      <div>bad {bad}</div>
-      <div>all {total}</div>
-      <div>average {average}</div>
-      <div>positive {positive} %</div>
+      {total == 0 ? (
+        <div>No data available</div>
+      ) : (
+        <>
+          <div>good {good}</div>
+          <div>neutral {neutral}</div>
+          <div>bad {bad}</div>
+          <div>all {total}</div>
+          <div>average {average}</div>
+          <div>positive {positive} %</div>
+        </>
+      )}
     </div>
   );
 };
