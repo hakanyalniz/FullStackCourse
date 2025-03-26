@@ -1,3 +1,4 @@
+// Forgot to mention the below in commit message for exercise 1.10
 const Button = ({ text, handleButton }) => {
   return <button onClick={() => handleButton()}>{text}</button>;
 };
