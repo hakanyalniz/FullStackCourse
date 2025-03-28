@@ -4,6 +4,7 @@ import personService from "../../services/persons";
 const AddPerson = ({ persons, setPersons }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  let personFoundID;
 
   const handleNameChange = (event) => {
     console.log(event.target.value);
@@ -19,10 +20,32 @@ const AddPerson = ({ persons, setPersons }) => {
     event.preventDefault();
 
     const hasNewName = persons.some((person) => {
+      personFoundID = person.id;
       return person.name === newName;
     });
 
-    if (hasNewName) {
+    const hasNewNumber = persons.some((person) => {
+      return person.number === newNumber;
+    });
+
+    if (hasNewName && !hasNewNumber) {
+      if (
+        !window.confirm(
+          `${newName} is already added to phonebook, replace the old number with the new one?`
+        )
+      )
+        return;
+
+      personService
+        .updatePerson({
+          name: newName,
+          number: newNumber,
+          id: personFoundID,
+        })
+        .then(() => {
+          personService.getAll().then((response) => setPersons(response));
+        });
+    } else if (hasNewName) {
       alert(`${newName} is already added to phonebook`);
       return;
     } else {
