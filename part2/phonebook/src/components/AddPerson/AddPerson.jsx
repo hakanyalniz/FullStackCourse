@@ -1,7 +1,7 @@
 import { useState } from "react";
 import personService from "../../services/persons";
 
-const AddPerson = ({ persons, setPersons }) => {
+const AddPerson = ({ persons, setPersons, handleSuccessNotification }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   let personFoundID;
@@ -45,6 +45,8 @@ const AddPerson = ({ persons, setPersons }) => {
         .then(() => {
           personService.getAll().then((response) => setPersons(response));
         });
+
+      handleSuccessNotification(`${newName}'s number has been changed`);
     } else if (hasNewName) {
       alert(`${newName} is already added to phonebook`);
       return;
@@ -63,6 +65,8 @@ const AddPerson = ({ persons, setPersons }) => {
           console.log(response);
           personService.getAll().then((response) => setPersons(response));
         });
+
+      handleSuccessNotification(`${newName} added to the phonebook`);
     }
   };
 

@@ -1,4 +1,9 @@
-const Numbers = ({ filteredPersons, deletePerson, setPersons }) => {
+const Numbers = ({
+  filteredPersons,
+  deletePerson,
+  setPersons,
+  handleSuccessNotification,
+}) => {
   const handleDeletePerson = (currentPerson) => {
     if (!window.confirm(`Delete ${currentPerson.name}?`)) return;
 
@@ -9,6 +14,9 @@ const Numbers = ({ filteredPersons, deletePerson, setPersons }) => {
         })
       );
     });
+    handleSuccessNotification(
+      `${currentPerson.name} has been deleted from phonebook`
+    );
   };
 
   return (
