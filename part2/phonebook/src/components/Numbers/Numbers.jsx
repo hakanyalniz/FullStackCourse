@@ -1,6 +1,8 @@
 const Numbers = ({ filteredPersons, deletePerson, setPersons }) => {
-  const handleDeletePerson = (personID) => {
-    deletePerson(personID).then((response) => {
+  const handleDeletePerson = (currentPerson) => {
+    if (!window.confirm(`Delete ${currentPerson.name}?`)) return;
+
+    deletePerson(currentPerson.id).then((response) => {
       setPersons((persons) =>
         persons.filter((item) => {
           return item.id !== response.id;
@@ -16,9 +18,7 @@ const Numbers = ({ filteredPersons, deletePerson, setPersons }) => {
         return (
           <div key={person.name}>
             {person.name} {person.number}{" "}
-            <button onClick={() => handleDeletePerson(person.id)}>
-              delete
-            </button>
+            <button onClick={() => handleDeletePerson(person)}>delete</button>
           </div>
         );
       })}
