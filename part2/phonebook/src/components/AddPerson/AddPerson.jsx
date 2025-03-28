@@ -28,6 +28,7 @@ const AddPerson = ({ persons, setPersons, handleSuccessNotification }) => {
       return person.number === newNumber;
     });
 
+    // If the name is found but the number is different, change the number
     if (hasNewName && !hasNewNumber) {
       if (
         !window.confirm(
@@ -44,6 +45,14 @@ const AddPerson = ({ persons, setPersons, handleSuccessNotification }) => {
         })
         .then(() => {
           personService.getAll().then((response) => setPersons(response));
+        })
+        .catch((error) => {
+          handleSuccessNotification(
+            `${newName}'s information has not been found`
+          );
+          // since there is information sync problem, update the local data from server
+          personService.getAll().then((response) => setPersons(response));
+          console.log(error);
         });
 
       handleSuccessNotification(`${newName}'s number has been changed`);
