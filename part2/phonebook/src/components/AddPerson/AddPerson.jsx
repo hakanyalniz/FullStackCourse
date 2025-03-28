@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 const AddPerson = ({ persons, setPersons }) => {
   const [newName, setNewName] = useState("");
@@ -26,6 +27,14 @@ const AddPerson = ({ persons, setPersons }) => {
       return;
     } else {
       setPersons([...persons, { name: newName, number: newNumber }]);
+      axios
+        .post("http://localhost:3001/persons", {
+          name: newName,
+          number: newNumber,
+        })
+        .then((response) => {
+          console.log(response);
+        });
     }
   };
 
