@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import personService from "./services/persons";
 
 import Filter from "./components/Filter/Filter";
 import AddPerson from "./components/AddPerson/AddPerson";
@@ -27,10 +27,14 @@ const App = () => {
   );
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    personService.getAll().then((response) => {
+      setPersons(response);
     });
   }, []);
+
+  useEffect(() => {
+    console.log(persons);
+  }, [persons]);
 
   return (
     <div>
@@ -40,7 +44,11 @@ const App = () => {
 
       <AddPerson persons={persons} setPersons={setPersons} />
 
-      <Numbers filteredPersons={filteredPersons} />
+      <Numbers
+        filteredPersons={filteredPersons}
+        deletePerson={personService.deletePerson}
+        setPersons={setPersons}
+      />
     </div>
   );
 };

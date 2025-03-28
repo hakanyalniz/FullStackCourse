@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import personService from "../../services/persons";
 
 const AddPerson = ({ persons, setPersons }) => {
   const [newName, setNewName] = useState("");
@@ -26,14 +26,19 @@ const AddPerson = ({ persons, setPersons }) => {
       alert(`${newName} is already added to phonebook`);
       return;
     } else {
-      setPersons([...persons, { name: newName, number: newNumber }]);
-      axios
-        .post("http://localhost:3001/persons", {
+      // setPersons([...persons, { name: newName, number: newNumber }]);
+
+      // Add the new person to the server database, then refresh the local person database from the server
+      // we do this because the server automatically ids the data
+      // There are several ways to make this more efficient, such as creating our own ids, or just fetching the latest update
+      personService
+        .addPerson({
           name: newName,
           number: newNumber,
         })
         .then((response) => {
           console.log(response);
+          personService.getAll().then((response) => setPersons(response));
         });
     }
   };
