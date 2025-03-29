@@ -1,18 +1,34 @@
+import { useEffect, useState } from "react";
+
 import "./SearchResult.css";
 
 function SearchResult({ allCountries, searchIndex }) {
-  if (
-    searchIndex === null ||
-    searchIndex === undefined ||
-    searchIndex.length === 0
-  )
-    return;
+  const [filteredSearchResult, setFilteredSearchResult] = useState([]);
 
-  const filteredSearchResult = allCountries.filter((country) => {
-    return country.name.common
-      .toLowerCase()
-      .includes(searchIndex.toLowerCase());
-  });
+  useEffect(() => {
+    if (
+      searchIndex === null ||
+      searchIndex === undefined ||
+      searchIndex.length === 0
+    ) {
+      setFilteredSearchResult([]);
+      return;
+    }
+    // Filter countries with searchIndex and log the results in filtered state
+    setFilteredSearchResult(
+      allCountries.filter((country) => {
+        return country.name.common
+          .toLowerCase()
+          .includes(searchIndex.toLowerCase());
+      })
+    );
+  }, [searchIndex]);
+
+  //   Set the country at index to be the sole item in filtered list, causing it to render First case below
+  //   This allows us to click at a country, get its index, and see its details
+  const handleShowDetail = (index) => {
+    setFilteredSearchResult([filteredSearchResult[index]]);
+  };
 
   return (
     <>
@@ -60,8 +76,8 @@ function SearchResult({ allCountries, searchIndex }) {
                 <th>Currency</th>
                 <td>
                   {Object.values(filteredSearchResult[0].currencies).map(
-                    (element) => {
-                      return <div>{element.name}</div>;
+                    (element, index) => {
+                      return <div key={index}>{element.name}</div>;
                     }
                   )}
                 </td>
@@ -71,8 +87,8 @@ function SearchResult({ allCountries, searchIndex }) {
                 <th>Language</th>
                 <td>
                   {Object.values(filteredSearchResult[0].languages).map(
-                    (element) => {
-                      return <div>{element}</div>;
+                    (element, index) => {
+                      return <div key={index}>{element}</div>;
                     }
                   )}
                 </td>
@@ -92,10 +108,12 @@ function SearchResult({ allCountries, searchIndex }) {
         </div>
       ) : (
         // Second case
-        filteredSearchResult.splice(0, 10).map((element, index) => {
+        filteredSearchResult.slice(0, 10).map((element, index) => {
           return (
             <div key={index} className="country-element">
-              {element.name.common}
+              <button onClick={() => handleShowDetail(index)}>
+                {element.name.common}
+              </button>
             </div>
           );
         })
