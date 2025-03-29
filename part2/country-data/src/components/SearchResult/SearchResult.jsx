@@ -64,12 +64,12 @@ function SearchResult({ allCountries, searchIndex }) {
           <div>
             <img
               src={filteredSearchResult[0].flags.png}
-              alt="a counties coat of arm"
+              alt="a countries flag"
               className="coat-of-arms"
             />
             <img
               src={filteredSearchResult[0].coatOfArms.png}
-              alt="a counties coat of arm"
+              alt="a countries coat of arm"
               className="coat-of-arms"
             />
           </div>
