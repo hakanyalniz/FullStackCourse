@@ -4,6 +4,7 @@ import "./SearchResult.css";
 
 function SearchResult({ allCountries, searchIndex }) {
   const [filteredSearchResult, setFilteredSearchResult] = useState([]);
+  let [weatherDATA, setWeatherDATA] = useState({});
 
   useEffect(() => {
     if (
@@ -29,6 +30,24 @@ function SearchResult({ allCountries, searchIndex }) {
   const handleShowDetail = (index) => {
     setFilteredSearchResult([filteredSearchResult[index]]);
   };
+
+  useEffect(() => {
+    if (filteredSearchResult.length !== 1) return;
+
+    const baseURL = "http://api.weatherapi.com/v1/current.json";
+    const api_key = import.meta.env.VITE_SOME_KEY;
+    const apiQ = filteredSearchResult[0].capital[0];
+
+    fetch(`${baseURL}` + `?key=${api_key}` + `&q=${apiQ}`)
+      .then((response) => {
+        if (!response.ok) console.log("An error occured");
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setWeatherDATA(data);
+      });
+  }, [filteredSearchResult]);
 
   return (
     <>
@@ -103,6 +122,50 @@ function SearchResult({ allCountries, searchIndex }) {
                 <th>Timezone</th>
                 <td>{filteredSearchResult[0].timezones[0]}</td>
               </tr>
+              {/* If weather data has not loaded, do not show anything, when it loads, state triggers render */}
+              {Object.keys(weatherDATA).length ===
+              0 ? null : weatherDATA.error ? (
+                <tr>
+                  <td colSpan={2}>Could not retrieve weather data.</td>
+                </tr>
+              ) : (
+                <>
+                  <tr>
+                    <th>Weather</th>
+                    <td>
+                      <img
+                        src={weatherDATA.current.condition.icon}
+                        alt="weather icon"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Temperature</th>
+                    <td>
+                      {weatherDATA.current.temp_c} C/
+                      {weatherDATA.current.temp_f} F
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>Wind</th>
+                    <td>
+                      {weatherDATA.current.wind_kph} KPH/
+                      {weatherDATA.current.wind_mph} MPH
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>Cloud</th>
+                    <td>{weatherDATA.current.cloud}</td>
+                  </tr>
+
+                  <tr>
+                    <th>humidity</th>
+                    <td>{weatherDATA.current.humidity}</td>
+                  </tr>
+                </>
+              )}
             </tbody>
           </table>
         </div>
