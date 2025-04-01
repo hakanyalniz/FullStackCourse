@@ -1,7 +1,10 @@
 const express = require("express");
+let morgan = require("morgan");
+
 const app = express();
 
 app.use(express.json());
+app.use(morgan("tiny"));
 
 let phonebook = [
   {
@@ -46,11 +49,13 @@ app.use("/api/persons/:id", (request, response, next) => {
 
 // Check for get methods on persons, validating the user sent requests to phonebook
 app.use("/api/persons", (request, response, next) => {
+  console.log(request.method !== "POST");
+
   // Only catch POST method on /api/persons
-  if (request.method !== "POST") next();
+  if (request.method !== "POST") return next();
 
   const requestBodyPerson = request.body;
-  const person = phonebook.find(
+  const foundPerson = phonebook.find(
     (person) => person.name === requestBodyPerson.name
   );
 
@@ -62,7 +67,7 @@ app.use("/api/persons", (request, response, next) => {
   }
 
   // if a person name with that name is not found, person will be undefined and the below if block will be ignored
-  if (person) {
+  if (foundPerson) {
     return response.status(400).json({
       error: "please try a different name",
     });
