@@ -45,6 +45,18 @@ app.get("/api/persons", (request, response) => {
   response.json(phonebook);
 });
 
+app.get("/api/persons/:id", (request, response) => {
+  const id = request.params.id;
+  const person = phonebook.find((person) => person.id === id);
+
+  response.json(person);
+});
+
+// Catch all route for error handling
+app.use((request, response, next) => {
+  response.status(404).send("404 - Route Not Found");
+});
+
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}.`);
