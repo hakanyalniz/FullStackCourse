@@ -5,7 +5,20 @@ const app = express();
 
 app.use(express.json());
 
-app.use(morgan("tiny"));
+// app.use(morgan("tiny"));
+
+// We can create custom token to insert into morgan, which will then log them
+function htmlPostBody(request, response) {
+  // The request.body is JSON object, turn it into a string
+  return JSON.stringify(request.body);
+}
+morgan.token("http-body", htmlPostBody);
+
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :http-body"
+  )
+);
 
 let phonebook = [
   {
@@ -50,8 +63,6 @@ app.use("/api/persons/:id", (request, response, next) => {
 
 // Check for get methods on persons, validating the user sent requests to phonebook
 app.use("/api/persons", (request, response, next) => {
-  console.log(request.method !== "POST");
-
   // Only catch POST method on /api/persons
   if (request.method !== "POST") return next();
 
