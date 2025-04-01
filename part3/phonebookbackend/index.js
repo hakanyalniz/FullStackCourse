@@ -26,6 +26,10 @@ let phonebook = [
   },
 ];
 
+const generateId = () => {
+  return String(Math.floor(Math.random() * 1000));
+};
+
 // middleware for checking if a person exists or not
 // adding id and person to request for later use
 app.use("/api/persons/:id", (request, response, next) => {
@@ -66,6 +70,26 @@ app.get("/api/persons/:id", (request, response) => {
 app.delete("/api/persons/:id", (request, response) => {
   phonebook = phonebook.filter((person) => person.id !== request.person.id);
 
+  response.json(phonebook);
+});
+
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
+
+  // name and number are required
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: "missing name or number",
+    });
+  }
+
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number,
+  };
+
+  phonebook = phonebook.concat(person);
   response.json(phonebook);
 });
 
