@@ -30,6 +30,17 @@ app.get("/", (request, response) => {
   response.send("Hello World!");
 });
 
+app.get("/info", (request, response) => {
+  const timestamp = new Date().toISOString();
+
+  const phonebookLength = phonebook.length;
+  const html = `
+  <p>Phonebook has info for ${phonebookLength} people</p>
+  <p>${timestamp}</p>
+  `;
+  response.send(html);
+});
+
 app.get("/api/persons", (request, response) => {
   response.json(phonebook);
 });
