@@ -3,7 +3,7 @@ const app = express();
 
 app.use(express.json());
 
-const phonebook = [
+let phonebook = [
   {
     id: "1",
     name: "Arto Hellas",
@@ -26,6 +26,20 @@ const phonebook = [
   },
 ];
 
+// middleware for checking if a person exists or not
+// adding id and person to request for later use
+app.use("/api/persons/:id", (request, response, next) => {
+  const id = request.params.id;
+  const person = phonebook.find((person) => person.id === id);
+
+  if (!person) {
+    return response.status(404).send("404 - Person Not Found");
+  }
+
+  request.person = person;
+  next();
+});
+
 app.get("/", (request, response) => {
   response.send("Hello World!");
 });
@@ -45,22 +59,14 @@ app.get("/api/persons", (request, response) => {
   response.json(phonebook);
 });
 
-// middleware for checking if a person exists or not
-// adding id and person to request for later use
-app.use("/api/persons/:id", (request, response, next) => {
-  const id = request.params.id;
-  const person = phonebook.find((person) => person.id === id);
-
-  if (!person) {
-    response.status(404).send("404 - Person Not Found");
-  }
-
-  request.person = person;
-  next();
-});
-
 app.get("/api/persons/:id", (request, response) => {
   response.json(request.person);
+});
+
+app.delete("/api/persons/:id", (request, response) => {
+  phonebook = phonebook.filter((person) => person.id !== request.person.id);
+
+  response.json(phonebook);
 });
 
 // Catch all route for error handling
