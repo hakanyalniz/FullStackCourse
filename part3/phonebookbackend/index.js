@@ -44,6 +44,33 @@ app.use("/api/persons/:id", (request, response, next) => {
   next();
 });
 
+// Check for get methods on persons, validating the user sent requests to phonebook
+app.use("/api/persons", (request, response, next) => {
+  // Only catch POST method on /api/persons
+  if (request.method !== "POST") next();
+
+  const requestBodyPerson = request.body;
+  const person = phonebook.find(
+    (person) => person.name === requestBodyPerson.name
+  );
+
+  // name and number are required
+  if (!requestBodyPerson.name || !requestBodyPerson.number) {
+    return response.status(400).json({
+      error: "missing name or number",
+    });
+  }
+
+  // if a person name with that name is not found, person will be undefined and the below if block will be ignored
+  if (person) {
+    return response.status(400).json({
+      error: "please try a different name",
+    });
+  }
+
+  next();
+});
+
 app.get("/", (request, response) => {
   response.send("Hello World!");
 });
@@ -75,13 +102,6 @@ app.delete("/api/persons/:id", (request, response) => {
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
-
-  // name and number are required
-  if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: "missing name or number",
-    });
-  }
 
   const person = {
     id: generateId(),
