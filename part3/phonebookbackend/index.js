@@ -45,11 +45,22 @@ app.get("/api/persons", (request, response) => {
   response.json(phonebook);
 });
 
-app.get("/api/persons/:id", (request, response) => {
+// middleware for checking if a person exists or not
+// adding id and person to request for later use
+app.use("/api/persons/:id", (request, response, next) => {
   const id = request.params.id;
   const person = phonebook.find((person) => person.id === id);
 
-  response.json(person);
+  if (!person) {
+    response.status(404).send("404 - Person Not Found");
+  }
+
+  request.person = person;
+  next();
+});
+
+app.get("/api/persons/:id", (request, response) => {
+  response.json(request.person);
 });
 
 // Catch all route for error handling
