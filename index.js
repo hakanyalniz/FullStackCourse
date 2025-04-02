@@ -1,4 +1,6 @@
 const express = require("express");
+const path = require("path");
+
 const app = express();
 const cors = require("cors");
 
@@ -29,9 +31,10 @@ const generateId = (arrayDict) => {
 // We receive JSON string, so convert it into JSON object to attach it to request body
 app.use(express.json());
 app.use(cors());
+app.use(express.static("public")); // Serve files from 'public' folder
 
 app.get("/", (request, response) => {
-  response.render("./index.html");
+  response.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.get("/api/notes", (request, response) => {
