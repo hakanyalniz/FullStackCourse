@@ -1,6 +1,6 @@
 async function loadPhoneBook() {
   try {
-    const response = await fetch("http://localhost:3001/api/notes/");
+    const response = await fetch("/api/notes/");
     const phoneBook = await response.json();
     return phoneBook;
   } catch (error) {
