@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 let notes = [
   {
@@ -27,6 +28,7 @@ const generateId = (arrayDict) => {
 
 // We receive JSON string, so convert it into JSON object to attach it to request body
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
@@ -92,7 +94,7 @@ app.use((request, response, next) => {
   response.status(404).send("404 - Route Not Found");
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}.`);
 });
