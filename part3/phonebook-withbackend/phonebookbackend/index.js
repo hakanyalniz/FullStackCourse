@@ -65,6 +65,7 @@ app.use("/api/persons/:id", (request, response, next) => {
 app.use("/api/persons", (request, response, next) => {
   // Only catch POST method on /api/persons
   if (request.method !== "POST") return next();
+  console.log("running");
 
   const requestBodyPerson = request.body;
   const foundPerson = phonebook.find(

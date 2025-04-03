@@ -8,6 +8,10 @@ const Numbers = ({
     if (!window.confirm(`Delete ${currentPerson.name}?`)) return;
 
     deletePerson(currentPerson.id).then((response) => {
+      // when deleting, delete route returns the full list back
+      // which doesnt work for setPersons, which is only expecting the deleted element
+      console.log("inside delete", response);
+
       setPersons((persons) =>
         persons.filter((item) => {
           return item.id !== response.id;

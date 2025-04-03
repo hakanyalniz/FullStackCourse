@@ -43,6 +43,7 @@ const App = () => {
     )
   );
 
+  // Initial fetch for Person state
   useEffect(() => {
     personService.getAll().then((response) => {
       setPersons(response);
