@@ -133,9 +133,8 @@ app.post("/api/persons", (request, response) => {
   response.json(phonebook);
 });
 
-// Catch all route for error handling
-app.use((request, response, next) => {
-  response.status(404).send("404 - Route Not Found");
+app.get("/*splat", (request, response) => {
+  response.sendFile(path.join(__dirname, "../index.html"));
 });
 
 const PORT = process.env.PORT || 3001;
