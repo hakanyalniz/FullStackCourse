@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 // For deployment
-app.use(express.static("dist"));
+app.use("/assets", express.static(path.join(__dirname, "../assets")));
 
 // We can create custom token to insert into morgan, which will then log them
 function htmlPostBody(request, response) {
@@ -92,7 +92,7 @@ app.use("/api/persons", (request, response, next) => {
 });
 
 app.get("/", (request, response) => {
-  response.send("Hello World!");
+  response.sendFile(path.join(__dirname, "../index.html"));
 });
 
 app.get("/info", (request, response) => {
@@ -133,17 +133,12 @@ app.post("/api/persons", (request, response) => {
   response.json(phonebook);
 });
 
-// Fallback to index.html for SPA routing
-app.get("*", (request, response) => {
-  response.sendFile(path.join(__dirname, "dist", "index.html"));
-});
-
 // Catch all route for error handling
 app.use((request, response, next) => {
   response.status(404).send("404 - Route Not Found");
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}.`);
 });
