@@ -1,0 +1,19 @@
+:root {
+  background-color: rgb(17, 17, 17);
+  color: rgb(238, 238, 238);
+}
+
+h2 {
+  color: rgb(110, 22, 0);
+  font-style: italic;
+}
+
+.error {
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
