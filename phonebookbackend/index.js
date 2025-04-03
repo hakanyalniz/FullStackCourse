@@ -1,11 +1,13 @@
 const express = require("express");
 let morgan = require("morgan");
+const path = require("path");
 
 const app = express();
 
 app.use(express.json());
 
-// app.use(morgan("tiny"));
+// For deployment
+app.use(express.static("dist"));
 
 // We can create custom token to insert into morgan, which will then log them
 function htmlPostBody(request, response) {
@@ -129,6 +131,11 @@ app.post("/api/persons", (request, response) => {
 
   phonebook = phonebook.concat(person);
   response.json(phonebook);
+});
+
+// Fallback to index.html for SPA routing
+app.get("*", (request, response) => {
+  response.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 // Catch all route for error handling
