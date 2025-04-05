@@ -1,5 +1,7 @@
 const express = require("express");
 const path = require("path");
+const Note = require("./models/note");
+const { addDB, findDB, deleteDB } = require("./models/mongo");
 
 const app = express();
 const cors = require("cors");
@@ -22,12 +24,6 @@ let notes = [
   },
 ];
 
-const generateId = (arrayDict) => {
-  const maxID =
-    arrayDict.length > 0 ? Math.max(...arrayDict.map((n) => Number(n.id))) : 0;
-  return String(maxID + 1);
-};
-
 // We receive JSON string, so convert it into JSON object to attach it to request body
 app.use(express.json());
 app.use(cors());
@@ -37,14 +33,17 @@ app.get("/", (request, response) => {
   response.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.get("/api/notes", (request, response) => {
-  response.json(notes);
+app.get("/api/notes", async (request, response) => {
+  console.log("Inside app.get,", await findDB());
+
+  response.json(await findDB());
 });
 
 // Check if the id exists and deal with it accordingly
-app.use("/api/notes/:id", (request, response, next) => {
+app.use("/api/notes/:id", async (request, response, next) => {
   const id = request.params.id;
-  const note = notes.find((note) => note.id === id);
+  const pendingNotePromise = await findDB();
+  const note = pendingNotePromise.find((note) => note.id === id);
 
   // Return early
   if (!note) {
@@ -63,8 +62,10 @@ app.get("/api/notes/:id", (request, response) => {
 });
 
 // Delete a specific notes by id
-app.delete("/api/notes/:id", (request, response) => {
-  notes = notes.filter((note) => note.id !== request.note.id);
+app.delete("/api/notes/:id", async (request, response) => {
+  // notes.filter((note) => note.id !== request.note.id);
+  deleteDB(request.note.id);
+
   response.status(204).end();
 });
 
@@ -79,17 +80,16 @@ app.post("/api/notes", (request, response) => {
     });
   }
 
-  // We use the ones we want and if the user happened to send something we did not want
-  // we do not process it
-  const note = {
-    content: body.content,
-    important: body.important || false,
-    id: generateId(notes),
-  };
+  response.json(addDB(body));
 
-  notes = notes.concat(note);
+  // const note = new Note({
+  //   content: body.content,
+  //   important: body.important || false,
+  // });
 
-  response.json(note);
+  // note.save().then((savedNote) => {
+  //   response.json(savedNote);
+  // });
 });
 
 // Catch-all route for unfound routes (404)
