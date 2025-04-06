@@ -4,8 +4,8 @@ const Phonebook = require("./phonebook");
 
 function addDB(body) {
   const phonebook = new Phonebook({
-    content: body.content,
-    important: body.important || false,
+    name: String,
+    number: Number,
   });
 
   phonebook.save().then((result) => {
@@ -15,7 +15,7 @@ function addDB(body) {
 }
 
 async function deleteDB(id) {
-  const result = await phonebook.deleteOne({ _id: id });
+  const result = await Phonebook.deleteOne({ _id: id });
 
   if (result.deletedCount === 0) {
     console.log("No document was deleted!");
@@ -23,7 +23,7 @@ async function deleteDB(id) {
 }
 
 async function findDB() {
-  return await phonebook.find({});
+  return await Phonebook.find({});
 }
 
 module.exports = { addDB, findDB, deleteDB };
