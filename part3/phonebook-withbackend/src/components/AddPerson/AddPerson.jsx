@@ -4,7 +4,6 @@ import personService from "../../services/persons";
 const AddPerson = ({ persons, setPersons, handleSuccessNotification }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  let personFoundID;
 
   const handleNameChange = (event) => {
     console.log(event.target.value);
@@ -20,7 +19,6 @@ const AddPerson = ({ persons, setPersons, handleSuccessNotification }) => {
     event.preventDefault();
 
     const hasNewName = persons.some((person) => {
-      personFoundID = person.id;
       return person.name === newName;
     });
 
@@ -41,7 +39,6 @@ const AddPerson = ({ persons, setPersons, handleSuccessNotification }) => {
         .updatePerson({
           name: newName,
           number: newNumber,
-          id: personFoundID,
         })
         .then(() => {
           personService.getAll().then((response) => setPersons(response));

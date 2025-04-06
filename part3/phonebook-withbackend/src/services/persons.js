@@ -20,7 +20,7 @@ const deletePerson = (personID) => {
 };
 
 const updatePerson = (payload) => {
-  const updateResource = `${baseURL}/` + payload.id;
+  const updateResource = `${baseURL}/`;
   const request = axios.put(updateResource, payload);
   return request.then((response) => response.data);
 };

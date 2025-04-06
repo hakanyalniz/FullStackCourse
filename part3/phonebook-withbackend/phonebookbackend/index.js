@@ -2,7 +2,12 @@ const express = require("express");
 let morgan = require("morgan");
 const path = require("path");
 
-const { addDB, findDB, deleteDB } = require("./models/phonebookActions");
+const {
+  addDB,
+  findDB,
+  deleteDB,
+  updateDB,
+} = require("./models/phonebookActions");
 
 const app = express();
 
@@ -82,27 +87,39 @@ app.get("/info", (request, response) => {
   response.send(html);
 });
 
+// Get all data
 app.get("/api/persons", async (request, response) => {
   const phonebook = await findDB();
 
   response.json(phonebook);
 });
 
+// Get specific id data
 app.get("/api/persons/:id", (request, response) => {
   response.json(request.person);
 });
 
+// Delete specific id data
 app.delete("/api/persons/:id", async (request, response) => {
   const deletePromise = await deleteDB(request.person.id);
 
   response.json(deletePromise);
 });
 
+// Post a specific data
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
   phonebook = addDB(body);
   response.json(phonebook);
+});
+
+app.put("/api/persons", (request, response) => {
+  console.log("Got a PUT request at /api/persons");
+  const payloadBody = request.body;
+  const result = updateDB(payloadBody);
+
+  response.send("Got a PUT request at /api/persons", result);
 });
 
 // app.get("/*splat", (request, response) => {

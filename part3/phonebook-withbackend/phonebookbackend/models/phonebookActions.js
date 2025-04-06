@@ -25,8 +25,17 @@ async function deleteDB(id) {
   return 1;
 }
 
+async function updateDB(payloadBody) {
+  const result = await Phonebook.findOneAndUpdate(
+    { name: payloadBody.name },
+    { number: payloadBody.number },
+    { new: true }
+  );
+  return result;
+}
+
 async function findDB() {
   return await Phonebook.find({});
 }
 
-module.exports = { addDB, findDB, deleteDB };
+module.exports = { addDB, findDB, deleteDB, updateDB };
