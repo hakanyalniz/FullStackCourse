@@ -4,8 +4,8 @@ const Phonebook = require("./phonebook");
 
 function addDB(body) {
   const phonebook = new Phonebook({
-    name: String,
-    number: Number,
+    name: body.name,
+    number: body.number,
   });
 
   phonebook.save().then((result) => {
@@ -19,7 +19,10 @@ async function deleteDB(id) {
 
   if (result.deletedCount === 0) {
     console.log("No document was deleted!");
+    return 0;
   }
+
+  return 1;
 }
 
 async function findDB() {
