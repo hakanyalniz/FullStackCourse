@@ -6,18 +6,16 @@ const Numbers = ({
 }) => {
   const handleDeletePerson = (currentPerson) => {
     if (!window.confirm(`Delete ${currentPerson.name}?`)) return;
+    console.log("Inside handleDeletePerson,", currentPerson);
 
-    deletePerson(currentPerson.id).then((response) => {
-      // when deleting, delete route returns the full list back
-      // which doesnt work for setPersons, which is only expecting the deleted element
-      console.log("inside delete", response);
-
-      setPersons((persons) =>
-        persons.filter((item) => {
-          return item.id !== response.id;
-        })
-      );
-    });
+    deletePerson(currentPerson)
+      .then((response) => {
+        // After delete, we return an updated list, set the Persons to that
+        setPersons(response);
+      })
+      .catch((error) => {
+        console.log("An error occured", error);
+      });
     handleSuccessNotification(
       `${currentPerson.name} has been deleted from phonebook`
     );

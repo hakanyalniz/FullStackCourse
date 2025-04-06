@@ -13,9 +13,10 @@ const addPerson = (payload) => {
   return request.then((response) => response.data);
 };
 
-const deletePerson = (personID) => {
-  const deleteResource = `${baseURL}/` + personID;
-  const request = axios.delete(deleteResource);
+const deletePerson = (payload) => {
+  const deleteResource = `${baseURL}?name=` + payload.name;
+  const request = axios.delete(deleteResource, payload);
+
   return request.then((response) => response.data);
 };
 

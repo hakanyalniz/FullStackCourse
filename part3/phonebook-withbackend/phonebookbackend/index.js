@@ -100,8 +100,11 @@ app.get("/api/persons/:id", (request, response) => {
 });
 
 // Delete specific id data
-app.delete("/api/persons/:id", async (request, response) => {
-  const deletePromise = await deleteDB(request.person.id);
+app.delete("/api/persons", async (request, response) => {
+  const name = request.query.name;
+  console.log("Inside request,", name);
+
+  const deletePromise = await deleteDB(name);
 
   response.json(deletePromise);
 });

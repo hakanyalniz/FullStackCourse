@@ -14,21 +14,24 @@ function addDB(body) {
   });
 }
 
-async function deleteDB(id) {
-  const result = await Phonebook.deleteOne({ _id: id });
+async function deleteDB(payload) {
+  console.log("Inside deleteDB", payload);
 
-  if (result.deletedCount === 0) {
+  const result = await Phonebook.findOneAndDelete({ name: payload });
+
+  if (result === null) {
     console.log("No document was deleted!");
     return 0;
   }
 
-  return 1;
+  // Return the updated data
+  return await findDB();
 }
 
 async function updateDB(payloadBody) {
   const result = await Phonebook.findOneAndUpdate(
     { name: payloadBody.name },
-    { number: payloadBody.number },
+    { $set: { number: payloadBody.number } },
     { new: true }
   );
   return result;
