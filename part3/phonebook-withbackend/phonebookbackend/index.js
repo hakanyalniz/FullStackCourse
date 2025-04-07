@@ -115,11 +115,16 @@ app.delete("/api/persons", async (request, response) => {
 });
 
 // Post a specific data
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", async (request, response, next) => {
   const body = request.body;
+  let person;
+  try {
+    person = await addDB(body);
+  } catch (error) {
+    next(error);
+  }
 
-  phonebook = addDB(body);
-  response.json(phonebook);
+  response.json(person);
 });
 
 // Update one specific data
@@ -143,12 +148,19 @@ app.use((request, response, next) => {
 // Error handling for malformed JSON
 // JSON handler internally calls next(error), so this gets called
 app.use((error, request, response, next) => {
+  console.log("Error name", error.name);
+
   if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
     return response.status(400).send({
       error: "Invalid JSON",
       message: "Malformed JSON",
     });
+  } else if (error.name === "ValidationError") {
+    return response
+      .status(400)
+      .json({ error: "ValidationError", message: error.message });
   }
+
   next();
 });
 

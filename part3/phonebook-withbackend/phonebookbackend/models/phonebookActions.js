@@ -8,7 +8,7 @@ function addDB(body) {
     number: body.number,
   });
 
-  phonebook.save().then((result) => {
+  return phonebook.save().then((result) => {
     console.log("Person saved!");
     return result;
   });

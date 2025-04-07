@@ -67,12 +67,21 @@ const AddPerson = ({ persons, setPersons, handleSuccessNotification }) => {
           name: newName,
           number: newNumber,
         })
-        .then((response) => {
-          console.log(response);
-          personService.getAll().then((response) => setPersons(response));
-        });
-
-      handleSuccessNotification(`${newName} added to the phonebook`);
+        .then(
+          (response) => {
+            console.log(response);
+            personService.getAll().then((response) => setPersons(response));
+            handleSuccessNotification(`${newName} added to the phonebook`);
+          },
+          (error) => {
+            console.error(error.message);
+            if (error.response.data.error === "ValidationError") {
+              handleSuccessNotification(`Validation error occured`);
+            } else {
+              handleSuccessNotification(`${newName}'s number is missing`);
+            }
+          }
+        );
     }
   };
 
