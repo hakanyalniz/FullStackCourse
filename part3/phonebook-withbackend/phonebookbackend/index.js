@@ -117,12 +117,13 @@ app.post("/api/persons", (request, response) => {
   response.json(phonebook);
 });
 
-app.put("/api/persons", (request, response) => {
+// Update one specific data
+app.put("/api/persons", async (request, response) => {
   console.log("Got a PUT request at /api/persons");
   const payloadBody = request.body;
-  const result = updateDB(payloadBody);
+  const result = await updateDB(payloadBody);
 
-  response.send("Got a PUT request at /api/persons", result);
+  response.send(result);
 });
 
 // app.get("/*splat", (request, response) => {
