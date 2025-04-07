@@ -76,10 +76,15 @@ app.use("/api/persons", async (request, response, next) => {
 //   response.sendFile(path.join(__dirname, "../index.html"));
 // });
 
-app.get("/info", (request, response) => {
+app.get("/", (request, response) => {
+  response.send("Hello World!");
+});
+
+app.get("/info", async (request, response) => {
   const timestamp = new Date().toISOString();
 
-  const phonebookLength = phonebook.length;
+  const personPromise = await findDB();
+  const phonebookLength = personPromise.length;
   const html = `
   <p>Phonebook has info for ${phonebookLength} people</p>
   <p>${timestamp}</p>
