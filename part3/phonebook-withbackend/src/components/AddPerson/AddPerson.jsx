@@ -44,9 +44,13 @@ const AddPerson = ({ persons, setPersons, handleSuccessNotification }) => {
           personService.getAll().then((response) => setPersons(response));
         })
         .catch((error) => {
-          handleSuccessNotification(
-            `${newName}'s information has not been found`
-          );
+          if (error.response.data.error === "ValidationError") {
+            handleSuccessNotification(`Validation error occured`);
+          } else {
+            handleSuccessNotification(
+              `${newName}'s information has not been found`
+            );
+          }
           // since there is information sync problem, update the local data from server
           personService.getAll().then((response) => setPersons(response));
           console.log(error);

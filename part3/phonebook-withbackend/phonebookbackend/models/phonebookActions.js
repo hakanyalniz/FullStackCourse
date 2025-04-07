@@ -32,7 +32,11 @@ async function updateDB(payloadBody) {
   const result = await Phonebook.findOneAndUpdate(
     { name: payloadBody.name },
     { $set: { number: payloadBody.number } },
-    { new: true }
+    {
+      new: true,
+      runValidators: true, // <-- IMPORTANT: Tells Mongoose to run schema validators
+      context: "query", // <-- Optional, but good practice for update validators
+    }
   );
   return result;
 }
