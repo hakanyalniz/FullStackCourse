@@ -135,6 +135,18 @@ app.use((request, response, next) => {
   response.status(404).send("404 - Route Not Found");
 });
 
+// Error handling for malformed JSON
+// JSON handler internally calls next(error), so this gets called
+app.use((error, request, response, next) => {
+  if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
+    return response.status(400).send({
+      error: "Invalid JSON",
+      message: "Malformed JSON",
+    });
+  }
+  next();
+});
+
 const PORT = process.env.PORT | 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}.`);
