@@ -2,12 +2,20 @@ const express = require("express");
 let morgan = require("morgan");
 const path = require("path");
 
+const {
+  addDB,
+  findDB,
+  deleteDB,
+  updateDB,
+} = require("./models/phonebookActions");
+
 const app = express();
+
+app.use("/assets", express.static(path.join(__dirname, "../assets")));
 
 app.use(express.json());
 
-// For deployment
-app.use("/assets", express.static(path.join(__dirname, "../assets")));
+// app.use(morgan("tiny"));
 
 // We can create custom token to insert into morgan, which will then log them
 function htmlPostBody(request, response) {
@@ -22,38 +30,12 @@ app.use(
   )
 );
 
-let phonebook = [
-  {
-    id: "1",
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: "2",
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: "3",
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: "4",
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
-
-const generateId = () => {
-  return String(Math.floor(Math.random() * 1000));
-};
-
 // middleware for checking if a person exists or not
 // adding id and person to request for later use
-app.use("/api/persons/:id", (request, response, next) => {
+app.use("/api/persons/:id", async (request, response, next) => {
   const id = request.params.id;
-  const person = phonebook.find((person) => person.id === id);
+  const personPromise = await findDB();
+  const person = personPromise.find((person) => person.id === id);
 
   if (!person) {
     return response.status(404).send("404 - Person Not Found");
@@ -64,13 +46,14 @@ app.use("/api/persons/:id", (request, response, next) => {
 });
 
 // Check for get methods on persons, validating the user sent requests to phonebook
-app.use("/api/persons", (request, response, next) => {
+app.use("/api/persons", async (request, response, next) => {
   // Only catch POST method on /api/persons
   if (request.method !== "POST") return next();
-  console.log("running");
 
   const requestBodyPerson = request.body;
-  const foundPerson = phonebook.find(
+  const personPromise = await findDB();
+
+  const foundPerson = personPromise.find(
     (person) => person.name === requestBodyPerson.name
   );
 
@@ -91,14 +74,19 @@ app.use("/api/persons", (request, response, next) => {
   next();
 });
 
+// app.get("/", (request, response) => {
+//   response.sendFile(path.join(__dirname, "../index.html"));
+// });
+
 app.get("/", (request, response) => {
-  response.sendFile(path.join(__dirname, "../index.html"));
+  response.send("Hello World!");
 });
 
-app.get("/info", (request, response) => {
+app.get("/info", async (request, response) => {
   const timestamp = new Date().toISOString();
 
-  const phonebookLength = phonebook.length;
+  const personPromise = await findDB();
+  const phonebookLength = personPromise.length;
   const html = `
   <p>Phonebook has info for ${phonebookLength} people</p>
   <p>${timestamp}</p>
@@ -106,38 +94,79 @@ app.get("/info", (request, response) => {
   response.send(html);
 });
 
-app.get("/api/persons", (request, response) => {
+// Get all data
+app.get("/api/persons", async (request, response) => {
+  const phonebook = await findDB();
+
   response.json(phonebook);
 });
 
+// Get specific id data
 app.get("/api/persons/:id", (request, response) => {
   response.json(request.person);
 });
 
-app.delete("/api/persons/:id", (request, response) => {
-  phonebook = phonebook.filter((person) => person.id !== request.person.id);
+// Delete specific id data
+app.delete("/api/persons", async (request, response) => {
+  const name = request.query.name;
+  console.log("Inside request,", name);
 
-  response.json(phonebook);
+  const deletePromise = await deleteDB(name);
+
+  response.json(deletePromise);
 });
 
-app.post("/api/persons", (request, response) => {
+// Post a specific data
+app.post("/api/persons", async (request, response, next) => {
   const body = request.body;
+  let person;
+  try {
+    person = await addDB(body);
+  } catch (error) {
+    next(error);
+  }
 
-  const person = {
-    id: generateId(),
-    name: body.name,
-    number: body.number,
-  };
+  response.json(person);
+});
 
-  phonebook = phonebook.concat(person);
-  response.json(phonebook);
+// Update one specific data
+app.put("/api/persons", async (request, response) => {
+  console.log("Got a PUT request at /api/persons");
+  const payloadBody = request.body;
+  const result = await updateDB(payloadBody);
+
+  response.send(result);
+});
+
+// Catch all route for error handling
+app.use((request, response, next) => {
+  response.status(404).send("404 - Route Not Found");
+});
+
+// Error handling for malformed JSON
+// JSON handler internally calls next(error), so this gets called
+app.use((error, request, response, next) => {
+  console.log("Error name", error.name);
+
+  if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
+    return response.status(400).send({
+      error: "Invalid JSON",
+      message: "Malformed JSON",
+    });
+  } else if (error.name === "ValidationError") {
+    return response
+      .status(400)
+      .json({ error: "ValidationError", message: error.message });
+  }
+
+  next();
 });
 
 app.get("/*splat", (request, response) => {
   response.sendFile(path.join(__dirname, "../index.html"));
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT | 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}.`);
 });
