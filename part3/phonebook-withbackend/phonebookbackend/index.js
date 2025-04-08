@@ -1,6 +1,6 @@
 const express = require("express");
 let morgan = require("morgan");
-const path = require("path");
+// const path = require("path");
 
 const {
   addDB,
@@ -143,6 +143,7 @@ app.put("/api/persons", async (request, response) => {
 // Catch all route for error handling
 app.use((request, response, next) => {
   response.status(404).send("404 - Route Not Found");
+  next();
 });
 
 // Error handling for malformed JSON
