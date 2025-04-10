@@ -1,0 +1,14 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title": "How to use Node Express",
+    "author": "Taylor Hebert",
+    "url": "https://www.dailyCapeLife.com",
+    "likes": 3
+}
+
+#   title: String,
+#   author: String,
+#   url: String,
+#   likes: Number,
