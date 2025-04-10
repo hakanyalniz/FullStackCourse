@@ -2,10 +2,10 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "How to use Node Express",
-    "author": "Taylor Hebert",
-    "url": "https://www.dailyCapeLife.com",
-    "likes": 3
+    "title": "How to raise a dragoon",
+    "author": "Natasha Rockstone",
+    "url": "https://www.dragonsarecool.com",
+    "likes": 8823
 }
 
 #   title: String,
