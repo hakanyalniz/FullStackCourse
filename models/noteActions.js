@@ -1,5 +1,4 @@
 // Actions used by the mongose database
-const mongoose = require("mongoose");
 const Note = require("./note");
 
 function addDB(body) {

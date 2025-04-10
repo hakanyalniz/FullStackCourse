@@ -1,21 +1,21 @@
 const notesRouter = require("express").Router();
 
-const { addDB, findDB, deleteDB } = require("./models/mongo");
+const { addDB, findDB, deleteDB } = require("../models/noteActions");
 
-notesRouter.get("/api/notes", async (request, response) => {
+notesRouter.get("/", async (request, response) => {
   console.log("Inside app.get,", await findDB());
 
   response.json(await findDB());
 });
 
 // Send specific notes id
-notesRouter.get("/api/notes/:id", (request, response) => {
+notesRouter.get("/:id", (request, response) => {
   // Reuse the note from middleware
   response.json(request.note);
 });
 
 // Delete a specific notes by id
-notesRouter.delete("/api/notes/:id", async (request, response) => {
+notesRouter.delete("/:id", async (request, response) => {
   // notes.filter((note) => note.id !== request.note.id);
   deleteDB(request.note.id);
 
@@ -23,7 +23,7 @@ notesRouter.delete("/api/notes/:id", async (request, response) => {
 });
 
 // Post a specific note
-notesRouter.post("/api/notes", (request, response) => {
+notesRouter.post("/", (request, response) => {
   const body = request.body;
 
   // This makes the content field in the dictionary a required element

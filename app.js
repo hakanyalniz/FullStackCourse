@@ -5,6 +5,7 @@ const logger = require("./utils/logger");
 const notesRouter = require("./controllers/notes");
 const middleware = require("./utils/middlware");
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
 
@@ -30,7 +31,7 @@ app.get("/", (request, response) => {
   response.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.use(middleware.verifyID);
+app.use("/api/notes/:id", middleware.verifyID);
 app.use("/api/notes", notesRouter);
 
 app.use(middleware.unknownEndpoint);

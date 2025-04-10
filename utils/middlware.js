@@ -1,4 +1,5 @@
 const logger = require("./logger");
+const { findDB } = require("../models/noteActions");
 
 const requestLogger = (request, response, next) => {
   logger.info("Method:", request.method);
@@ -12,7 +13,10 @@ const requestLogger = (request, response, next) => {
 const verifyID = async (request, response, next) => {
   const id = request.params.id;
   const pendingNotePromise = await findDB();
+
   const note = pendingNotePromise.find((note) => note.id === id);
+
+  console.log(request.params);
 
   // Return early
   if (!note) {
