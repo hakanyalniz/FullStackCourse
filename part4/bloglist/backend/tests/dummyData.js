@@ -9,7 +9,7 @@ const listWithOneBlog = [
   },
 ];
 
-const listWithManyBlog = [
+const listWithFourBlog = [
   {
     _id: "5a422aa71b54a676234d1799",
     title: "Go To Statement Considered Harmful",
@@ -44,7 +44,7 @@ const listWithManyBlog = [
   },
 ];
 
-const listWithManyManyBlogs = [
+const listWithNineBlogs = [
   {
     _id: "5a422aa71b54a676234d1799",
     title: "Go To Statement Considered Harmful",
@@ -119,4 +119,4 @@ const listWithManyManyBlogs = [
   },
 ];
 
-module.exports = { listWithOneBlog, listWithManyBlog, listWithManyManyBlogs };
+module.exports = { listWithOneBlog, listWithFourBlog, listWithNineBlogs };
