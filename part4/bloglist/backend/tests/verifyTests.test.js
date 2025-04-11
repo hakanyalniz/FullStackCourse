@@ -43,14 +43,26 @@ describe("Most likes", () => {
   });
 });
 
-describe("The author", () => {
-  test("with the most blogs with small list is correct", () => {
+describe("The author with most blog", () => {
+  test("with small list is correct", () => {
     const result = listHelper.mostBlogs(dummyData.listWithManyBlog);
     assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", blogs: 2 });
   });
 
-  test("with the most blogs with big list is correct", () => {
+  test("with big list is correct", () => {
     const result = listHelper.mostBlogs(dummyData.listWithManyManyBlogs);
     assert.deepStrictEqual(result, { author: "Dmitri", blogs: 4 });
+  });
+});
+
+describe("The author with most likes", () => {
+  test("with small list is correct", () => {
+    const result = listHelper.mostLikes(dummyData.listWithManyBlog);
+    assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", likes: 40 });
+  });
+
+  test("with big list is correct", () => {
+    const result = listHelper.mostLikes(dummyData.listWithManyManyBlogs);
+    assert.deepStrictEqual(result, { author: "Dmitri", likes: 2020 });
   });
 });

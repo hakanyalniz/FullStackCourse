@@ -44,9 +44,29 @@ const mostBlogs = (blogs) => {
   return filteredMostBlogsDict;
 };
 
+const mostLikes = (blogs) => {
+  const authorDict = {};
+  blogs.forEach((blog) => {
+    typeof authorDict[blog.author] === "object"
+      ? (authorDict[blog.author].likes += blog.likes)
+      : (authorDict[blog.author] = { author: blog.author, likes: blog.likes });
+  });
+
+  let largestBlog = 0;
+  let filteredMostBlogsDict;
+  Object.values(authorDict).forEach((item) =>
+    item.likes > largestBlog
+      ? ((largestBlog = item.likes), (filteredMostBlogsDict = item))
+      : undefined
+  );
+
+  return filteredMostBlogsDict;
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
