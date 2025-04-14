@@ -3,8 +3,6 @@ const notesRouter = require("express").Router();
 const { addDB, findDB, deleteDB } = require("../models/noteActions");
 
 notesRouter.get("/", async (request, response) => {
-  console.log("Inside app.get,", await findDB());
-
   response.json(await findDB());
 });
 
