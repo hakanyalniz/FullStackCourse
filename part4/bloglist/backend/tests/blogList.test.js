@@ -33,13 +33,14 @@ beforeEach(async () => {
 
 describe("HTTP GET request", () => {
   test("verifies JSON format", async () => {
-    await api.get("/api/notes").expect("Content-Type", /application\/json/);
+    await api.get("/api/blogs").expect("Content-Type", /application\/json/);
   });
 
   test("verifies blog post amount", async () => {
-    const response = await api.get("/api/notes");
+    const response = await api.get("/api/blogs");
+    console.log(response.body);
 
-    assert.strictEqual(response.body.length, 2);
+    assert.strictEqual(response.body.length, initialBlog.length);
   });
 });
 
