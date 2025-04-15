@@ -25,9 +25,18 @@ describe("HTTP GET request", () => {
 
   test("verifies blog post amount", async () => {
     const response = await api.get("/api/blogs");
-    console.log(response.body);
 
     assert.strictEqual(response.body.length, testHelper.initialBlog.length);
+  });
+});
+
+describe("The structure of", () => {
+  test("blog id is correct", async () => {
+    const response = await api.get("/api/blogs");
+
+    response.body.forEach((blog) => {
+      assert(Object.keys(blog).includes("id"));
+    });
   });
 });
 
