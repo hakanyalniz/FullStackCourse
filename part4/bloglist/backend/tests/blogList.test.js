@@ -25,10 +25,10 @@ const initialBlog = [
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  let blogObject = new Blog(initialBlog[0]);
-  await blogObject.save();
-  blogObject = new Blog(initialBlog[1]);
-  await blogObject.save();
+
+  const blogObject = initialBlog.map((blog) => new Blog(blog));
+  const promiseArray = blogObject.map((blog) => blog.save());
+  await Promise.all(promiseArray);
 });
 
 describe("HTTP GET request", () => {
