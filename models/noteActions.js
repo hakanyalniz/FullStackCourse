@@ -1,16 +1,14 @@
 // Actions used by the mongose database
 const Note = require("./note");
 
-function addDB(body) {
+async function addDB(body) {
   const note = new Note({
     content: body.content,
     important: body.important || false,
   });
 
-  note.save().then((result) => {
-    console.log("note saved!");
-    return result;
-  });
+  const result = await note.save();
+  return result;
 }
 
 async function deleteDB(id) {
