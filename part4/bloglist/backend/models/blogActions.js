@@ -1,6 +1,13 @@
+const Blog = require("../models/blog");
+
 async function findAllDB() {
-  const blogPromise = await Blog.find({});
+  return await Blog.find({});
+}
+
+async function postDB(requestBody) {
+  const blog = new Blog(requestBody);
+  const blogPromise = await blog.save();
   return blogPromise;
 }
 
-module.exports = { findAllDB };
+module.exports = { findAllDB, postDB };
