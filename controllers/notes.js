@@ -31,7 +31,7 @@ notesRouter.post("/", (request, response) => {
     });
   }
 
-  response.json(addDB(body));
+  response.status(201).json(addDB(body));
 
   // const note = new Note({
   //   content: body.content,
