@@ -30,6 +30,26 @@ describe("HTTP GET request", () => {
   });
 });
 
+describe("HTTP POST request", () => {
+  test("successfully created a new blog", async () => {
+    const newBlog = {
+      title: "The moon and the sky",
+      author: "Rossy",
+      url: "www.spaceandstuff/blog/2024/3",
+      likes: 342,
+    };
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+    const response = await api.get("/api/blogs");
+
+    assert.strictEqual(response.body.length, testHelper.initialBlog.length + 1);
+  });
+});
+
 describe("The structure of", () => {
   test("blog id is correct", async () => {
     const response = await api.get("/api/blogs");
