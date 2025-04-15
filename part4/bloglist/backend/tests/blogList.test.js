@@ -8,25 +8,12 @@ const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
 
-const initialBlog = [
-  {
-    title: "How to tame your dragon",
-    author: "Taylor",
-    url: "www.tamingDragons.com/post01",
-    likes: 1002,
-  },
-  {
-    title: "The chilling tale of snowman",
-    author: "Drake",
-    url: "www.allthingssnow.com/snowman/01/chill",
-    likes: 2,
-  },
-];
+const testHelper = require("./test_helper");
 
 beforeEach(async () => {
   await Blog.deleteMany({});
 
-  const blogObject = initialBlog.map((blog) => new Blog(blog));
+  const blogObject = testHelper.initialBlog.map((blog) => new Blog(blog));
   const promiseArray = blogObject.map((blog) => blog.save());
   await Promise.all(promiseArray);
 });
@@ -40,7 +27,7 @@ describe("HTTP GET request", () => {
     const response = await api.get("/api/blogs");
     console.log(response.body);
 
-    assert.strictEqual(response.body.length, initialBlog.length);
+    assert.strictEqual(response.body.length, testHelper.initialBlog.length);
   });
 });
 
