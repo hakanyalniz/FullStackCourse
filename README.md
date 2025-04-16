@@ -12,6 +12,7 @@ This repo has a few different branches. The "production" branch is the one that 
 
 The ideal node express project structure is:
 
+```
 ├── controllers
 │ └── notes.js
 ├── dist
@@ -21,8 +22,9 @@ The ideal node express project structure is:
 ├── utils
 │ ├── config.js
 │ ├── logger.js
-│ └── middleware.js  
+│ └── middleware.js
 ├── app.js
 ├── index.js
 ├── package-lock.json
 ├── package.json
+```
