@@ -15,4 +15,12 @@ async function postDB(requestBody) {
   return blogPromise;
 }
 
-module.exports = { findAllDB, postDB };
+async function deleteDB(requestID) {
+  const deleteStatus = await Blog.deleteOne({ _id: requestID });
+
+  if (deleteStatus.deletedCount === 0) return 400;
+
+  return deleteStatus;
+}
+
+module.exports = { findAllDB, postDB, deleteDB };

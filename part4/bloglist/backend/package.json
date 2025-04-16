@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development node --watch index.js",
     "test-suit": "cross-env NODE_ENV=test node --test -- tests/blogList.test.js",
-    "test": "cross-env NODE_ENV=test node --test --test-name-pattern=\"verifies that if title/url is missing, returns 400\""
+    "test": "cross-env NODE_ENV=test node --test --test-name-pattern=\"verifies that delete works\""
   },
   "author": "Hakan",
   "license": "ISC",

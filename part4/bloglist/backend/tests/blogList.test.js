@@ -57,6 +57,26 @@ describe("HTTP POST request", () => {
       .send(testHelper.newBlogWithoutTitle)
       .expect(400);
   });
+
+  test("verifies that delete works", async () => {
+    const responseBeginning = await api
+      .get("/api/blogs")
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+    const blogToBeDeleted = responseBeginning.body[0];
+
+    await api.delete(`/api/blogs/${blogToBeDeleted.id}`).expect(204);
+
+    const responseEnd = await api
+      .get("/api/blogs")
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+
+    assert.strictEqual(
+      responseEnd.body.length,
+      testHelper.initialBlog.length - 1
+    );
+  });
 });
 
 describe("The structure of", () => {
