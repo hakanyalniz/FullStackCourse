@@ -1,3 +1,7 @@
+const supertest = require("supertest");
+const app = require("../app");
+const api = supertest(app);
+
 const initialBlog = [
   {
     title: "How to tame your dragon",
@@ -32,9 +36,17 @@ const newBlogWithoutTitle = {
   likes: 342,
 };
 
+async function currentDB() {
+  return await api
+    .get("/api/blogs")
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+}
+
 module.exports = {
   initialBlog,
   newFullBlog,
   newBlogWithoutLikes,
   newBlogWithoutTitle,
+  currentDB,
 };

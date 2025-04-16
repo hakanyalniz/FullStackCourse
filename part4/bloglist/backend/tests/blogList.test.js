@@ -59,18 +59,12 @@ describe("HTTP POST request", () => {
   });
 
   test("verifies that delete works", async () => {
-    const responseBeginning = await api
-      .get("/api/blogs")
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
+    const responseBeginning = await testHelper.currentDB();
     const blogToBeDeleted = responseBeginning.body[0];
 
     await api.delete(`/api/blogs/${blogToBeDeleted.id}`).expect(204);
 
-    const responseEnd = await api
-      .get("/api/blogs")
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
+    const responseEnd = await testHelper.currentDB();
 
     assert.strictEqual(
       responseEnd.body.length,
