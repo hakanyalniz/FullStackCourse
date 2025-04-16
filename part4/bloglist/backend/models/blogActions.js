@@ -7,6 +7,7 @@ async function findAllDB() {
 async function postDB(requestBody) {
   const blog = new Blog(requestBody);
   const blogPromise = await blog.save();
+
   return blogPromise;
 }
 

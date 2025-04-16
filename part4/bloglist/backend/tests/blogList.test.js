@@ -28,6 +28,21 @@ describe("HTTP GET request", () => {
 
     assert.strictEqual(response.body.length, testHelper.initialBlog.length);
   });
+
+  test("verifies likes default to 0 if missing in POST", async () => {
+    const newBlog = {
+      title: "The red color and chemicals",
+      author: "Alberto",
+      url: "www.whackystuff.org/dev/posts/2004/30",
+    };
+
+    const response = await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect("Content-Type", /application\/json/);
+
+    assert.strictEqual(response.body.likes, 0);
+  });
 });
 
 describe("HTTP POST request", () => {

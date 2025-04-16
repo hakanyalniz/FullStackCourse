@@ -6,7 +6,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development node --watch index.js",
-    "test": "cross-env NODE_ENV=test node --test -- tests/blogList.test.js"
+    "test-suit": "cross-env NODE_ENV=test node --test -- tests/blogList.test.js",
+    "test": "cross-env NODE_ENV=test node --test --test-name-pattern=\"verifies likes default to 0 if missing in POST\""
   },
   "author": "Hakan",
   "license": "ISC",
