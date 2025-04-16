@@ -37,10 +37,12 @@ const newBlogWithoutTitle = {
 };
 
 async function currentDB() {
-  return await api
+  const response = await api
     .get("/api/blogs")
     .expect(200)
     .expect("Content-Type", /application\/json/);
+
+  return response.body;
 }
 
 module.exports = {

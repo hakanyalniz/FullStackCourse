@@ -15,6 +15,18 @@ async function postDB(requestBody) {
   return blogPromise;
 }
 
+async function updateDB(requestID, requestBody) {
+  const updatedBlog = await Blog.findOneAndUpdate(
+    { _id: requestID },
+    requestBody,
+    {
+      returnOriginal: false,
+    }
+  );
+
+  return updatedBlog;
+}
+
 async function deleteDB(requestID) {
   const deleteStatus = await Blog.deleteOne({ _id: requestID });
 
@@ -23,4 +35,4 @@ async function deleteDB(requestID) {
   return deleteStatus;
 }
 
-module.exports = { findAllDB, postDB, deleteDB };
+module.exports = { findAllDB, postDB, updateDB, deleteDB };

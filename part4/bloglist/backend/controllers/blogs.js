@@ -15,6 +15,15 @@ blogsRouter.post("/", async (request, response) => {
   response.status(201).json(blogPromise);
 });
 
+blogsRouter.put("/:id", async (request, response) => {
+  const updateResource = await blogActions.updateDB(
+    request.params.id,
+    request.body
+  );
+
+  response.status(200).json(updateResource);
+});
+
 blogsRouter.delete("/:id", async (request, response) => {
   const deletedResource = await blogActions.deleteDB(request.params.id);
 

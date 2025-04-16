@@ -60,16 +60,26 @@ describe("HTTP POST request", () => {
 
   test("verifies that delete works", async () => {
     const responseBeginning = await testHelper.currentDB();
-    const blogToBeDeleted = responseBeginning.body[0];
+    const blogToBeDeleted = responseBeginning[0];
 
     await api.delete(`/api/blogs/${blogToBeDeleted.id}`).expect(204);
-
     const responseEnd = await testHelper.currentDB();
 
-    assert.strictEqual(
-      responseEnd.body.length,
-      testHelper.initialBlog.length - 1
-    );
+    assert.strictEqual(responseEnd.length, testHelper.initialBlog.length - 1);
+  });
+
+  test("verifies that update works", async () => {
+    const responseBeginning = await testHelper.currentDB();
+    const blogToBeUpdated = responseBeginning[0];
+
+    await api
+      .put(`/api/blogs/${blogToBeUpdated.id}`)
+      .send({ likes: 9999 })
+      .expect(200);
+
+    const responseUpdated = await testHelper.currentDB();
+
+    assert.strictEqual(responseUpdated[0].likes, 9999);
   });
 });
 
