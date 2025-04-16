@@ -32,16 +32,9 @@ describe("HTTP GET request", () => {
 
 describe("HTTP POST request", () => {
   test("successfully created a new blog", async () => {
-    const newBlog = {
-      title: "The moon and the sky",
-      author: "Rossy",
-      url: "www.spaceandstuff/blog/2024/3",
-      likes: 342,
-    };
-
     await api
       .post("/api/blogs")
-      .send(newBlog)
+      .send(testHelper.newFullBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
     const response = await api.get("/api/blogs");
@@ -50,28 +43,19 @@ describe("HTTP POST request", () => {
   });
 
   test("verifies likes default to 0 if missing in POST", async () => {
-    const newBlog = {
-      title: "The red color and chemicals",
-      author: "Alberto",
-      url: "www.whackystuff.org/dev/posts/2004/30",
-    };
-
     const response = await api
       .post("/api/blogs")
-      .send(newBlog)
+      .send(testHelper.newBlogWithoutLikes)
       .expect("Content-Type", /application\/json/);
 
     assert.strictEqual(response.body.likes, 0);
   });
 
   test("verifies that if title/url is missing, returns 400", async () => {
-    const newBlog = {
-      author: "Alberto",
-      url: "www.whackystuff.org/dev/posts/2004/30",
-      likes: 342,
-    };
-
-    await api.post("/api/blogs/").send(newBlog).expect(400);
+    await api
+      .post("/api/blogs/")
+      .send(testHelper.newBlogWithoutTitle)
+      .expect(400);
   });
 });
 

@@ -13,4 +13,28 @@ const initialBlog = [
   },
 ];
 
-module.exports = { initialBlog };
+const newFullBlog = {
+  title: "The moon and the sky",
+  author: "Rossy",
+  url: "www.spaceandstuff/blog/2024/3",
+  likes: 342,
+};
+
+const newBlogWithoutLikes = {
+  title: "The red color and chemicals",
+  author: "Alberto",
+  url: "www.whackystuff.org/dev/posts/2004/30",
+};
+
+const newBlogWithoutTitle = {
+  author: "Alberto",
+  url: "www.whackystuff.org/dev/posts/2004/30",
+  likes: 342,
+};
+
+module.exports = {
+  initialBlog,
+  newFullBlog,
+  newBlogWithoutLikes,
+  newBlogWithoutTitle,
+};
