@@ -1,4 +1,3 @@
-const { request } = require("../app");
 const Blog = require("../models/blog");
 
 async function findAllDB() {
