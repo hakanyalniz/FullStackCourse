@@ -28,21 +28,6 @@ describe("HTTP GET request", () => {
 
     assert.strictEqual(response.body.length, testHelper.initialBlog.length);
   });
-
-  test("verifies likes default to 0 if missing in POST", async () => {
-    const newBlog = {
-      title: "The red color and chemicals",
-      author: "Alberto",
-      url: "www.whackystuff.org/dev/posts/2004/30",
-    };
-
-    const response = await api
-      .post("/api/blogs")
-      .send(newBlog)
-      .expect("Content-Type", /application\/json/);
-
-    assert.strictEqual(response.body.likes, 0);
-  });
 });
 
 describe("HTTP POST request", () => {
@@ -62,6 +47,31 @@ describe("HTTP POST request", () => {
     const response = await api.get("/api/blogs");
 
     assert.strictEqual(response.body.length, testHelper.initialBlog.length + 1);
+  });
+
+  test("verifies likes default to 0 if missing in POST", async () => {
+    const newBlog = {
+      title: "The red color and chemicals",
+      author: "Alberto",
+      url: "www.whackystuff.org/dev/posts/2004/30",
+    };
+
+    const response = await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect("Content-Type", /application\/json/);
+
+    assert.strictEqual(response.body.likes, 0);
+  });
+
+  test("verifies that if title/url is missing, returns 400", async () => {
+    const newBlog = {
+      author: "Alberto",
+      url: "www.whackystuff.org/dev/posts/2004/30",
+      likes: 342,
+    };
+
+    await api.post("/api/blogs/").send(newBlog).expect(400);
   });
 });
 

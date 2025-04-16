@@ -10,6 +10,8 @@ blogsRouter.get("/", async (request, response) => {
 blogsRouter.post("/", async (request, response) => {
   const blogPromise = await blogActions.postDB(request.body);
 
+  if (blogPromise === 400) response.status(400).send("Bad Request");
+
   response.status(201).json(blogPromise);
 });
 
