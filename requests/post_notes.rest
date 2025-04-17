@@ -2,6 +2,7 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "This is the REST client.",
-    "important": true
+    "content": "One for the rose",
+    "important": true,
+    "userId": "680135d5879fbebbcce6016c"
 }
