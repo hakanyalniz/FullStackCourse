@@ -4,6 +4,7 @@ const config = require("./utils/config");
 const logger = require("./utils/logger");
 const notesRouter = require("./controllers/notes");
 const usersRouter = require("./controllers/users");
+const loginRouter = require("./controllers/login");
 const middleware = require("./utils/middlware");
 const path = require("path");
 const cors = require("cors");
@@ -33,6 +34,7 @@ app.get("/", (request, response) => {
 });
 
 app.use("/api/notes/:id", middleware.verifyID);
+app.use("/api/login", loginRouter);
 app.use("/api/notes", notesRouter);
 app.use("/api/users", usersRouter);
 

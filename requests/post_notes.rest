@@ -1,8 +1,8 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvemUiLCJpZCI6IjY4MDEzNWQ1ODc5ZmJlYmJjY2U2MDE2YyIsImlhdCI6MTc0NDk5MDM1OX0.56g8bGyr9AoM4A1vtRpw3VXCqPLLp2OMHhtJN1uFgRs
 
 {
-    "content": "One for the rose",
-    "important": true,
-    "userId": "680135d5879fbebbcce6016c"
+    "content": "One for the heart",
+    "important": true
 }

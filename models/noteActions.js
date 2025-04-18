@@ -1,10 +1,7 @@
 // Actions used by the mongose database
 const Note = require("./note");
-const User = require("./user");
 
-async function addDB(body) {
-  const user = await User.findById(body.userId);
-
+async function addDB(body, user) {
   const note = new Note({
     content: body.content,
     important: body.important || false,
