@@ -6,12 +6,18 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development node --watch index.js",
-    "test-suit": "cross-env NODE_ENV=test node --test -- tests/blogList.test.js",
+    "test-suit": "cross-env NODE_ENV=test node --test -- tests/blogUser.test.js",
     "test": "cross-env NODE_ENV=test node --test --test-name-pattern=\"TEXT-GOES-HERE\""
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "bcrypt"
+    ]
   },
   "author": "Hakan",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",

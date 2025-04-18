@@ -1,3 +1,5 @@
+const User = require("../models/user");
+
 const supertest = require("supertest");
 const app = require("../app");
 const api = supertest(app);
@@ -45,10 +47,16 @@ async function currentDB() {
   return response.body;
 }
 
+const usersInDb = async () => {
+  const users = await User.find({});
+  return users.map((u) => u.toJSON());
+};
+
 module.exports = {
   initialBlog,
   newFullBlog,
   newBlogWithoutLikes,
   newBlogWithoutTitle,
   currentDB,
+  usersInDb,
 };
