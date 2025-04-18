@@ -1,15 +1,26 @@
 const Blog = require("../models/blog");
 
 async function findAllDB() {
-  return await Blog.find({});
+  const blog = await Blog.find({}).populate("user", { username: 1, name: 1 });
+  return blog;
 }
 
-async function postDB(requestBody) {
+async function postDB(requestBody, user) {
   if (requestBody.title === undefined || requestBody.url === undefined)
     return 400;
 
-  const blog = new Blog(requestBody);
+  const blog = new Blog({
+    title: requestBody.title,
+    author: requestBody.author,
+    url: requestBody.url,
+    likes: requestBody.likes,
+    user: user.id,
+  });
+
   const blogPromise = await blog.save();
+
+  user.blogs = user.blogs.concat(blogPromise);
+  await user.save();
 
   return blogPromise;
 }
