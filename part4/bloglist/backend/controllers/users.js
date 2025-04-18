@@ -9,6 +9,12 @@ usersRouter.get("/", async (request, response) => {
 usersRouter.post("/", async (request, response) => {
   const { username, name, password } = request.body;
 
+  if (username === undefined || password === undefined)
+    return response.status(400).send("Missing password or username");
+
+  if (password.length < 3)
+    return response.status(400).send("Password is too short");
+
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
 

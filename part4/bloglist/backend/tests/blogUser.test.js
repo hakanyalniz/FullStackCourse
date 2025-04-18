@@ -42,6 +42,33 @@ describe("when there is initially one user in db", () => {
     const usernames = usersAtEnd.map((u) => u.username);
     assert(usernames.includes(newUser.username));
   });
+
+  test("creation fails with invalid short username", async () => {
+    const newShortUser = {
+      username: "Ro",
+      name: "Rosalaen",
+      password: "sekret",
+    };
+
+    await api.post("/api/users").send(newShortUser).expect(400);
+  });
+
+  test("creation fails with invalid none existent password", async () => {
+    const newShortUser = {
+      username: "Roze",
+    };
+
+    await api.post("/api/users").send(newShortUser).expect(400);
+  });
+
+  test("creation fails with invalid same username", async () => {
+    const newShortUser = {
+      username: "root",
+      password: "newsekret",
+    };
+
+    await api.post("/api/users").send(newShortUser).expect(400);
+  });
 });
 
 after(async () => {
