@@ -3,19 +3,8 @@ const blogsRouter = require("express").Router();
 const blogActions = require("../models/blogActions");
 const User = require("../models/user");
 const config = require("../utils/config");
-const middleware = require("../utils/middleware");
 
 const jwt = require("jsonwebtoken");
-
-const getTokenFrom = (request) => {
-  const authorization = request.get("authorization");
-
-  if (authorization && authorization.startsWith("Bearer ")) {
-    return authorization.replace("Bearer ", "");
-  }
-
-  return null;
-};
 
 blogsRouter.get("/", async (request, response) => {
   response.json(await blogActions.findAllDB());
@@ -46,9 +35,11 @@ blogsRouter.put("/:id", async (request, response) => {
   response.status(200).json(updateResource);
 });
 
-blogsRouter.delete("/:id", async (request, response) => {
-  const deletedResource = await blogActions.deleteDB(request.params.id);
+blogsRouter.delete("/:id", async (request, response, next) => {
+  const deletedResource = await blogActions.deleteDB(request);
 
+  if (!deletedResource)
+    return response.status(401).json({ error: "token invalid" });
   response.status(204).json(deletedResource);
 });
 

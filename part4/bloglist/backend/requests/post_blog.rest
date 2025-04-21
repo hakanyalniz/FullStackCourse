@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJvemUiLCJpZCI6IjY4MDI4ZjIyOWRlYzc4ZTcyYzVhY2FhNSIsImlhdCI6MTc0NTI1MjQ0N30.LFQZi1S80fjQFu-18jPk91WVsrYDrx70XBzZOGK3Sgg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNodWNrIiwiaWQiOiI2ODA2NzgzNTc0ZDc1OWU4ZDk0YWM2NjgiLCJpYXQiOjE3NDUyNTQ0Nzd9.ZatSSqJ0drCBLRg7k9Lwmc0EdNMeF-D1HJ_CMP5Hvgw
 
 {
-    "title": "Final Final Dawn",
-    "author": "Natasha",
+    "title": "Chuck e Cheese",
+    "author": "Chuck",
     "url": "https://www.dawnspear.com/2002",
     "likes": 32
 }

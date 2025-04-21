@@ -23,6 +23,8 @@ const unknownEndpoint = (request, response, next) => {
 };
 
 const errorHandler = (error, request, response, next) => {
+  console.log("Manual error", error.name);
+
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
   } else if (error.name === "ValidationError") {
@@ -35,6 +37,8 @@ const errorHandler = (error, request, response, next) => {
       .status(400)
       .json({ error: "expected `username` to be unique" });
   } else if (error.name === "JsonWebTokenError") {
+    console.log("handling token error");
+
     return response.status(401).json({ error: "token invalid" });
   }
 

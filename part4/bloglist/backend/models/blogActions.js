@@ -1,4 +1,7 @@
 const Blog = require("../models/blog");
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+const config = require("../utils/config");
 
 async function findAllDB() {
   const blog = await Blog.find({}).populate("user", { username: 1, name: 1 });
@@ -37,12 +40,27 @@ async function updateDB(requestID, requestBody) {
   return updatedBlog;
 }
 
-async function deleteDB(requestID) {
-  const deleteStatus = await Blog.deleteOne({ _id: requestID });
+async function deleteDB(request) {
+  // Get the post userID
+  // get the current userID from middleware
+  // compare, if they match, delete post
+  // if they do not match deny request
 
-  if (deleteStatus.deletedCount === 0) return 400;
+  const blogToBeDeleted = await Blog.findOne({ _id: request.params.id });
+  const userForThatBlog = await User.findOne({ _id: blogToBeDeleted.user });
+  const decodedToken = jwt.verify(request.token, config.SECRET);
 
-  return deleteStatus;
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: "token invalid" });
+  }
+  const user = await User.findById(decodedToken.id);
+
+  if (userForThatBlog.id === user.id) {
+    const deleteStatus = await Blog.deleteOne({ _id: request.params.id });
+    if (deleteStatus.deletedCount === 0) return 400;
+
+    return deleteStatus;
+  }
 }
 
 module.exports = { findAllDB, postDB, updateDB, deleteDB };
