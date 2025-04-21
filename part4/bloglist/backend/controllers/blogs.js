@@ -1,16 +1,15 @@
 // api/blogs
 const blogsRouter = require("express").Router();
 const blogActions = require("../models/blogActions");
-const User = require("../models/user");
-const config = require("../utils/config");
-
-const jwt = require("jsonwebtoken");
 
 blogsRouter.get("/", async (request, response) => {
   response.json(await blogActions.findAllDB());
 });
 
 blogsRouter.post("/", async (request, response) => {
+  if (request.user === undefined)
+    return response.status(401).json({ error: "Unauthorized" });
+
   const blogPromise = await blogActions.postDB(request.body, request.user);
 
   if (blogPromise === 400) response.status(400).send("Bad Request");

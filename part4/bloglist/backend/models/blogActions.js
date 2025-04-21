@@ -1,7 +1,5 @@
 const Blog = require("../models/blog");
 const User = require("../models/user");
-const jwt = require("jsonwebtoken");
-const config = require("../utils/config");
 
 async function findAllDB() {
   const blog = await Blog.find({}).populate("user", { username: 1, name: 1 });

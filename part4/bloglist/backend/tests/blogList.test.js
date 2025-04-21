@@ -2,7 +2,11 @@ const { test, describe, after, beforeEach } = require("node:test");
 const assert = require("node:assert");
 
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Types;
+
 const Blog = require("../models/blog");
+const User = require("../models/user");
+const bcrypt = require("bcrypt");
 
 const supertest = require("supertest");
 const app = require("../app");
@@ -11,6 +15,17 @@ const api = supertest(app);
 const testHelper = require("./test_helper");
 
 beforeEach(async () => {
+  await User.deleteMany({});
+
+  const passwordHash = await bcrypt.hash("sekret", 10);
+  const user = new User({
+    username: "root",
+    passwordHash,
+    _id: new ObjectId("507f1f77bcf86cd799439011"),
+  });
+
+  await user.save();
+
   await Blog.deleteMany({});
 
   const blogObject = testHelper.initialBlog.map((blog) => new Blog(blog));
@@ -34,6 +49,7 @@ describe("HTTP POST request", () => {
   test("successfully created a new blog", async () => {
     await api
       .post("/api/blogs")
+      .set("Authorization", `Bearer ${await testHelper.loggedInUser()}`)
       .send(testHelper.newFullBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
@@ -42,9 +58,18 @@ describe("HTTP POST request", () => {
     assert.strictEqual(response.body.length, testHelper.initialBlog.length + 1);
   });
 
+  test("with missing token while creating blog is working as expected", async () => {
+    await api
+      .post("/api/blogs")
+      .send(testHelper.newFullBlog)
+      .expect(401)
+      .expect("Content-Type", /application\/json/);
+  });
+
   test("verifies likes default to 0 if missing in POST", async () => {
     const response = await api
       .post("/api/blogs")
+      .set("Authorization", `Bearer ${await testHelper.loggedInUser()}`)
       .send(testHelper.newBlogWithoutLikes)
       .expect("Content-Type", /application\/json/);
 
@@ -54,6 +79,7 @@ describe("HTTP POST request", () => {
   test("verifies that if title/url is missing, returns 400", async () => {
     await api
       .post("/api/blogs/")
+      .set("Authorization", `Bearer ${await testHelper.loggedInUser()}`)
       .send(testHelper.newBlogWithoutTitle)
       .expect(400);
   });
@@ -62,7 +88,10 @@ describe("HTTP POST request", () => {
     const responseBeginning = await testHelper.currentDB();
     const blogToBeDeleted = responseBeginning[0];
 
-    await api.delete(`/api/blogs/${blogToBeDeleted.id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${blogToBeDeleted.id}`)
+      .set("Authorization", `Bearer ${await testHelper.loggedInUser()}`)
+      .expect(204);
     const responseEnd = await testHelper.currentDB();
 
     assert.strictEqual(responseEnd.length, testHelper.initialBlog.length - 1);
