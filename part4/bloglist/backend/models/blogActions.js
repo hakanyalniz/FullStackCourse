@@ -48,14 +48,8 @@ async function deleteDB(request) {
 
   const blogToBeDeleted = await Blog.findOne({ _id: request.params.id });
   const userForThatBlog = await User.findOne({ _id: blogToBeDeleted.user });
-  const decodedToken = jwt.verify(request.token, config.SECRET);
 
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: "token invalid" });
-  }
-  const user = await User.findById(decodedToken.id);
-
-  if (userForThatBlog.id === user.id) {
+  if (userForThatBlog.id === request.user.id) {
     const deleteStatus = await Blog.deleteOne({ _id: request.params.id });
     if (deleteStatus.deletedCount === 0) return 400;
 

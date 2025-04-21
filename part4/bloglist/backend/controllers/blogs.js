@@ -11,15 +11,7 @@ blogsRouter.get("/", async (request, response) => {
 });
 
 blogsRouter.post("/", async (request, response) => {
-  const decodedToken = jwt.verify(request.token, config.SECRET);
-
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: "token invalid" });
-  }
-
-  const user = await User.findById(decodedToken.id);
-
-  const blogPromise = await blogActions.postDB(request.body, user);
+  const blogPromise = await blogActions.postDB(request.body, request.user);
 
   if (blogPromise === 400) response.status(400).send("Bad Request");
 
