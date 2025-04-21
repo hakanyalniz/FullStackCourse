@@ -3,6 +3,7 @@ const blogsRouter = require("express").Router();
 const blogActions = require("../models/blogActions");
 const User = require("../models/user");
 const config = require("../utils/config");
+const middleware = require("../utils/middleware");
 
 const jwt = require("jsonwebtoken");
 
@@ -21,7 +22,7 @@ blogsRouter.get("/", async (request, response) => {
 });
 
 blogsRouter.post("/", async (request, response) => {
-  const decodedToken = jwt.verify(getTokenFrom(request), config.SECRET);
+  const decodedToken = jwt.verify(request.token, config.SECRET);
 
   if (!decodedToken.id) {
     return response.status(401).json({ error: "token invalid" });
