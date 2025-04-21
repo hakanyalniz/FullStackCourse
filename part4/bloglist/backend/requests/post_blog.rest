@@ -2,7 +2,7 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-    "title": "SThird dawn",
+    "title": "Second dawn",
     "author": "Rasha",
     "url": "https://www.dawnspear.com/2002",
     "likes": 32,
