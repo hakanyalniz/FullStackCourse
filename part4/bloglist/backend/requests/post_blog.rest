@@ -1,12 +1,12 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJvemUiLCJpZCI6IjY4MDI4ZjIyOWRlYzc4ZTcyYzVhY2FhNSIsImlhdCI6MTc0NTI1MjQ0N30.LFQZi1S80fjQFu-18jPk91WVsrYDrx70XBzZOGK3Sgg
 
 {
-    "title": "Second dawn",
-    "author": "Rasha",
+    "title": "Final Dawn",
+    "author": "Natasha",
     "url": "https://www.dawnspear.com/2002",
-    "likes": 32,
-    "userId": "68028f229dec78e72c5acaa5"
+    "likes": 32
 }
 
 #   title: String,
