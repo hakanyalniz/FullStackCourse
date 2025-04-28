@@ -11,8 +11,28 @@ const App = () => {
     password: "",
   });
 
+  // Reset everything to log out
+  const handleLogOut = () => {
+    window.localStorage.removeItem("loggedBlogUser");
+    setUser(null);
+    setLoginUser({
+      username: "",
+      password: "",
+    });
+  };
+
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
+  }, []);
+
+  // When first accessing the website, check if user is logged in by looking at local storage
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      console.log(user);
+    }
   }, []);
 
   // Check if username is available for user, if not then request login
@@ -27,6 +47,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <div>Logged in as {user.name}</div>
+      <button onClick={handleLogOut}>Logout</button>
       <br />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
