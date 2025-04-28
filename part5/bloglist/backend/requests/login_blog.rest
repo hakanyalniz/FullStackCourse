@@ -1,0 +1,17 @@
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "Roze",
+    "password": "admin"
+}
+
+# {
+#     "username": "Roze",
+#     "password": "admin"
+# }
+
+#   title: String,
+#   author: String,
+#   url: String,
+#   likes: Number,
