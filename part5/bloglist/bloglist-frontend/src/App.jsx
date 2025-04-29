@@ -12,6 +12,7 @@ const App = () => {
     username: "",
     password: "",
   });
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   // Reset everything to log out
   const handleLogOut = () => {
@@ -21,6 +22,10 @@ const App = () => {
       username: "",
       password: "",
     });
+  };
+
+  const handleNotificationMessage = (message) => {
+    setNotificationMessage(message);
   };
 
   useEffect(() => {
@@ -51,13 +56,21 @@ const App = () => {
     />
   ) : (
     <div>
-      <NotificationBar />
+      <NotificationBar
+        notificationMessage={notificationMessage}
+        setNotificationMessage={setNotificationMessage}
+      />
+
       <h2>User</h2>
       <div>Logged in as {user.name}</div>
       <button onClick={handleLogOut}>Logout</button>
 
       <h2>Create Blog</h2>
-      <CreateBlog user={user} setBlogs={setBlogs} />
+      <CreateBlog
+        user={user}
+        setBlogs={setBlogs}
+        handleNotificationMessage={handleNotificationMessage}
+      />
 
       <h2>blogs</h2>
       {blogs.map((blog) => (

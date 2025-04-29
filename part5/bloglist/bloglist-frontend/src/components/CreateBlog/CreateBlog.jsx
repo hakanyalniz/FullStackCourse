@@ -1,6 +1,7 @@
 import blogService from "../../services/blogs";
+import NotificationBar from "../NotificationBar/NotificationBar";
 
-const CreateBlog = ({ user, setBlogs }) => {
+const CreateBlog = ({ user, setBlogs, handleNotificationMessage }) => {
   const handleCreateBlog = async (event) => {
     event.preventDefault();
     console.log(event.target[0].value);
@@ -14,8 +15,8 @@ const CreateBlog = ({ user, setBlogs }) => {
       user.token
     );
 
-    console.log(await blogService.getAll());
     setBlogs(await blogService.getAll());
+    handleNotificationMessage("Successfully created a blog!");
   };
 
   return (
