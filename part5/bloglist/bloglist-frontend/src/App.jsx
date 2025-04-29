@@ -3,6 +3,7 @@ import Blog from "./components/Blog/Blog";
 import blogService from "./services/blogs";
 import Login from "./components/Login/Login";
 import CreateBlog from "./components/CreateBlog/CreateBlog";
+import NotificationBar from "./components/NotificationBar/NotificationBar";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -50,6 +51,7 @@ const App = () => {
     />
   ) : (
     <div>
+      <NotificationBar />
       <h2>User</h2>
       <div>Logged in as {user.name}</div>
       <button onClick={handleLogOut}>Logout</button>

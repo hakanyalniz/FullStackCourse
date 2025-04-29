@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 import blogService from "../../services/blogs";
 
 const CreateBlog = ({ user, setBlogs }) => {
