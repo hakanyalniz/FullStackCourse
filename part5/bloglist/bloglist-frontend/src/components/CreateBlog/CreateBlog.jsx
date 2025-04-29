@@ -16,7 +16,7 @@ const CreateBlog = ({ user, setBlogs, handleNotificationMessage }) => {
     );
 
     setBlogs(await blogService.getAll());
-    handleNotificationMessage("Successfully created a blog!");
+    handleNotificationMessage("Successfully created a blog!", true);
   };
 
   return (

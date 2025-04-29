@@ -1,7 +1,11 @@
 import loginService from "../../services/login";
-import { useState, useEffect } from "react";
 
-const Login = ({ loginUser, setLoginUser, setUser }) => {
+const Login = ({
+  loginUser,
+  setLoginUser,
+  setUser,
+  handleNotificationMessage,
+}) => {
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -19,8 +23,10 @@ const Login = ({ loginUser, setLoginUser, setUser }) => {
         username: "",
         password: "",
       });
+      handleNotificationMessage("Successfully logged in!", true);
     } catch (exception) {
       console.log("Wrong credentials", exception);
+      handleNotificationMessage("Failed logging in.", false);
     }
   };
 

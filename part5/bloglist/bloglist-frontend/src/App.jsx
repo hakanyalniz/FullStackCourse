@@ -12,7 +12,10 @@ const App = () => {
     username: "",
     password: "",
   });
-  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState({
+    message: "",
+    status: true,
+  });
 
   // Reset everything to log out
   const handleLogOut = () => {
@@ -24,8 +27,8 @@ const App = () => {
     });
   };
 
-  const handleNotificationMessage = (message) => {
-    setNotificationMessage(message);
+  const handleNotificationMessage = (message, status) => {
+    setNotificationMessage({ message: message, status: status });
   };
 
   useEffect(() => {
@@ -49,11 +52,18 @@ const App = () => {
   // Check if username is available for user, if not then request login
   // otherwise display blog
   return user === null ? (
-    <Login
-      loginUser={loginUser}
-      setLoginUser={setLoginUser}
-      setUser={setUser}
-    />
+    <>
+      <NotificationBar
+        notificationMessage={notificationMessage}
+        setNotificationMessage={setNotificationMessage}
+      />
+      <Login
+        loginUser={loginUser}
+        setLoginUser={setLoginUser}
+        setUser={setUser}
+        handleNotificationMessage={handleNotificationMessage}
+      />
+    </>
   ) : (
     <div>
       <NotificationBar
