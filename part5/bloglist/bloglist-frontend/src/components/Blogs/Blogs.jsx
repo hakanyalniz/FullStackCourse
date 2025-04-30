@@ -12,6 +12,10 @@ const Blogs = ({ user, handleNotificationMessage }) => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
+  useEffect(() => {
+    console.log(blogs);
+  }, [blogs]);
+
   return (
     <>
       <h2>Create Blog</h2>
