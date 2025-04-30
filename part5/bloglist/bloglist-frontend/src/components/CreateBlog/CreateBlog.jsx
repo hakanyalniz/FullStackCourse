@@ -1,7 +1,11 @@
 import blogService from "../../services/blogs";
-import NotificationBar from "../NotificationBar/NotificationBar";
 
-const CreateBlog = ({ user, setBlogs, handleNotificationMessage }) => {
+const CreateBlog = ({
+  user,
+  setBlogs,
+  handleNotificationMessage,
+  createBlogFormRef,
+}) => {
   const handleCreateBlog = async (event) => {
     event.preventDefault();
     console.log(event.target[0].value);
@@ -17,6 +21,7 @@ const CreateBlog = ({ user, setBlogs, handleNotificationMessage }) => {
 
     setBlogs(await blogService.getAll());
     handleNotificationMessage("Successfully created a blog!", true);
+    createBlogFormRef.current.toggleVisibility();
   };
 
   return (

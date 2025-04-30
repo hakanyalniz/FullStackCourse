@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "../Blog/Blog";
 import CreateBlog from "../CreateBlog/CreateBlog";
 import blogService from "../../services/blogs";
+import Togglable from "../Togglable/Togglable";
 
 const Blogs = ({ user, handleNotificationMessage }) => {
   const [blogs, setBlogs] = useState([]);
+  const createBlogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -13,12 +15,14 @@ const Blogs = ({ user, handleNotificationMessage }) => {
   return (
     <>
       <h2>Create Blog</h2>
-
-      <CreateBlog
-        user={user}
-        setBlogs={setBlogs}
-        handleNotificationMessage={handleNotificationMessage}
-      />
+      <Togglable buttonLabel={"New Note"} ref={createBlogFormRef}>
+        <CreateBlog
+          user={user}
+          setBlogs={setBlogs}
+          handleNotificationMessage={handleNotificationMessage}
+          createBlogFormRef={createBlogFormRef}
+        />
+      </Togglable>
 
       <h2>Blogs</h2>
 
