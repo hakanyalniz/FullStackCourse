@@ -1,8 +1,8 @@
 import blogService from "../../services/blogs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./style.css";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, setBlogs }) => {
   const [visible, setVisible] = useState(false);
 
   const toggleVisibility = () => {
@@ -12,13 +12,13 @@ const Blog = ({ blog }) => {
   const visibleOrHidden = visible ? { display: "" } : { display: "none" };
 
   const handleIncreaseLike = () => {
-    console.log("Increase like by 1", blog);
     const likeIncreasedBlog = {
       ...blog,
       likes: blog.likes + 1,
       user: blog.user.id,
     };
     blogService.updateBlog(likeIncreasedBlog);
+    blogService.getAll().then((blogs) => setBlogs(blogs));
   };
 
   return (
