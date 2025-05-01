@@ -18,7 +18,13 @@ const Blog = ({ blog, setBlogs }) => {
       user: blog.user.id,
     };
     blogService.updateBlog(likeIncreasedBlog);
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService.getAll().then((blogs) =>
+      setBlogs(
+        blogs.sort((a, b) => {
+          return b.likes - a.likes;
+        })
+      )
+    );
   };
 
   return (
