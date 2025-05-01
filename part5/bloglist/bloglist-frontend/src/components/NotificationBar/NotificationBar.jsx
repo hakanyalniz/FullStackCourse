@@ -6,7 +6,6 @@ const NotificationBar = ({ notificationMessage, setNotificationMessage }) => {
   useEffect(() => {
     const notificationElement = document.getElementById("notification-bar");
 
-    console.log(notificationElement);
     if (notificationElement === null) return;
     if (notificationMessage.status === true) {
       notificationElement.classList.remove("failure");

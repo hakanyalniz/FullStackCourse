@@ -8,10 +8,6 @@ const Blogs = ({ user, handleNotificationMessage }) => {
   const [blogs, setBlogs] = useState([]);
   const createBlogFormRef = useRef();
 
-  const compareForSort = (a, b) => {
-    return b.likes - a.likes;
-  };
-
   useEffect(() => {
     blogService.getAll().then((blogs) =>
       setBlogs(
@@ -41,7 +37,7 @@ const Blogs = ({ user, handleNotificationMessage }) => {
       <h2>Blogs</h2>
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />
+        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user} />
       ))}
     </>
   );

@@ -2,14 +2,18 @@ import blogService from "../../services/blogs";
 import { useEffect, useState } from "react";
 import "./style.css";
 
-const Blog = ({ blog, setBlogs }) => {
+const Blog = ({ blog, setBlogs, user }) => {
   const [visible, setVisible] = useState(false);
+  const [deleteButtonVisible, setDeleteButtonVisible] = useState(false);
 
   const toggleVisibility = () => {
     setVisible(!visible);
   };
 
   const visibleOrHidden = visible ? { display: "" } : { display: "none" };
+  const deleteVisibleOrHidden = deleteButtonVisible
+    ? { display: "" }
+    : { display: "none" };
 
   const handleIncreaseLike = () => {
     const likeIncreasedBlog = {
@@ -27,6 +31,25 @@ const Blog = ({ blog, setBlogs }) => {
     );
   };
 
+  const handleDeleteBlog = () => {
+    console.log("Delete");
+    if (window.confirm("Do you really want to delete, ", blog.title)) {
+      blogService.deleteBlog(blog, user.token);
+    }
+  };
+
+  const handleDeleteButtonVisibility = () => {
+    if (blog.user.id === user.id) {
+      setDeleteButtonVisible(true);
+    } else {
+      setDeleteButtonVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    handleDeleteButtonVisibility();
+  }, []);
+
   return (
     <div className="blog-entry">
       <div>
@@ -39,9 +62,17 @@ const Blog = ({ blog, setBlogs }) => {
         <div>
           {blog.likes} <button onClick={handleIncreaseLike}>Like</button>
         </div>
+        <div>
+          <button style={deleteVisibleOrHidden} onClick={handleDeleteBlog}>
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default Blog;
+
+// There seems to be a small bug that happens now and then when the like button is clicked
+// too rapidly between different blogs
