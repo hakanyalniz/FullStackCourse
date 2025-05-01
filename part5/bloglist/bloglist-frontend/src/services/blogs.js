@@ -15,4 +15,11 @@ const postBlog = async (requestBody, userToken) => {
   return response.data;
 };
 
-export default { getAll, postBlog };
+const updateBlog = async (requestBody) => {
+  console.log(requestBody);
+
+  const response = await axios.put(`/api/blogs/${requestBody.id}`, requestBody);
+  console.log(response);
+};
+
+export default { getAll, postBlog, updateBlog };

@@ -1,3 +1,4 @@
+import blogService from "../../services/blogs";
 import { useState } from "react";
 import "./style.css";
 
@@ -12,6 +13,12 @@ const Blog = ({ blog }) => {
 
   const handleIncreaseLike = () => {
     console.log("Increase like by 1", blog);
+    const likeIncreasedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+      user: blog.user.id,
+    };
+    blogService.updateBlog(likeIncreasedBlog);
   };
 
   return (
