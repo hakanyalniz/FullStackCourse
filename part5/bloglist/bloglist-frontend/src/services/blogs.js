@@ -1,3 +1,4 @@
+import loginService from "../services/login";
 import axios from "axios";
 const baseUrl = "/api/blogs";
 
@@ -8,7 +9,7 @@ const getAll = () => {
 
 const postBlog = async (requestBody, userToken) => {
   const config = {
-    headers: { Authorization: `Bearer ${userToken}` },
+    headers: { Authorization: loginService.setToken(userToken) },
   };
 
   const response = await axios.post(baseUrl, requestBody, config);
@@ -24,7 +25,7 @@ const updateBlog = async (requestBody) => {
 
 const deleteBlog = async (requestBody, userToken) => {
   const config = {
-    headers: { Authorization: `Bearer ${userToken}` },
+    headers: { Authorization: loginService.setToken(userToken) },
   };
 
   const response = await axios.delete(`/api/blogs/${requestBody.id}`, config);

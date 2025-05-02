@@ -10,6 +10,7 @@ const login = async (credentials) => {
 
 const setToken = (newToken) => {
   token = `Bearer ${newToken}`;
+  return token;
 };
 
 export default { login, setToken };

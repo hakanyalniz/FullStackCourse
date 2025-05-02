@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./style.css";
 
 const NotificationBar = ({ notificationMessage, setNotificationMessage }) => {
@@ -19,7 +19,7 @@ const NotificationBar = ({ notificationMessage, setNotificationMessage }) => {
       setNotificationMessage({ message: "", status: undefined });
     }, 5000);
     console.log(notificationMessage);
-  }, [notificationMessage]);
+  }, [notificationMessage, setNotificationMessage]);
 
   return notificationMessage.message === "" ? (
     <></>
