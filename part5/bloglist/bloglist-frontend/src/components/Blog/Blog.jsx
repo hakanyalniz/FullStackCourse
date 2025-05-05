@@ -56,7 +56,7 @@ const Blog = ({ blog, setBlogs, user }) => {
 
       <div style={visibleOrHidden}>
         <div>{blog.url}</div>
-        <div>
+        <div data-testid="like-button-container">
           {blog.likes} <button onClick={handleIncreaseLike}>Like</button>
         </div>
         <div>
