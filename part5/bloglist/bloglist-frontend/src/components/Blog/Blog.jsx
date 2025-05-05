@@ -38,26 +38,23 @@ const Blog = ({ blog, setBlogs, user }) => {
     }
   };
 
-  const handleDeleteButtonVisibility = () => {
+  // handle delete button visibility
+  useEffect(() => {
     if (blog.user.id === user.id) {
       setDeleteButtonVisible(true);
     } else {
       setDeleteButtonVisible(false);
     }
-  };
-
-  useEffect(() => {
-    handleDeleteButtonVisibility();
-  }, []);
+  }, [blog.user.id, user.id]);
 
   return (
     <div className="blog-entry">
       <div>
         {blog.title} <button onClick={toggleVisibility}>View</button>
       </div>
+      <div>{blog.author}</div>
 
       <div style={visibleOrHidden}>
-        <div>{blog.author}</div>
         <div>{blog.url}</div>
         <div>
           {blog.likes} <button onClick={handleIncreaseLike}>Like</button>
