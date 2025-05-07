@@ -10,6 +10,7 @@ const middleware = require("./utils/middleware");
 const app = express();
 
 logger.info("connecting to", config.MONGODB_URI);
+logger.testLog("Test underway");
 
 mongoose
   .connect(config.MONGODB_URI)
