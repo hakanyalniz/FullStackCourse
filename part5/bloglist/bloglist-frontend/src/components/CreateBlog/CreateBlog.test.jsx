@@ -33,16 +33,6 @@ vi.mock("../../services/blogs", () => ({
   },
 }));
 
-// Mock useRef before rendering the component
-vi.mock("react", async () => ({
-  ...(await vi.importActual("react")), // Keep other React features
-  useRef: vi.fn(() => ({
-    current: {
-      toggleVisibility: vi.fn(),
-    },
-  })),
-}));
-
 test("verify create blog input data", async () => {
   const mockSetStatus = vi.fn();
   const mockHandleNotificationMessage = vi.fn();
