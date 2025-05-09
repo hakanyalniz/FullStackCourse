@@ -43,6 +43,13 @@ describe("Logged in User", () => {
         password: "sekret",
       },
     });
+    await request.post("/api/users", {
+      data: {
+        name: "anonUser",
+        username: "anon",
+        password: "sekret",
+      },
+    });
 
     await page.goto("/");
 
@@ -86,5 +93,20 @@ describe("Logged in User", () => {
     await expect(
       page.getByTestId("like-button-container").locator(".like-number")
     ).toHaveText("1");
+  });
+
+  test("can only see their own delete button", async ({ page }) => {
+    await createBlog(page, "Testing Title", "Testing Author", "Testing URL");
+    await page.getByRole("button", { name: "View" }).click();
+    await expect(page.getByRole("button", { name: "Delete" })).toBeVisible();
+
+    await page.getByRole("button", { name: "Logout" }).click();
+    await loginWith(page, "anon", "sekret");
+    await expect(page.getByText("Successfully logged in!")).toBeVisible();
+
+    await page.getByRole("button", { name: "View" }).click();
+    await expect(
+      page.getByRole("button", { name: "Delete" })
+    ).not.toBeVisible();
   });
 });
