@@ -21,20 +21,37 @@ const Blog = ({ blog, setBlogs, user }) => {
       likes: blog.likes + 1,
       user: blog.user.id,
     };
+
     blogService.updateBlog(likeIncreasedBlog);
-    blogService.getAll().then((blogs) =>
-      setBlogs(
-        blogs.sort((a, b) => {
-          return b.likes - a.likes;
-        })
+
+    // Instead of doing a call to the backend database and updating program state from that
+    // we now update the the backend database and update the state from the current state
+    // we do this because sometimes the server fetch would be faster than the update
+    // therefore returning old data
+    setBlogs((prevBlogs) =>
+      prevBlogs.map((blog) =>
+        blog.id === likeIncreasedBlog.id
+          ? { ...blog, likes: blog.likes + 1 }
+          : blog
       )
     );
+
+    // blogService.getAll().then((blogs) => {
+    //   console.log("blogs", blogs);
+
+    //   setBlogs(
+    //     blogs.sort((a, b) => {
+    //       return b.likes - a.likes;
+    //     })
+    //   );
+    // });
   };
 
-  const handleDeleteBlog = () => {
+  const handleDeleteBlog = async () => {
     console.log("Delete");
     if (window.confirm("Do you really want to delete, ", blog.title)) {
-      blogService.deleteBlog(blog, user.token);
+      const response = await blogService.deleteBlog(blog, user.token);
+      setBlogs(response.data);
     }
   };
 
@@ -57,7 +74,8 @@ const Blog = ({ blog, setBlogs, user }) => {
       <div style={visibleOrHidden}>
         <div>{blog.url}</div>
         <div data-testid="like-button-container">
-          {blog.likes} <button onClick={handleIncreaseLike}>Like</button>
+          <span className="like-number">{blog.likes}</span>{" "}
+          <button onClick={handleIncreaseLike}>Like</button>
         </div>
         <div>
           <button style={deleteVisibleOrHidden} onClick={handleDeleteBlog}>
@@ -73,3 +91,5 @@ export default Blog;
 
 // There seems to be a small bug that happens now and then when the like button is clicked
 // too rapidly between different blogs
+
+// data is null when like request fails

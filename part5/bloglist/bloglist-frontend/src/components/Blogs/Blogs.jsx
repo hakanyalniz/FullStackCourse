@@ -19,7 +19,7 @@ const Blogs = ({ user, handleNotificationMessage }) => {
   }, []);
 
   useEffect(() => {
-    console.log(blogs);
+    console.log("blogs", blogs);
   }, [blogs]);
 
   return (

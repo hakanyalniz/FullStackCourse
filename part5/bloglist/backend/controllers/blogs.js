@@ -31,7 +31,7 @@ blogsRouter.delete("/:id", async (request, response, next) => {
 
   if (!deletedResource)
     return response.status(401).json({ error: "token invalid" });
-  response.status(204).json(deletedResource);
+  response.status(200).json(deletedResource);
 });
 
 module.exports = blogsRouter;

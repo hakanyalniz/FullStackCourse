@@ -3,7 +3,7 @@ const { loginWith, createBlog } = require("./helper");
 
 describe("Blog app", () => {
   beforeEach(async ({ page }) => {
-    await page.goto("http://localhost:5173");
+    await page.goto("/");
   });
 
   test("front page can be opened", async ({ page }) => {
@@ -35,8 +35,8 @@ describe("Logged in User", () => {
     // login as new user, get user JSON from local storage
     // use the JSON for sending a request to reset route, which will both reset the blogs and also create a new one
     // the created new blog uses the user credentials sent
-    await request.post("http://localhost:3001/api/testing/reset");
-    await request.post("http://localhost:3001/api/users", {
+    await request.post("/api/testing/reset");
+    await request.post("/api/users", {
       data: {
         name: "RootUser",
         username: "root",
@@ -44,7 +44,7 @@ describe("Logged in User", () => {
       },
     });
 
-    await page.goto("http://localhost:5173");
+    await page.goto("/");
 
     loginWith(page, "root", "sekret");
 
@@ -76,5 +76,15 @@ describe("Logged in User", () => {
 
     await viewButton[viewButton.length - 1].click();
     await page.getByRole("button", { name: "Delete" }).click();
+  });
+
+  test("can like a blog", async ({ page }) => {
+    createBlog(page, "Testing Title", "Testing Author", "Testing URL");
+
+    await page.getByRole("button", { name: "View" }).click();
+    await page.getByRole("button", { name: "Like" }).click();
+    await expect(
+      page.getByTestId("like-button-container").locator(".like-number")
+    ).toHaveText("1");
   });
 });

@@ -51,7 +51,7 @@ async function deleteDB(request) {
     const deleteStatus = await Blog.deleteOne({ _id: request.params.id });
     if (deleteStatus.deletedCount === 0) return 400;
 
-    return deleteStatus;
+    return await findAllDB();
   } else {
     console.log("You can not delete this blog!");
   }

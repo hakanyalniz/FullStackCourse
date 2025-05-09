@@ -20,7 +20,8 @@ const updateBlog = async (requestBody) => {
   console.log(requestBody);
 
   const response = await axios.put(`/api/blogs/${requestBody.id}`, requestBody);
-  console.log(response);
+  console.log("response", response);
+  return response;
 };
 
 const deleteBlog = async (requestBody, userToken) => {
@@ -30,6 +31,7 @@ const deleteBlog = async (requestBody, userToken) => {
 
   const response = await axios.delete(`/api/blogs/${requestBody.id}`, config);
   console.log("response", response);
+  return response;
 };
 
 export default { getAll, postBlog, updateBlog, deleteBlog };
