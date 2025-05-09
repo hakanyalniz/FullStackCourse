@@ -1,4 +1,5 @@
 const { describe, test, expect, beforeEach } = require("@playwright/test");
+const { loginWith, createBlog } = require("./helper");
 
 describe("Blog app", () => {
   beforeEach(async ({ page }) => {
@@ -11,11 +12,20 @@ describe("Blog app", () => {
   });
 
   test("user can login", async ({ page }) => {
-    await page.getByPlaceholder("Enter Username").fill("root");
-    await page.getByPlaceholder("Enter Password").fill("sekret");
-    await page.getByRole("button", { name: "Login" }).click();
+    await loginWith(page, "root", "sekret");
 
     await expect(page.getByText("Successfully logged in!")).toBeVisible();
+  });
+
+  test("login fails with wrong password", async ({ page }) => {
+    const errorDiv = await page.locator(".failure");
+
+    await loginWith(page, "root", "wrong");
+
+    await expect(errorDiv).toContainText("Failed logging in.");
+    await expect(errorDiv).toHaveCSS("border-style", "solid");
+    await expect(errorDiv).toHaveCSS("color", "rgb(255, 0, 0)");
+    await expect(page.getByText("Successfully logged in!")).not.toBeVisible();
   });
 });
 
@@ -36,9 +46,7 @@ describe("Logged in User", () => {
 
     await page.goto("http://localhost:5173");
 
-    await page.getByPlaceholder("Enter Username").fill("root");
-    await page.getByPlaceholder("Enter Password").fill("sekret");
-    await page.getByRole("button", { name: "Login" }).click();
+    loginWith(page, "root", "sekret");
 
     await expect(page.getByText("Successfully logged in!")).toBeVisible();
 
@@ -47,26 +55,15 @@ describe("Logged in User", () => {
   });
 
   test("can create a new blog", async ({ page }) => {
-    await page.getByRole("button", { name: "New Note" }).click();
-
-    await page.getByPlaceholder("Enter Title").fill("Testing Title");
-    await page.getByPlaceholder("Enter Author").fill("Testing Author");
-    await page.getByPlaceholder("Enter URL").fill("Testing URL");
-
-    await page.getByRole("button", { name: "Create" }).click();
+    createBlog(page, "Testing Title", "Testing Author", "Testing URL");
 
     await expect(page.getByText("Successfully created a blog!")).toBeVisible();
   });
 
   test("can delete a blog", async ({ page }) => {
     // create a new blog so we can delete it
-    await page.getByRole("button", { name: "New Note" }).click();
+    createBlog(page, "Testing Title", "Testing Author", "Testing URL");
 
-    await page.getByPlaceholder("Enter Title").fill("Testing Title");
-    await page.getByPlaceholder("Enter Author").fill("Testing Author");
-    await page.getByPlaceholder("Enter URL").fill("Testing URL");
-
-    await page.getByRole("button", { name: "Create" }).click();
     await expect(page.getByText("Successfully created a blog!")).toBeVisible();
 
     page.on("dialog", async (dialog) => {
