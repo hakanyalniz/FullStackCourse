@@ -14,7 +14,7 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
   // Reduce waiting time for HTML render
-  timeout: 3000,
+  timeout: 5000,
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: false,

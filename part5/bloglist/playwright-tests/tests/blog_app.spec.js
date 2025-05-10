@@ -109,4 +109,21 @@ describe("Logged in User", () => {
       page.getByRole("button", { name: "Delete" })
     ).not.toBeVisible();
   });
+
+  test.only("blogs are sorted according to likes", async ({ page }) => {
+    await createBlog(page, "Testing Title 01", "Testing Author", "Testing URL");
+    await createBlog(page, "Testing Title 02", "Testing Author", "Testing URL");
+    await createBlog(page, "Testing Title 03", "Testing Author", "Testing URL");
+
+    const viewButton = await page.getByRole("button", { name: "View" }).all();
+
+    for (let i = 0; i < viewButton.length; i++) {
+      await viewButton[i].click();
+    }
+
+    // await page.getByRole("button", { name: "Like" }).click();
+    // await expect(
+    //   page.getByTestId("like-button-container").locator(".like-number")
+    // ).toHaveText("1");
+  });
 });

@@ -12,6 +12,14 @@ const createBlog = async (page, title, author, url) => {
   await page.getByPlaceholder("Enter URL").fill(url);
 
   await page.getByRole("button", { name: "Create" }).click();
+
+  // Start waiting for the response
+  await page.waitForResponse(
+    (response) =>
+      response.url().includes("/api/blogs") &&
+      response.request().method() === "GET" &&
+      response.status() === 200
+  );
 };
 
 export { loginWith, createBlog };
