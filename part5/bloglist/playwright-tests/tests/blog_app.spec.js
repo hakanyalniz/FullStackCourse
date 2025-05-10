@@ -130,6 +130,16 @@ describe("Logged in User", () => {
         await page.getByRole("button", { name: "Like" }).click();
       }
 
+      await viewButton[i].click();
+    }
+
+    // refresh page so that blogs can be resorted
+    await page.reload();
+
+    // after page reload, check if they are all sorted
+    for (let i = 0; i < viewButton.length; i++) {
+      await viewButton[i].click();
+
       // fetch the likes, push to like array
       let element = await blogList[i].locator(".like-number");
       likesArray.push(await element.textContent());
@@ -137,9 +147,11 @@ describe("Logged in User", () => {
       await viewButton[i].click();
     }
 
-    // refresh page so that blogs can be resorted
-    await page.reload();
-
-    console.log(likesArray);
+    // likesArray is [3, 2, 1], compare from greater to smaller, 3 to 1
+    // ignore the last one, because or else it will go 1 > null
+    // as it is, it will go, 2 > 1, which is enough
+    for (let h = 0; h < likesArray.length - 1; h++) {
+      expect(Number(likesArray[h])).toBeGreaterThan(Number(likesArray[h + 1]));
+    }
   });
 });
