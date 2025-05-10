@@ -111,19 +111,35 @@ describe("Logged in User", () => {
   });
 
   test.only("blogs are sorted according to likes", async ({ page }) => {
+    // create three blogs, open them, add their likes to an array, close them
+    // continue for all blogs
+    // to get the likes for blogs, open them, add likes equal to the number of their position
+    const likesArray = [];
     await createBlog(page, "Testing Title 01", "Testing Author", "Testing URL");
     await createBlog(page, "Testing Title 02", "Testing Author", "Testing URL");
     await createBlog(page, "Testing Title 03", "Testing Author", "Testing URL");
 
     const viewButton = await page.getByRole("button", { name: "View" }).all();
+    const blogList = await page.locator(".blog-entry").all();
 
-    for (let i = 0; i < viewButton.length; i++) {
+    // add likes equal to the position of blogs
+    for (let i = viewButton.length - 1; i >= 0; i--) {
+      await viewButton[i].click();
+
+      for (let x = i; x > 0; x--) {
+        await page.getByRole("button", { name: "Like" }).click();
+      }
+
+      // fetch the likes, push to like array
+      let element = await blogList[i].locator(".like-number");
+      likesArray.push(await element.textContent());
+
       await viewButton[i].click();
     }
 
-    // await page.getByRole("button", { name: "Like" }).click();
-    // await expect(
-    //   page.getByTestId("like-button-container").locator(".like-number")
-    // ).toHaveText("1");
+    // refresh page so that blogs can be resorted
+    await page.reload();
+
+    console.log(likesArray);
   });
 });
