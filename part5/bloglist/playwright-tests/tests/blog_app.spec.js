@@ -1,6 +1,7 @@
 const { describe, test, expect, beforeEach } = require("@playwright/test");
 const { loginWith, createBlog } = require("./helper");
 
+// Tests basic page functions
 describe("Blog app", () => {
   beforeEach(async ({ page }) => {
     await page.goto("/");
@@ -29,6 +30,10 @@ describe("Blog app", () => {
   });
 });
 
+// Tests functions that require user logging in
+// One thing I noticed with tests that involve network requests is that, at times a request can be sent
+// but the tests can continue on without waiting for a reply, or such other problems may occur
+// it seems making sure the request is complete
 describe("Logged in User", () => {
   beforeEach(async ({ page, request }) => {
     // Reset the users in database, register new user
@@ -110,7 +115,7 @@ describe("Logged in User", () => {
     ).not.toBeVisible();
   });
 
-  test.only("blogs are sorted according to likes", async ({ page }) => {
+  test("blogs are sorted according to likes", async ({ page }) => {
     // create three blogs, open them, add their likes to an array, close them
     // continue for all blogs
     // to get the likes for blogs, open them, add likes equal to the number of their position
