@@ -4,6 +4,8 @@ import ReactDOM from "react-dom/client";
 import { createStore } from "redux";
 import reducer from "./reducer";
 
+import "./style.css";
+
 // Normally, in redux toolkit, a seperate file is used to create the store
 // more "classical" version of redux is used for learning purposes
 const store = createStore(reducer);
@@ -31,14 +33,26 @@ const App = () => {
   };
 
   return (
-    <div>
-      <button onClick={good}>good</button>
-      <button onClick={ok}>ok</button>
-      <button onClick={bad}>bad</button>
-      <button onClick={reset}>reset stats</button>
-      <div>good {store.getState().good}</div>
-      <div>ok {store.getState().ok}</div>
-      <div>bad {store.getState().bad}</div>
+    <div className="flex-container">
+      <div className="box-container">
+        <div className="row">
+          <div className="number">good {store.getState().good}</div>
+          <button onClick={good}>good</button>
+        </div>
+        <div className="row">
+          <div className="number">ok {store.getState().ok}</div>
+          <button onClick={ok}>ok</button>
+        </div>
+        <div className="row">
+          <div className="number">bad {store.getState().bad}</div>
+          <button onClick={bad}>bad</button>
+        </div>
+        <div className="row">
+          <button className="reset-button" onClick={reset}>
+            reset stats
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
