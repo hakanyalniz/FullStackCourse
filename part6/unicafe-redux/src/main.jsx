@@ -4,6 +4,8 @@ import ReactDOM from "react-dom/client";
 import { createStore } from "redux";
 import reducer from "./reducer";
 
+// Normally, in redux toolkit, a seperate file is used to create the store
+// more "classical" version of redux is used for learning purposes
 const store = createStore(reducer);
 
 const App = () => {
