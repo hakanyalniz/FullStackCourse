@@ -1,7 +1,3 @@
-import { render, screen } from "@testing-library/react";
-import deepFreeze from "deep-freeze";
-import counterReducer from "./reducer";
-
 import { setAction } from "./test_helper";
 
 describe("unicafe reducer", () => {
