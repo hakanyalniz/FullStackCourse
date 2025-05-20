@@ -24,11 +24,14 @@ const reducer = (state = initialState, action) => {
   console.log("action", action);
   switch (action.type) {
     case "VOTE":
+      // find the correct id, increase its vote by 1, for the rest, keep them as is
       return state.map((element) =>
         element.id === action.payload.id
           ? { ...element, votes: element.votes + 1 }
           : element
       );
+    case "ADD_ANECDOTE":
+      return [...state, asObject(action.payload.content)];
     default:
       return state;
   }
