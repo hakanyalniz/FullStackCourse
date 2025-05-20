@@ -25,11 +25,14 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "VOTE":
       // find the correct id, increase its vote by 1, for the rest, keep them as is
-      return state.map((element) =>
-        element.id === action.payload.id
-          ? { ...element, votes: element.votes + 1 }
-          : element
-      );
+      // lastly, sort them from big to small
+      return state
+        .map((element) =>
+          element.id === action.payload.id
+            ? { ...element, votes: element.votes + 1 }
+            : element
+        )
+        .sort((a, b) => b.votes - a.votes);
     case "ADD_ANECDOTE":
       return [...state, asObject(action.payload.content)];
     default:
