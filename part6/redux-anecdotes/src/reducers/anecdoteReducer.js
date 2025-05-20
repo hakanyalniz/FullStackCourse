@@ -40,4 +40,8 @@ const reducer = (state = initialState, action) => {
   }
 };
 
+export const createAction = (type, payload) => {
+  return { type: type, payload: payload };
+};
+
 export default reducer;
