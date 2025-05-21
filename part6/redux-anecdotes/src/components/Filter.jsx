@@ -1,5 +1,5 @@
 import { createAction } from "../reducers/anecdoteFilterReducer";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const Filter = () => {
   const dispatch = useDispatch();

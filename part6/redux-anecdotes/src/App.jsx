@@ -5,8 +5,16 @@ import AnecdoteList from "./components/AnecdoteList";
 import Filter from "./components/Filter";
 
 const App = () => {
-  const anecdotes = useSelector((state) => state.anecdote);
   const dispatch = useDispatch();
+
+  const anecdoteFilter = useSelector((state) => state.filter);
+  const anecdotes = useSelector((state) =>
+    state.anecdote.filter((anecdote) =>
+      anecdote.content.includes(anecdoteFilter)
+    )
+  );
+
+  console.log("anecdotes", anecdotes);
 
   const vote = (id) => {
     dispatch(createAction("VOTE", { id }));
