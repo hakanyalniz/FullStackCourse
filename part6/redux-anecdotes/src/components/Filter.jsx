@@ -1,4 +1,4 @@
-import { createAction } from "../reducers/anecdoteFilterReducer";
+import { filterAnecdote } from "../reducers/anecdoteFilterReducer";
 import { useDispatch } from "react-redux";
 
 const Filter = () => {
@@ -8,7 +8,7 @@ const Filter = () => {
     // input-field value is in variable event.target.value
     console.log(event.target.value);
     const filter = event.target.value;
-    dispatch(createAction("FILTER", { filter }));
+    dispatch(filterAnecdote(filter));
   };
   const style = {
     marginBottom: 10,

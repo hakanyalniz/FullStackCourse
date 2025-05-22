@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import anecdoteReducer from "../reducers/anecdoteReducer";
-import anecdoteFilterReducer from "../reducers/anecdoteFilterReducer";
+import anecdoteFilterSlice from "../reducers/anecdoteFilterReducer";
 
 const store = configureStore({
   reducer: {
     anecdote: anecdoteReducer,
-    filter: anecdoteFilterReducer,
+    filter: anecdoteFilterSlice,
   },
 });
 
