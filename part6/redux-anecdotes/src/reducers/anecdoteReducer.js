@@ -36,9 +36,9 @@ const anecdoteSlice = createSlice({
         )
         .sort((a, b) => b.votes - a.votes);
     },
-  },
-  addAnecdote(state, action) {
-    return [...state, asObject(action.payload.content)];
+    addAnecdote(state, action) {
+      return [...state, asObject(action.payload.content)];
+    },
   },
 });
 
