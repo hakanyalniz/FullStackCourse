@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { anecdoteVote, addAnecdote } from "./reducers/anecdoteReducer";
+import { changeNotification } from "./reducers/notificationReducer";
 import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
 import Notification from "./components/Notification";
@@ -17,10 +18,11 @@ const App = () => {
 
   console.log("anecdotes", anecdotes);
 
-  const vote = (id) => {
-    dispatch(anecdoteVote({ id }));
+  const vote = (anecdote) => {
+    dispatch(anecdoteVote(anecdote.id));
+    dispatch(changeNotification(`Voted for "${anecdote.content}"`));
 
-    console.log("vote", id);
+    console.log("vote", anecdote.id);
   };
 
   const createAnecdote = (event) => {
@@ -29,6 +31,7 @@ const App = () => {
     const content = event.target.anecdote.value;
 
     dispatch(addAnecdote({ content }));
+    dispatch(changeNotification(`Created "${content}"`));
   };
 
   return (
