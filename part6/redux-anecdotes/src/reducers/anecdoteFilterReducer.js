@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const anecdoteFilterSlice = createSlice({
-  name: "filterReducer",
+  name: "filter",
   initialState: "",
   reducers: {
     filterAnecdote(state, action) {
+      console.log("Previous state:", state);
+
       return action.payload;
     },
   },
