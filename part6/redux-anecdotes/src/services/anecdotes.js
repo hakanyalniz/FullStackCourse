@@ -4,14 +4,12 @@ const baseUrl = "http://localhost:3001/anecdotes";
 
 const getAll = async () => {
   const response = await axios.get(baseUrl);
-  return response.data.map(asObject);
+  return response.data;
 };
 
-const asObject = (anecdote) => {
-  return {
-    ...anecdote,
-    votes: 0,
-  };
+const createNew = async (object) => {
+  const response = await axios.post(baseUrl, object);
+  return response.data;
 };
 
-export default { getAll };
+export default { getAll, createNew };
