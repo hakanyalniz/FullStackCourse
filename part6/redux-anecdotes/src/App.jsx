@@ -14,8 +14,6 @@ const App = () => {
 
   const anecdoteFilter = useSelector((state) => state.filter);
   const anecdotes = useSelector((state) => {
-    console.log("state.anecdote", state.anecdote);
-
     return state.anecdote.filter((anecdote) => {
       return anecdote.content.includes(anecdoteFilter);
     });
@@ -28,13 +26,9 @@ const App = () => {
       .then((anecdotes) => dispatch(setAnecdotes(anecdotes)));
   }, []);
 
-  console.log("anecdotes", anecdotes);
-
   const vote = (anecdote) => {
     dispatch(anecdoteVote(anecdote.id));
     dispatch(changeNotification(`Voted for "${anecdote.content}"`));
-
-    console.log("vote", anecdote.id);
   };
 
   const createAnecdote = async (event) => {
