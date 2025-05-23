@@ -20,9 +20,9 @@ const App = () => {
   const anecdotes = useSelector((state) => {
     console.log("state.anecdote", state.anecdote);
 
-    return state.anecdote.filter((anecdote) =>
-      anecdote.content.includes(anecdoteFilter)
-    );
+    return state.anecdote.filter((anecdote) => {
+      return anecdote.content.includes(anecdoteFilter);
+    });
   });
 
   // Fetch the anecdotes from database and set up the state store

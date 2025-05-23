@@ -11,7 +11,7 @@ import { createSlice, current } from "@reduxjs/toolkit";
 
 const asObject = (anecdote) => {
   return {
-    ...anecdote,
+    content: anecdote,
     votes: 0,
   };
 };
