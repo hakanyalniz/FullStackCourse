@@ -1,20 +1,36 @@
 import { useSelector, useDispatch } from "react-redux";
-import { anecdoteVote, addAnecdote } from "./reducers/anecdoteReducer";
+import {
+  anecdoteVote,
+  addAnecdote,
+  setAnecdotes,
+} from "./reducers/anecdoteReducer";
 import { changeNotification } from "./reducers/notificationReducer";
 import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
 import Notification from "./components/Notification";
 import Filter from "./components/Filter";
+import anecdotesService from "./services/anecdotes";
+
+import { useEffect } from "react";
 
 const App = () => {
   const dispatch = useDispatch();
 
   const anecdoteFilter = useSelector((state) => state.filter);
-  const anecdotes = useSelector((state) =>
-    state.anecdote.filter((anecdote) =>
+  const anecdotes = useSelector((state) => {
+    console.log("state.anecdote", state.anecdote);
+
+    return state.anecdote.filter((anecdote) =>
       anecdote.content.includes(anecdoteFilter)
-    )
-  );
+    );
+  });
+
+  // Fetch the anecdotes from database and set up the state store
+  useEffect(() => {
+    anecdotesService
+      .getAll()
+      .then((anecdotes) => dispatch(setAnecdotes(anecdotes)));
+  }, []);
 
   console.log("anecdotes", anecdotes);
 
