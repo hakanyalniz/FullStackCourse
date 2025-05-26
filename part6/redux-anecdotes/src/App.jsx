@@ -1,13 +1,18 @@
 import { useSelector, useDispatch } from "react-redux";
-import { anecdoteVote, setAnecdotes } from "./reducers/anecdoteReducer";
+import {
+  anecdoteVote,
+  setAnecdotes,
+  initializeAnecdotes,
+} from "./reducers/anecdoteReducer";
 import { changeNotification } from "./reducers/notificationReducer";
+
+import { useEffect } from "react";
 import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
 import Notification from "./components/Notification";
 import Filter from "./components/Filter";
-import anecdotesService from "./services/anecdotes";
 
-import { useEffect } from "react";
+import anecdotesService from "./services/anecdotes";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -21,9 +26,7 @@ const App = () => {
 
   // Fetch the anecdotes from database and set up the state store
   useEffect(() => {
-    anecdotesService
-      .getAll()
-      .then((anecdotes) => dispatch(setAnecdotes(anecdotes)));
+    dispatch(initializeAnecdotes());
   }, []);
 
   const vote = (anecdote) => {
