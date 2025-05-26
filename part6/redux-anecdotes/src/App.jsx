@@ -4,7 +4,7 @@ import {
   createAnecdotes,
   voteAnecdotesAction,
 } from "./reducers/anecdoteReducer";
-import { changeNotification } from "./reducers/notificationReducer";
+import { setNotification } from "./reducers/notificationReducer";
 
 import { useEffect } from "react";
 import AnecdoteForm from "./components/AnecdoteForm";
@@ -29,8 +29,7 @@ const App = () => {
 
   const vote = (anecdote) => {
     dispatch(voteAnecdotesAction(anecdote));
-    // dispatch(anecdoteVote(anecdote.id));
-    dispatch(changeNotification(`Voted for "${anecdote.content}"`));
+    dispatch(setNotification(`Voted for "${anecdote.content}"`, 5));
   };
 
   const createAnecdote = async (event) => {
@@ -39,7 +38,7 @@ const App = () => {
     const content = event.target.anecdote.value;
     // After posting to the database, await, then do fetch
     await dispatch(createAnecdotes(content));
-    dispatch(changeNotification(`Created "${content}"`));
+    dispatch(setNotification(`Created "${content}"`, 5));
   };
 
   return (
