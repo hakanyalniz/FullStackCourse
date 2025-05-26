@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import {
   anecdoteVote,
-  setAnecdotes,
   initializeAnecdotes,
+  createAnecdotes,
 } from "./reducers/anecdoteReducer";
 import { changeNotification } from "./reducers/notificationReducer";
 
@@ -11,8 +11,6 @@ import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
 import Notification from "./components/Notification";
 import Filter from "./components/Filter";
-
-import anecdotesService from "./services/anecdotes";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -38,12 +36,8 @@ const App = () => {
     event.preventDefault();
 
     const content = event.target.anecdote.value;
-
     // After posting to the database, await, then do fetch
-    await anecdotesService.createNew({ content, votes: 0 });
-    await anecdotesService
-      .getAll()
-      .then((anecdotes) => dispatch(setAnecdotes(anecdotes))); // dispatch(addAnecdote({ content }));
+    await dispatch(createAnecdotes(content));
     dispatch(changeNotification(`Created "${content}"`));
   };
 
