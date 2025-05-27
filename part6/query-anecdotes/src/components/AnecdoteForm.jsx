@@ -1,5 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getNotes, createAnecdote } from "../services/requests";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createAnecdote } from "../services/requests";
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient();
@@ -7,7 +7,7 @@ const AnecdoteForm = () => {
   // if successful, invalidates anecdotes queries, which causes it to call the query function
   // which fetches data again from the server
   // this basically allows us to fetch data from server whenever server has changes
-  const newNoteMutation = useMutation({
+  const newAnecddoteMutation = useMutation({
     mutationFn: createAnecdote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["anecdotes"] });
@@ -19,7 +19,7 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value;
     event.target.anecdote.value = "";
 
-    newNoteMutation.mutate({ content, votes: 0 });
+    newAnecddoteMutation.mutate({ content, votes: 0 });
   };
 
   return (
