@@ -7,16 +7,23 @@ import Notification from "./components/Notification";
 const App = () => {
   const queryClient = useQueryClient();
 
-  const newAnecddoteMutation = useMutation({
+  // Updated the mutation so that instead of doing a put and get to update the state
+  // we instead update the local state manually
+  const newAnecdoteVoteMutation = useMutation({
     mutationFn: voteAnecdote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["anecdotes"] });
+    onSuccess: (votedAnecdote) => {
+      const anecdotes = queryClient.getQueryData(["anecdotes"]);
+      queryClient.setQueryData(
+        ["anecdotes"],
+        anecdotes.map((anecdote) =>
+          anecdote.id === votedAnecdote.id ? { ...votedAnecdote } : anecdote
+        )
+      );
     },
   });
 
   const handleVote = (anecdote) => {
-    newAnecddoteMutation.mutate(anecdote);
-    console.log("vote");
+    newAnecdoteVoteMutation.mutate(anecdote);
   };
 
   const anecdoteResult = useQuery({
@@ -39,6 +46,8 @@ const App = () => {
         <span>Loading...</span>
       </div>
     );
+  } else if (anecdoteResult.status === "success") {
+    console.log("anecdoteResult,data", anecdoteResult.data);
   }
 
   return (

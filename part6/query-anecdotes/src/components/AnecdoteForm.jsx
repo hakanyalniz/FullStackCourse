@@ -7,10 +7,15 @@ const AnecdoteForm = () => {
   // if successful, invalidates anecdotes queries, which causes it to call the query function
   // which fetches data again from the server
   // this basically allows us to fetch data from server whenever server has changes
+  // !!!UPDATE!!!
+  //  The above was how it happened before, now we just change the state locally instead of fetching
+  // from server again
   const newAnecddoteMutation = useMutation({
     mutationFn: createAnecdote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["anecdotes"] });
+    onSuccess: (newAnecdote) => {
+      const anecdotes = queryClient.getQueryData(["anecdotes"]);
+
+      queryClient.setQueryData(["anecdotes"], [...anecdotes, newAnecdote]);
     },
   });
 
