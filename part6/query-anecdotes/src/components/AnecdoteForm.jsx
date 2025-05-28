@@ -1,7 +1,12 @@
+import { useContext } from "react";
+import CounterContext from "../store/CounterContext";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAnecdote } from "../services/requests";
 
 const AnecdoteForm = () => {
+  const [notification, dispatch] = useContext(CounterContext);
+
   const queryClient = useQueryClient();
 
   // if successful, invalidates anecdotes queries, which causes it to call the query function
@@ -25,6 +30,10 @@ const AnecdoteForm = () => {
     event.target.anecdote.value = "";
 
     newAnecddoteMutation.mutate({ content, votes: 0 });
+    dispatch({
+      type: "NEW",
+      payload: `Created new anecdote named "${content}".`,
+    });
   };
 
   return (

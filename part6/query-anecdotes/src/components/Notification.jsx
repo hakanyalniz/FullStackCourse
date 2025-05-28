@@ -1,18 +1,31 @@
+import { useContext } from "react";
+import CounterContext from "../store/CounterContext";
+
 const Notification = () => {
+  const [notification, dispatch] = useContext(CounterContext);
+
   const style = {
-    border: 'solid',
+    border: "solid",
     padding: 10,
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
+  };
+
+  if (notification === "") return null;
+
+  // If notification is not empty, not only render what is below but also, 5 seconds later
+  // reset it, which will make it dissappear
+  if (notification) {
+    setTimeout(() => {
+      dispatch({ type: "ZERO" });
+    }, 5000);
   }
-  
-  if (true) return null
 
   return (
     <div style={style}>
-      
+      <span>{notification}</span>
     </div>
-  )
-}
+  );
+};
 
-export default Notification
+export default Notification;
