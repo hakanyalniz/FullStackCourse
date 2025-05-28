@@ -22,6 +22,12 @@ const AnecdoteForm = () => {
 
       queryClient.setQueryData(["anecdotes"], [...anecdotes, newAnecdote]);
     },
+    onError: (newAnecdote) => {
+      dispatch({
+        type: "NEW",
+        payload: `The anecdote name is too short! Minimum 5 character long.`,
+      });
+    },
   });
 
   const onCreate = (event) => {
