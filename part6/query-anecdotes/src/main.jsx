@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { NotificationContextProvider } from "./store/CounterContext";
+import { NotificationContextProvider } from "./store/NotificationContext";
 
 import App from "./App";
 

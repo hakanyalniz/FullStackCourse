@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types */
+import { useContext } from "react";
+
 import { createContext } from "react";
 import { useReducer } from "react";
 
@@ -14,7 +16,7 @@ const notificationReducer = (state, action) => {
   }
 };
 
-const CounterContext = createContext();
+const NotificationContext = createContext();
 
 export const NotificationContextProvider = (props) => {
   const [notification, notificationDispatch] = useReducer(
@@ -23,10 +25,22 @@ export const NotificationContextProvider = (props) => {
   );
 
   return (
-    <CounterContext.Provider value={[notification, notificationDispatch]}>
+    <NotificationContext.Provider value={[notification, notificationDispatch]}>
       {props.children}
-    </CounterContext.Provider>
+    </NotificationContext.Provider>
   );
 };
 
-export default CounterContext;
+export const useNotificationReducerNotification = () => {
+  const [notification, dispatch] = useContext(NotificationContext);
+
+  return notification;
+};
+
+export const useNotificationReducerDispatch = () => {
+  const [notification, dispatch] = useContext(NotificationContext);
+
+  return dispatch;
+};
+
+export default NotificationContext;

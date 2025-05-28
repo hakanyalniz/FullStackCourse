@@ -1,11 +1,10 @@
-import { useContext } from "react";
-import CounterContext from "../store/CounterContext";
+import { useNotificationReducerDispatch } from "../store/NotificationContext";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createAnecdote } from "../services/requests";
 
 const AnecdoteForm = () => {
-  const [notification, dispatch] = useContext(CounterContext);
+  const dispatch = useNotificationReducerDispatch();
 
   const queryClient = useQueryClient();
 

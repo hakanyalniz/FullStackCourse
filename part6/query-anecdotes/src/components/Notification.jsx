@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import CounterContext from "../store/CounterContext";
+import NotificationContext from "../store/NotificationContext";
 
 const Notification = () => {
-  const [notification, dispatch] = useContext(CounterContext);
+  const [notification, dispatch] = useContext(NotificationContext);
 
   const style = {
     border: "solid",
