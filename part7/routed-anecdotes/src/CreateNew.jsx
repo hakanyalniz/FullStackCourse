@@ -26,6 +26,7 @@ const CreateNew = (props) => {
     info.resetField();
   };
 
+  // We can use spread here for our custom hooks because inputProps matches the fields we need for input one to one
   return (
     <div>
       <h2>create a new anecdote</h2>
