@@ -1,10 +1,5 @@
 import { useState } from "react";
 
-// We declare it here then assign value to it later so we can export it seperately, therefore avoid returning it with useField
-// this is required because not doing so would cause problems when we use spread operator on input
-// all of the other returned values are required values for the input tag, but not the resetField function
-// let resetField;
-
 export const useField = (type, name) => {
   const [value, setValue] = useState("");
 
@@ -16,13 +11,17 @@ export const useField = (type, name) => {
     setValue("");
   };
 
+  // The below returned values in inputProps are the exact same values required in the input field of a form
+  // Because of this we can easily spread the hook, therefore making things look neat and simple, abstracting away this messy stuff
+  // The resetField and inputProps is particularly clever, because obviously resetField is not something available in input field, this would cause error
+  // so we seperate them like this
   return {
-    type,
-    name,
-    value,
-    onChange,
+    inputProps: {
+      type,
+      name,
+      value,
+      onChange,
+    },
     resetField,
   };
 };
-
-// export { resetField };
