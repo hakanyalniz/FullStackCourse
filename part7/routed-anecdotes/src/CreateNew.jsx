@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { useField, resetField } from "./hooks";
+import { useField } from "./hooks";
 
 const CreateNew = (props) => {
-  const content = useField("text", "content");
-  const author = useField("text", "author");
-  const info = useField("text", "info");
+  const contentState = useField("text", "content");
+  const authorState = useField("text", "author");
+  const infoState = useField("text", "info");
+
+  const { resetField: contentResetField, ...content } = contentState;
+  const { resetField: authorResetField, ...author } = authorState;
+  const { resetField: infoResetField, ...info } = infoState;
 
   const navigate = useNavigate();
 
@@ -21,7 +25,9 @@ const CreateNew = (props) => {
   };
 
   const handleClear = () => {
-    resetField();
+    contentResetField();
+    authorResetField();
+    infoResetField();
   };
 
   return (
