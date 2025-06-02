@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useField } from "./hooks";
+import { useField, resetField } from "./hooks";
 
 const CreateNew = (props) => {
   const content = useField("text", "content");
@@ -20,6 +20,10 @@ const CreateNew = (props) => {
     navigate("/");
   };
 
+  const handleClear = () => {
+    resetField();
+  };
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -37,6 +41,12 @@ const CreateNew = (props) => {
           <input {...info} />
         </div>
         <button>create</button>
+        <button
+          type="button" // Apparently using type button prevents it from trigger onSubmit
+          onClick={handleClear}
+        >
+          clear
+        </button>
       </form>
     </div>
   );
