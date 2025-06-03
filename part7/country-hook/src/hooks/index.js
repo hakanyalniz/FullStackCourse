@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+
+const baseNameURL = "https://studies.cs.helsinki.fi/restcountries/api/name";
 
 export const useField = (type) => {
   const [value, setValue] = useState("");
@@ -17,7 +20,20 @@ export const useField = (type) => {
 export const useCountry = (name) => {
   const [country, setCountry] = useState(null);
 
-  useEffect(() => {});
+  // use async inside useEffect for fetching
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios
+        .get(`${baseNameURL}/${name}`)
+        .catch(function (error) {
+          console.log(error);
+        });
+      setCountry(response.data);
+    }
+
+    // Use fetchData seperately because we are inside useEffect
+    fetchData();
+  }, [name]);
 
   return country;
 };
