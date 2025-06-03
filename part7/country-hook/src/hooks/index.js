@@ -34,6 +34,6 @@ export const useCountry = (name) => {
     // Use fetchData seperately because we are inside useEffect
     fetchData();
   }, [name]);
-
-  return country;
+  // If country is available, then found is true, if not, then it is not found, therefore it is false
+  return { data: country, found: country ? true : false };
 };
