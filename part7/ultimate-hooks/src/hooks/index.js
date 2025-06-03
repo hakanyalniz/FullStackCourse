@@ -18,23 +18,26 @@ export const useField = (type) => {
 export const useResource = (baseUrl) => {
   const [resources, setResources] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(baseUrl);
-        setResources(response.data); // Update state with fetched data
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(baseUrl);
+      setResources(response.data); // Update state with fetched data
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+  useEffect(() => {
     if (baseUrl) {
       fetchData(); // Trigger the fetch
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseUrl]); // Re-run the effect if `baseUrl` changes
 
-  const create = (resource) => {
-    axios.post(baseUrl, resource);
+  const create = async (resource) => {
+    await axios.post(baseUrl, resource);
+    // Do a new fetch if something is created, so component can re render
+    fetchData();
   };
 
   const service = {
