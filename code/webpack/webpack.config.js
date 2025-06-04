@@ -22,6 +22,11 @@ const config = () => {
         },
       ],
     },
+    devServer: {
+      static: path.resolve(__dirname, "build"),
+      compress: true,
+      port: 3000,
+    },
   };
 };
 
