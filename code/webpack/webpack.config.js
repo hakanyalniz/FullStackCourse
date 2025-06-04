@@ -1,6 +1,16 @@
 const path = require("path");
+const webpack = require("webpack");
 
-const config = () => {
+const config = (env, argv) => {
+  console.log("argv.mode:", argv.mode);
+
+  // We define a global constant via DefinePlugin of webpack, allowing us to use different backend url
+  // depending on the current mode. This is similar to vite env MODE
+  const backend_url =
+    argv.mode === "production"
+      ? "https://notes2023.fly.dev/api/notes"
+      : "http://localhost:3001/notes";
+
   return {
     entry: "./src/index.js",
     output: {
@@ -27,6 +37,11 @@ const config = () => {
       compress: true,
       port: 3000,
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        BACKEND_URL: JSON.stringify(backend_url),
+      }),
+    ],
     devtool: "source-map",
   };
 };
