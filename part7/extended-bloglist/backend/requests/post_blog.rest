@@ -1,0 +1,15 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+    "title": "Chuck e Cheese",
+    "author": "Chuck",
+    "url": "https://www.dawnspear.com/2002",
+    "likes": 32
+}
+
+#   title: String,
+#   author: String,
+#   url: String,
+#   likes: Number,
