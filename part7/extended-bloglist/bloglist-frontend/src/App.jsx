@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import Login from "./components/Login/Login";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import Blogs from "./components/Blogs/Blogs";
+import Users from "./components/Users/Users";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "./reducers/notificationReducer";
 import { setUser } from "./reducers/userReducer";
 
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -77,6 +78,8 @@ const App = () => {
 
       <Routes>
         {/* The routes were done in a way so that if user is not defined properly, you would need to login */}
+        <Route path="/users" element={<Users />} />
+
         <Route
           path="/login"
           element={
