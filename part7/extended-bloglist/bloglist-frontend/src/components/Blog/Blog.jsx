@@ -2,7 +2,13 @@ import blogService from "../../services/blogs";
 import { useEffect, useState } from "react";
 import "./style.css";
 
-const Blog = ({ blog, setBlogs, user }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setAllBlog } from "../../reducers/blogReducer";
+
+const Blog = ({ blog, user }) => {
+  const dispatch = useDispatch();
+  const blogs = useSelector((state) => state.blogs);
+
   const [visible, setVisible] = useState(false);
   const [deleteButtonVisible, setDeleteButtonVisible] = useState(false);
 
@@ -28,13 +34,19 @@ const Blog = ({ blog, setBlogs, user }) => {
     // we now update the the backend database and update the state from the current state
     // we do this because sometimes the server fetch would be faster than the update
     // therefore returning old data
-    setBlogs((prevBlogs) =>
-      prevBlogs.map((blog) =>
-        blog.id === likeIncreasedBlog.id
-          ? { ...blog, likes: blog.likes + 1 }
-          : blog
-      )
+    const sortedBlogs = blogs.map((blog) =>
+      blog.id === likeIncreasedBlog.id
+        ? { ...blog, likes: blog.likes + 1 }
+        : blog
     );
+    dispatch(setAllBlog(sortedBlogs));
+    // setBlogs((prevBlogs) =>
+    //   prevBlogs.map((blog) =>
+    //     blog.id === likeIncreasedBlog.id
+    //       ? { ...blog, likes: blog.likes + 1 }
+    //       : blog
+    //   )
+    // );
 
     // blogService.getAll().then((blogs) => {
     //   console.log("blogs", blogs);
@@ -51,7 +63,8 @@ const Blog = ({ blog, setBlogs, user }) => {
     console.log("Delete");
     if (window.confirm("Do you really want to delete, ", blog.title)) {
       const response = await blogService.deleteBlog(blog, user.token);
-      setBlogs(response.data);
+      dispatch(setAllBlog(response.data));
+      // setBlogs(response.data);
     }
   };
 

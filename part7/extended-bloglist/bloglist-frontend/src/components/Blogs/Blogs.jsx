@@ -1,21 +1,23 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Blog from "../Blog/Blog";
 import CreateBlog from "../CreateBlog/CreateBlog";
 import blogService from "../../services/blogs";
 import Togglable from "../Togglable/Togglable";
 
+import { setAllBlog } from "../../reducers/blogReducer";
+import { useSelector, useDispatch } from "react-redux";
+
 const Blogs = ({ user, handleNotificationMessage }) => {
-  const [blogs, setBlogs] = useState([]);
+  const dispatch = useDispatch();
+  const blogs = useSelector((state) => state.blogs);
+
+  // const [blogs, setBlogs] = useState([]);
   const createBlogFormRef = useRef();
 
   useEffect(() => {
-    blogService.getAll().then((blogs) =>
-      setBlogs(
-        blogs.sort((a, b) => {
-          return b.likes - a.likes;
-        })
-      )
-    );
+    console.log("Inside useEffect");
+
+    blogService.getAll().then((blogs) => dispatch(setAllBlog(blogs)));
   }, []);
 
   useEffect(() => {
@@ -28,7 +30,6 @@ const Blogs = ({ user, handleNotificationMessage }) => {
       <Togglable buttonLabel={"New Note"} ref={createBlogFormRef}>
         <CreateBlog
           user={user}
-          setBlogs={setBlogs}
           handleNotificationMessage={handleNotificationMessage}
           createBlogFormRef={createBlogFormRef}
         />
@@ -37,7 +38,7 @@ const Blogs = ({ user, handleNotificationMessage }) => {
       <h2>Blogs</h2>
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} setBlogs={setBlogs} user={user} />
+        <Blog key={blog.id} blog={blog} user={user} />
       ))}
     </>
   );

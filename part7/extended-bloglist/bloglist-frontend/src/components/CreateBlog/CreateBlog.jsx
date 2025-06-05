@@ -1,11 +1,10 @@
 import blogService from "../../services/blogs";
+import { useDispatch } from "react-redux";
+import { setAllBlog } from "../../reducers/blogReducer";
 
-const CreateBlog = ({
-  user,
-  setBlogs,
-  handleNotificationMessage,
-  createBlogFormRef,
-}) => {
+const CreateBlog = ({ user, handleNotificationMessage, createBlogFormRef }) => {
+  const dispatch = useDispatch();
+
   const handleCreateBlog = async (event) => {
     event.preventDefault();
     console.log(event.target[0].value);
@@ -18,8 +17,7 @@ const CreateBlog = ({
       },
       user.token
     );
-
-    setBlogs(await blogService.getAll());
+    dispatch(setAllBlog(await blogService.getAll()));
     handleNotificationMessage("Successfully created a blog!", true);
     createBlogFormRef.current.toggleVisibility();
   };
