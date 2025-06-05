@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "./reducers/notificationReducer";
 import { setUser } from "./reducers/userReducer";
 
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -20,6 +22,8 @@ const App = () => {
   const handleLogOut = () => {
     window.localStorage.removeItem("loggedBlogUser");
     dispatch(setUser(null));
+    console.log(user);
+
     setLoginUser({
       username: "",
       password: "",
@@ -46,27 +50,64 @@ const App = () => {
 
   // Check if username is available for user, if not then request login
   // otherwise display blog
-  return user === null ? (
-    <>
-      <NotificationBar />
-      <Login
-        loginUser={loginUser}
-        setLoginUser={setLoginUser}
-        handleNotificationMessage={handleNotificationMessage}
-      />
-    </>
-  ) : (
+
+  //   return user === null ? (
+  //   <>
+  //     <NotificationBar />
+  //     <Login
+  //       loginUser={loginUser}
+  //       setLoginUser={setLoginUser}
+  //       handleNotificationMessage={handleNotificationMessage}
+  //     />
+  //   </>
+  // ) :
+
+  return (
     <div>
       <NotificationBar />
+      {console.log("user", user)}
 
-      <h2>User</h2>
-      <div>Logged in as {user.name}</div>
-      <button onClick={handleLogOut}>Logout</button>
+      {user ? (
+        <>
+          <h2>User</h2>
+          <div>Logged in as {user.name}</div>
+          <button onClick={handleLogOut}>Logout</button>
+        </>
+      ) : null}
 
-      <Blogs
-        user={user}
-        handleNotificationMessage={handleNotificationMessage}
-      />
+      <Routes>
+        {/* The routes were done in a way so that if user is not defined properly, you would need to login */}
+        <Route
+          path="/login"
+          element={
+            user ? null : (
+              <Login
+                loginUser={loginUser}
+                setLoginUser={setLoginUser}
+                handleNotificationMessage={handleNotificationMessage}
+              />
+            )
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            user ? (
+              <Blogs
+                user={user}
+                handleNotificationMessage={handleNotificationMessage}
+              />
+            ) : (
+              <Login
+                loginUser={loginUser}
+                setLoginUser={setLoginUser}
+                handleNotificationMessage={handleNotificationMessage}
+              />
+            )
+          }
+        />
+      </Routes>
     </div>
   );
 };
