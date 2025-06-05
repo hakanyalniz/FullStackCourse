@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import "./style.css";
 
-const NotificationBar = ({ notificationMessage, setNotificationMessage }) => {
+import { useSelector } from "react-redux";
+// { notificationMessage, setNotificationMessage }
+const NotificationBar = () => {
+  const notificationMessage = useSelector((state) => state.notification);
+
   // Each time a message is sent, display it for 5 seconds then reset
   useEffect(() => {
     const notificationElement = document.getElementById("notification-bar");
@@ -15,11 +19,8 @@ const NotificationBar = ({ notificationMessage, setNotificationMessage }) => {
       notificationElement.classList.add("failure");
     }
 
-    setTimeout(() => {
-      setNotificationMessage({ message: "", status: undefined });
-    }, 5000);
     console.log(notificationMessage);
-  }, [notificationMessage, setNotificationMessage]);
+  }, [notificationMessage]);
 
   return notificationMessage.message === "" ? (
     <></>

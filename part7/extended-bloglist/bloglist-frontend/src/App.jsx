@@ -3,15 +3,16 @@ import Login from "./components/Login/Login";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import Blogs from "./components/Blogs/Blogs";
 
+import { useDispatch } from "react-redux";
+import { setNotification } from "./reducers/notificationReducer";
+
 const App = () => {
+  const dispatch = useDispatch();
+
   const [user, setUser] = useState(null);
   const [loginUser, setLoginUser] = useState({
     username: "",
     password: "",
-  });
-  const [notificationMessage, setNotificationMessage] = useState({
-    message: "",
-    status: true,
   });
 
   // Reset everything to log out
@@ -25,7 +26,7 @@ const App = () => {
   };
 
   const handleNotificationMessage = (message, status) => {
-    setNotificationMessage({ message: message, status: status });
+    dispatch(setNotification(message, status, 5));
   };
 
   // When first accessing the website, check if user is logged in by looking at local storage
@@ -42,10 +43,7 @@ const App = () => {
   // otherwise display blog
   return user === null ? (
     <>
-      <NotificationBar
-        notificationMessage={notificationMessage}
-        setNotificationMessage={setNotificationMessage}
-      />
+      <NotificationBar />
       <Login
         loginUser={loginUser}
         setLoginUser={setLoginUser}
@@ -55,10 +53,7 @@ const App = () => {
     </>
   ) : (
     <div>
-      <NotificationBar
-        notificationMessage={notificationMessage}
-        setNotificationMessage={setNotificationMessage}
-      />
+      <NotificationBar />
 
       <h2>User</h2>
       <div>Logged in as {user.name}</div>
