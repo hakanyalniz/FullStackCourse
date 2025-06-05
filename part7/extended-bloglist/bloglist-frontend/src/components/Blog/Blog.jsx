@@ -5,9 +5,10 @@ import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllBlog } from "../../reducers/blogReducer";
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog }) => {
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
+  const user = useSelector((state) => state.user);
 
   const [visible, setVisible] = useState(false);
   const [deleteButtonVisible, setDeleteButtonVisible] = useState(false);

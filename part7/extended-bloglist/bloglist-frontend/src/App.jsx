@@ -3,13 +3,14 @@ import Login from "./components/Login/Login";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import Blogs from "./components/Blogs/Blogs";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "./reducers/notificationReducer";
+import { setUser } from "./reducers/userReducer";
 
 const App = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
-  const [user, setUser] = useState(null);
   const [loginUser, setLoginUser] = useState({
     username: "",
     password: "",
@@ -18,7 +19,7 @@ const App = () => {
   // Reset everything to log out
   const handleLogOut = () => {
     window.localStorage.removeItem("loggedBlogUser");
-    setUser(null);
+    dispatch(setUser(null));
     setLoginUser({
       username: "",
       password: "",
@@ -34,10 +35,14 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      dispatch(setUser(user));
       console.log(user);
     }
   }, []);
+
+  useEffect(() => {
+    console.log("user", user);
+  }, [user]);
 
   // Check if username is available for user, if not then request login
   // otherwise display blog
@@ -47,7 +52,6 @@ const App = () => {
       <Login
         loginUser={loginUser}
         setLoginUser={setLoginUser}
-        setUser={setUser}
         handleNotificationMessage={handleNotificationMessage}
       />
     </>

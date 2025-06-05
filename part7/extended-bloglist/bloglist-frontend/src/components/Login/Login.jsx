@@ -1,11 +1,10 @@
 import loginService from "../../services/login";
+import { setUser } from "../../reducers/userReducer";
+import { useDispatch } from "react-redux";
 
-const Login = ({
-  loginUser,
-  setLoginUser,
-  setUser,
-  handleNotificationMessage,
-}) => {
+const Login = ({ loginUser, setLoginUser, handleNotificationMessage }) => {
+  const dispatch = useDispatch();
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -17,7 +16,7 @@ const Login = ({
         username: loginUser.username,
         password: loginUser.password,
       });
-      setUser(user);
+      dispatch(setUser(user));
       window.localStorage.setItem("loggedBlogUser", JSON.stringify(user));
       setLoginUser({
         username: "",

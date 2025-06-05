@@ -1,9 +1,10 @@
 import blogService from "../../services/blogs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAllBlog } from "../../reducers/blogReducer";
 
-const CreateBlog = ({ user, handleNotificationMessage, createBlogFormRef }) => {
+const CreateBlog = ({ handleNotificationMessage, createBlogFormRef }) => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   const handleCreateBlog = async (event) => {
     event.preventDefault();

@@ -7,11 +7,11 @@ import Togglable from "../Togglable/Togglable";
 import { setAllBlog } from "../../reducers/blogReducer";
 import { useSelector, useDispatch } from "react-redux";
 
-const Blogs = ({ user, handleNotificationMessage }) => {
+const Blogs = ({ handleNotificationMessage }) => {
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
+  const user = useSelector((state) => state.user);
 
-  // const [blogs, setBlogs] = useState([]);
   const createBlogFormRef = useRef();
 
   useEffect(() => {
