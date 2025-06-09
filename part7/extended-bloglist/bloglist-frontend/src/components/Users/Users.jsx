@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setThunkAllUsers } from "../../reducers/usersReducer";
 import { useEffect } from "react";
 
+import { Link } from "react-router-dom";
+
 import "./style.css";
 
 const Users = () => {
@@ -24,7 +26,9 @@ const Users = () => {
         <tbody>
           {allUsers.map((user) => (
             <tr key={user.id}>
-              <td>{user.name}</td>
+              <td>
+                <Link to="#">{user.name} </Link>
+              </td>
               <td>{user.blogs.length}</td>
             </tr>
           ))}
