@@ -15,14 +15,12 @@ const Blogs = ({ handleNotificationMessage }) => {
   const createBlogFormRef = useRef();
 
   useEffect(() => {
-    console.log("Inside useEffect");
-
     blogService.getAll().then((blogs) => dispatch(setAllBlog(blogs)));
   }, []);
 
-  useEffect(() => {
-    console.log("blogs", blogs);
-  }, [blogs]);
+  // useEffect(() => {
+  //   console.log("blogs", blogs);
+  // }, [blogs]);
 
   return (
     <>

@@ -1,15 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import usersService from "../services/users";
 
-/**
- * @typedef {object} User
- * @property {string | null} id
- * @property {string | null} name
- * @property {string | null} username
- * @property {Array | null} blogs
- */
+// /**
+//  * @typedef {object} User
+//  * @property {string | null} id
+//  * @property {string | null} name
+//  * @property {string | null} username
+//  * @property {Array | null} blogs
+//  */
 
-/** @type {User} */
+// /** @type {User} */
 const initialState = [];
 
 const usersSlice = createSlice({

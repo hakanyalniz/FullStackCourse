@@ -46,9 +46,9 @@ const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("user", user);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log("user", user);
+  // }, [user]);
 
   // Check if username is available for user, if not then request login
   // otherwise display blog
