@@ -3,6 +3,7 @@ import Login from "./components/Login/Login";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import Blogs from "./components/Blogs/Blogs";
 import Users from "./components/Users/Users";
+import User from "./components/User/User";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "./reducers/notificationReducer";
@@ -110,6 +111,8 @@ const App = () => {
             )
           }
         />
+
+        <Route path="/User/:userID" element={<User />} />
       </Routes>
     </div>
   );
