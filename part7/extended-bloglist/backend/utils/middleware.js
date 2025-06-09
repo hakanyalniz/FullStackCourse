@@ -58,6 +58,12 @@ const errorHandler = (error, request, response, next) => {
     });
   }
 
+  // else if (error.name === "TypeError") {
+  //   return response.status(404).json({
+  //     error: "user returned null",
+  //   });
+  // }
+
   next(error);
 };
 
