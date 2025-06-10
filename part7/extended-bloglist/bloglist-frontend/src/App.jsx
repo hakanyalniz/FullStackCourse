@@ -50,6 +50,7 @@ const App = () => {
 
   return (
     <div>
+      <Navigation />
       <NotificationBar />
       {console.log("user", user)}
 
