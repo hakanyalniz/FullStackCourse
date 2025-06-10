@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Login from "./components/Login/Login";
 import NotificationBar from "./components/NotificationBar/NotificationBar";
 import Blogs from "./components/Blogs/Blogs";
+import Blog from "./components/Blog/Blog";
 import Users from "./components/Users/Users";
 import User from "./components/User/User";
 
@@ -113,6 +114,8 @@ const App = () => {
         />
 
         <Route path="/User/:userID" element={<User />} />
+
+        <Route path="/Blogs/:blogID" element={<Blog />} />
       </Routes>
     </div>
   );

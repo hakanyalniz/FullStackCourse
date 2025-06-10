@@ -1,17 +1,24 @@
 import blogService from "../../services/blogs";
 import { useEffect, useState } from "react";
+
 import "./style.css";
+
+import { useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setAllBlog } from "../../reducers/blogReducer";
 
-const Blog = ({ blog }) => {
+const Blog = () => {
+  const { blogID } = useParams();
+
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
   const user = useSelector((state) => state.user);
 
   const [visible, setVisible] = useState(false);
   const [deleteButtonVisible, setDeleteButtonVisible] = useState(false);
+
+  const filteredCurrentBlog = blogs.filter((blog) => blog.id === blogID)[0];
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -24,9 +31,9 @@ const Blog = ({ blog }) => {
 
   const handleIncreaseLike = () => {
     const likeIncreasedBlog = {
-      ...blog,
-      likes: blog.likes + 1,
-      user: blog.user.id,
+      ...filteredCurrentBlog,
+      likes: filteredCurrentBlog.likes + 1,
+      user: filteredCurrentBlog.user.id,
     };
 
     blogService.updateBlog(likeIncreasedBlog);
@@ -41,6 +48,7 @@ const Blog = ({ blog }) => {
         : blog
     );
     dispatch(setAllBlog(sortedBlogs));
+
     // setBlogs((prevBlogs) =>
     //   prevBlogs.map((blog) =>
     //     blog.id === likeIncreasedBlog.id
@@ -62,8 +70,16 @@ const Blog = ({ blog }) => {
 
   const handleDeleteBlog = async () => {
     console.log("Delete");
-    if (window.confirm("Do you really want to delete, ", blog.title)) {
-      const response = await blogService.deleteBlog(blog, user.token);
+    if (
+      window.confirm(
+        "Do you really want to delete, ",
+        filteredCurrentBlog.title
+      )
+    ) {
+      const response = await blogService.deleteBlog(
+        filteredCurrentBlog,
+        user.token
+      );
       dispatch(setAllBlog(response.data));
       // setBlogs(response.data);
     }
@@ -71,24 +87,25 @@ const Blog = ({ blog }) => {
 
   // handle delete button visibility
   useEffect(() => {
-    if (blog.user.id === user.id) {
+    if (filteredCurrentBlog.user.id === user.id) {
       setDeleteButtonVisible(true);
     } else {
       setDeleteButtonVisible(false);
     }
-  }, [blog.user.id, user.id]);
+  }, [filteredCurrentBlog.user.id, user.id]);
 
   return (
     <div className="blog-entry">
       <div>
-        {blog.title} <button onClick={toggleVisibility}>View</button>
+        {filteredCurrentBlog.title}
+        <button onClick={toggleVisibility}>View</button>
       </div>
-      <div>{blog.author}</div>
+      <div>{filteredCurrentBlog.author}</div>
 
       <div style={visibleOrHidden}>
-        <div>{blog.url}</div>
+        <div>{filteredCurrentBlog.url}</div>
         <div data-testid="like-button-container">
-          <span className="like-number">{blog.likes}</span>{" "}
+          <span className="like-number">{filteredCurrentBlog.likes}</span>{" "}
           <button onClick={handleIncreaseLike}>Like</button>
         </div>
         <div>
