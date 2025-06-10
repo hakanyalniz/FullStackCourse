@@ -13,8 +13,6 @@ import { setUser } from "./reducers/userReducer";
 
 import { Routes, Route } from "react-router-dom";
 
-import "./main.css";
-
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);

@@ -3,3 +3,9 @@
   margin: 5px 0;
   border: 1px solid black;
 }
+
+.comments input {
+  border: 2px black solid;
+  border-radius: 10px;
+  margin-right: 10px;
+}
