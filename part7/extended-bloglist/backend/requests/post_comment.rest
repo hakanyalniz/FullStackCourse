@@ -1,0 +1,12 @@
+POST http://localhost:3001/api/blogs/6802919b710ae4b60790e2b9/comments
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+    "message": "This is a test"
+}
+
+#   title: String,
+#   author: String,
+#   url: String,
+#   likes: Number,

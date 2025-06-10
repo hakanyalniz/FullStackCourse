@@ -34,4 +34,11 @@ blogsRouter.delete("/:id", async (request, response, next) => {
   response.status(200).json(deletedResource);
 });
 
+blogsRouter.post("/:id/comments", async (request, response) => {
+  const blogID = request.params.id;
+  console.log(blogID);
+
+  response.status(200).send(blogID);
+});
+
 module.exports = blogsRouter;
