@@ -1,3 +1,5 @@
+// Frontend uses these services to connect with backend, which will use their own services to manipulate the database
+
 import loginService from "../services/login";
 import axios from "axios";
 const baseUrl = "/api/blogs";
@@ -24,6 +26,18 @@ const updateBlog = async (requestBody) => {
   return response;
 };
 
+// requestBody contains a blog id and a message to be sent
+const postMessageToBlog = async (requestBody) => {
+  console.log(requestBody);
+
+  const response = await axios.put(
+    `/api/blogs/${requestBody.id}/comments`,
+    requestBody
+  );
+
+  return response;
+};
+
 const deleteBlog = async (requestBody, userToken) => {
   const config = {
     headers: { Authorization: loginService.setToken(userToken) },
@@ -34,4 +48,4 @@ const deleteBlog = async (requestBody, userToken) => {
   return response;
 };
 
-export default { getAll, postBlog, updateBlog, deleteBlog };
+export default { getAll, postBlog, updateBlog, deleteBlog, postMessageToBlog };

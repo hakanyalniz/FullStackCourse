@@ -97,6 +97,11 @@ const Blog = () => {
       </div>
       <div className="comments">
         <h3>Comments</h3>
+        <ul>
+          {filteredCurrentBlog.messages.map((message, index) => (
+            <li key={index}>- {message}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
@@ -108,3 +113,5 @@ export default Blog;
 // too rapidly between different blogs
 
 // data is null when like request fails
+
+// an error occurs when the page is refreshed, saying that user id could not be found, user is null

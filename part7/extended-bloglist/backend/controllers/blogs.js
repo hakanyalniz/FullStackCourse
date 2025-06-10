@@ -34,11 +34,19 @@ blogsRouter.delete("/:id", async (request, response, next) => {
   response.status(200).json(deletedResource);
 });
 
-blogsRouter.post("/:id/comments", async (request, response) => {
+// receive a comment about a specific blog id
+// take  the comment, then post it under that blogs message array
+// on the frontend, fetch the comments to display them
+blogsRouter.put("/:id/comments", async (request, response) => {
   const blogID = request.params.id;
-  console.log(blogID);
 
-  response.status(200).send(blogID);
+  // request body contains the message
+  const updateResource = await blogActions.updateDBComment(
+    blogID,
+    request.body
+  );
+
+  response.status(200).json(updateResource);
 });
 
 module.exports = blogsRouter;

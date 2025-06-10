@@ -1,3 +1,4 @@
+// Requests from backend use these functions to manipulate the database
 const Blog = require("../models/blog");
 const User = require("../models/user");
 
@@ -39,6 +40,19 @@ async function updateDB(requestID, requestBody) {
   return updatedBlog;
 }
 
+// $push allows us to push our message to the messages array
+async function updateDBComment(blogID, requestMessage) {
+  const updatedBlog = await Blog.findOneAndUpdate(
+    { _id: blogID },
+    { $push: { messages: requestMessage.message } },
+    {
+      returnOriginal: false,
+    }
+  );
+
+  return updatedBlog;
+}
+
 async function deleteDB(request) {
   // Get the post userID
   // get the current userID from middleware
@@ -58,4 +72,4 @@ async function deleteDB(request) {
   }
 }
 
-module.exports = { findAllDB, postDB, updateDB, deleteDB };
+module.exports = { findAllDB, postDB, updateDB, deleteDB, updateDBComment };
