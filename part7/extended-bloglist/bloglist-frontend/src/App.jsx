@@ -71,7 +71,11 @@ const App = () => {
         <Route
           path="/login"
           element={
-            user ? null : (
+            user ? (
+              <div>
+                <h1>You are already logged in.</h1>
+              </div>
+            ) : (
               <Login
                 loginUser={loginUser}
                 setLoginUser={setLoginUser}
