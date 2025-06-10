@@ -1,8 +1,6 @@
 import blogService from "../../services/blogs";
 import { useEffect, useState } from "react";
 
-import "./style.css";
-
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -90,7 +88,7 @@ const Blog = () => {
   }, [filteredCurrentBlog.user.id, user.id]);
 
   return (
-    <div className="blog-entry">
+    <div className="p-1.25! my-1.25! border border-black">
       <div>
         {filteredCurrentBlog.title}
         <button onClick={toggleVisibility}>View</button>
@@ -109,11 +107,17 @@ const Blog = () => {
           </button>
         </div>
       </div>
-      <div className="comments">
+      <div>
         <h3>Comments</h3>
         <div>
           <form>
-            <input type="text" name="message" id="message-input" required />
+            <input
+              type="text"
+              name="message"
+              id="message-input"
+              required
+              className="border-2 border-black rounded-lg mr-2.5!"
+            />
             <button onClick={sendCommentToBlog}>Send</button>
           </form>
         </div>
