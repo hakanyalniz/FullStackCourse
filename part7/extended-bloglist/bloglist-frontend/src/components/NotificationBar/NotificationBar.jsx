@@ -25,7 +25,12 @@ const NotificationBar = () => {
   return notificationMessage.message === "" ? (
     <></>
   ) : (
-    <div id="notification-bar">{notificationMessage.message}</div>
+    <div
+      id="notification-bar"
+      className="p-2.5! border-5 border-black rounded-lg bg-gray-400 text-2xl font-semibold text-black"
+    >
+      {notificationMessage.message}
+    </div>
   );
 };
 
