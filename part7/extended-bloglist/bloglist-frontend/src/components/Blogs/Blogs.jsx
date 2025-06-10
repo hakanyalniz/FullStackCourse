@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import Blog from "../Blog/Blog";
 import CreateBlog from "../CreateBlog/CreateBlog";
 import blogService from "../../services/blogs";
 import Togglable from "../Togglable/Togglable";

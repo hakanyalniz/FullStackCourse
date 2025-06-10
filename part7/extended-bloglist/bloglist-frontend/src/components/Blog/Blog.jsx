@@ -48,24 +48,6 @@ const Blog = () => {
         : blog
     );
     dispatch(setAllBlog(sortedBlogs));
-
-    // setBlogs((prevBlogs) =>
-    //   prevBlogs.map((blog) =>
-    //     blog.id === likeIncreasedBlog.id
-    //       ? { ...blog, likes: blog.likes + 1 }
-    //       : blog
-    //   )
-    // );
-
-    // blogService.getAll().then((blogs) => {
-    //   console.log("blogs", blogs);
-
-    //   setBlogs(
-    //     blogs.sort((a, b) => {
-    //       return b.likes - a.likes;
-    //     })
-    //   );
-    // });
   };
 
   const handleDeleteBlog = async () => {
@@ -81,7 +63,6 @@ const Blog = () => {
         user.token
       );
       dispatch(setAllBlog(response.data));
-      // setBlogs(response.data);
     }
   };
 

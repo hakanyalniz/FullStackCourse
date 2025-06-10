@@ -5,6 +5,7 @@ import Blogs from "./components/Blogs/Blogs";
 import Blog from "./components/Blog/Blog";
 import Users from "./components/Users/Users";
 import User from "./components/User/User";
+import Navigation from "./components/Navigation/Navigation";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "./reducers/notificationReducer";
@@ -46,24 +47,6 @@ const App = () => {
       console.log(user);
     }
   }, []);
-
-  // useEffect(() => {
-  //   console.log("user", user);
-  // }, [user]);
-
-  // Check if username is available for user, if not then request login
-  // otherwise display blog
-
-  //   return user === null ? (
-  //   <>
-  //     <NotificationBar />
-  //     <Login
-  //       loginUser={loginUser}
-  //       setLoginUser={setLoginUser}
-  //       handleNotificationMessage={handleNotificationMessage}
-  //     />
-  //   </>
-  // ) :
 
   return (
     <div>
