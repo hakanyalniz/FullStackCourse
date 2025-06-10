@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "./style.css";
 
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setAllBlog } from "../../reducers/blogReducer";
@@ -66,6 +67,19 @@ const Blog = () => {
     }
   };
 
+  const sendCommentToBlog = async (event) => {
+    event.preventDefault();
+
+    const message = document.getElementById("message-input").value;
+    const response = await axios.put(
+      `/api/blogs/${filteredCurrentBlog.id}/comments`,
+      {
+        message: message,
+      }
+    );
+    console.log(response);
+  };
+
   // handle delete button visibility
   useEffect(() => {
     if (filteredCurrentBlog.user.id === user.id) {
@@ -97,6 +111,12 @@ const Blog = () => {
       </div>
       <div className="comments">
         <h3>Comments</h3>
+        <div>
+          <form>
+            <input type="text" name="message" id="message-input" required />
+            <button onClick={sendCommentToBlog}>Send</button>
+          </form>
+        </div>
         <ul>
           {filteredCurrentBlog.messages.map((message, index) => (
             <li key={index}>- {message}</li>
