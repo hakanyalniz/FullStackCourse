@@ -16,6 +16,7 @@ async function postDB(requestBody, user) {
     url: requestBody.url,
     likes: requestBody.likes,
     user: user.id,
+    message: [],
   });
 
   const blogPromise = await blog.save();
