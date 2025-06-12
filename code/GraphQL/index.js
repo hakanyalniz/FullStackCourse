@@ -58,6 +58,11 @@ const typeDefs = `
             street: String!
             city: String!
         ): Person
+
+        editNumber(
+            name: String!
+            phone: String!
+        ): Person
     }
 `;
 
@@ -94,6 +99,17 @@ const resolvers = {
       const person = { ...args, id: uuidv4() };
       persons = persons.concat(person);
       return person;
+    },
+
+    editNumber: (root, args) => {
+      const person = persons.find((p) => p.name === args.name);
+      if (!person) {
+        return null;
+      }
+      // if person exists update it with new phone, then replace the old one with the new one
+      const updatedPerson = { ...person, phone: args.phone };
+      persons = persons.map((p) => (p.name === args.name ? updatedPerson : p));
+      return updatedPerson;
     },
   },
   Person: {
