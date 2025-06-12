@@ -25,26 +25,39 @@ let persons = [
 ];
 
 const typeDefs = `
-  type Person {
-    name: String!
-    phone: String
-    street: String!
-    city: String! 
-    id: ID!
-  }
+    type Address {
+        street: String!
+        city: String! 
+    }
 
-  type Query {
-    personCount: Int!
-    allPersons: [Person!]!
-    findPerson(name: String!): Person
-  }
+    type Person {
+        name: String!
+        phone: String
+        address: Address!
+        id: ID!
+    }
+
+    type Query {
+        personCount: Int!
+        allPersons: [Person!]!
+        findPerson(name: String!): Person
+    }
 `;
-
+//   Since we have added the address field to the Person, we need to change the default resolver
+// because the default resolver attempt to get persons.address, but such a thing does not exist
 const resolvers = {
   Query: {
     personCount: () => persons.length,
     allPersons: () => persons,
     findPerson: (root, args) => persons.find((p) => p.name === args.name),
+  },
+  Person: {
+    address: (root) => {
+      return {
+        street: root.street,
+        city: root.city,
+      };
+    },
   },
 };
 
