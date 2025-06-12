@@ -1,5 +1,6 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
+const { v4: uuidv4 } = require("uuid");
 
 let persons = [
   {
@@ -42,6 +43,15 @@ const typeDefs = `
         allPersons: [Person!]!
         findPerson(name: String!): Person
     }
+
+    type Mutation {
+        addPerson(
+            name: String!
+            phone: String
+            street: String!
+            city: String!
+        ): Person
+    }
 `;
 //   Since we have added the address field to the Person, we need to change the default resolver
 // because the default resolver attempt to get persons.address, but such a thing does not exist
@@ -50,6 +60,13 @@ const resolvers = {
     personCount: () => persons.length,
     allPersons: () => persons,
     findPerson: (root, args) => persons.find((p) => p.name === args.name),
+  },
+  Mutation: {
+    addPerson: (root, args) => {
+      const person = { ...args, id: uuidv4() };
+      persons = persons.concat(person);
+      return person;
+    },
   },
   Person: {
     address: (root) => {
