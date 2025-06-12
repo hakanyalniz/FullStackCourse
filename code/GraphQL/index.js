@@ -1,6 +1,7 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v4: uuidv4 } = require("uuid");
+const { GraphQLError } = require("graphql");
 
 let persons = [
   {
@@ -25,7 +26,13 @@ let persons = [
   },
 ];
 
+//
 const typeDefs = `
+    enum YesNo {
+        YES
+        NO
+    }
+
     type Address {
         street: String!
         city: String! 
@@ -40,7 +47,7 @@ const typeDefs = `
 
     type Query {
         personCount: Int!
-        allPersons: [Person!]!
+        allPersons(phone: YesNo): [Person!]!
         findPerson(name: String!): Person
     }
 
@@ -53,16 +60,37 @@ const typeDefs = `
         ): Person
     }
 `;
-//   Since we have added the address field to the Person, we need to change the default resolver
+
+// Since we have added the address field to the Person, we need to change the default resolver
 // because the default resolver attempt to get persons.address, but such a thing does not exist
 const resolvers = {
   Query: {
     personCount: () => persons.length,
-    allPersons: () => persons,
+    allPersons: (root, args) => {
+      // if no phone parameter is found, they want all of them
+      if (!args.phone) {
+        return persons;
+      }
+
+      const byPhone = (person) =>
+        args.phone === "YES" ? person.phone : !person.phone;
+
+      return persons.filter(byPhone);
+    },
     findPerson: (root, args) => persons.find((p) => p.name === args.name),
   },
   Mutation: {
     addPerson: (root, args) => {
+      // If the person name already exists
+      if (persons.find((p) => p.name === args.name)) {
+        throw new GraphQLError("Name must be unique", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.name,
+          },
+        });
+      }
+
       const person = { ...args, id: uuidv4() };
       persons = persons.concat(person);
       return person;
