@@ -111,7 +111,7 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks: [Books]
+    allBooks(genre: String): [Books]
     allAuthors(author: String): [Authors]
   }
 `;
@@ -120,7 +120,12 @@ const resolvers = {
   Query: {
     bookCount: () => authors.length,
     authorCount: () => books.length,
-    allBooks: () => books,
+    allBooks: (
+      // Go to each book, go to genre one by one and find ones that match. If find, it is truthy, if false it returns undefined, which is falsy
+      root,
+      args
+    ) =>
+      books.filter((book) => book.genres.find((genre) => genre === args.genre)),
     allAuthors: (root, args) =>
       authors.filter((author) => author.name === args.author),
   },
