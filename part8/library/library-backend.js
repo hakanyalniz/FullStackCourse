@@ -157,6 +157,16 @@ const resolvers = {
       // create the book to add, update the database and return the added book
       const tempBook = { ...args, id: uuidv4() };
       books = books.concat(tempBook);
+
+      // If author is not found in the author database, add it
+      if (!authors.find((author) => author.name === tempBook.author)) {
+        authors = authors.concat({
+          name: tempBook.author,
+          born: undefined,
+          id: uuidv4(),
+        });
+      }
+      // return the newly added book
       return tempBook;
     },
   },
