@@ -122,6 +122,8 @@ const typeDefs = `
     published: Int,
     author: String,
     genres: [String]): Books
+
+    editAuthor(name: String, setBorn: Int): Authors
   }
 `;
 
@@ -168,6 +170,16 @@ const resolvers = {
       }
       // return the newly added book
       return tempBook;
+    },
+
+    editAuthor: (root, args) => {
+      // Map through the authors array, find the correct author by name, change the born field, otherwise let author be
+      const updatedAuthors = authors.map((author) =>
+        author.name === args.name ? { ...author, born: args.setBorn } : author
+      );
+      authors = updatedAuthors;
+
+      return updatedAuthors.filter((author) => author.name === args.name)[0];
     },
   },
 };
