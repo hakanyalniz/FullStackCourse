@@ -2,13 +2,14 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v4: uuidv4 } = require("uuid");
 
-import { authors, books } from "./dummy-db";
+const { authors, books } = require("./dummy-db.js");
 
 const typeDefs = `
   type Authors {
     name: String
     id: ID!
     born: Int
+    bookCount: String
   }
 
   type Books {
