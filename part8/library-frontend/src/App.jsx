@@ -4,12 +4,13 @@ import NewBook from "./components/NewBook";
 
 import { Routes, Route, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { ALL_PERSONS } from "./queries";
+import { ALL_PERSONS, ALL_BOOKS } from "./queries";
 
 import "./style.css";
 
 const App = () => {
-  const result = useQuery(ALL_PERSONS);
+  const allPersonResult = useQuery(ALL_PERSONS);
+  const allBooksResult = useQuery(ALL_BOOKS);
 
   return (
     <div>
@@ -21,8 +22,11 @@ const App = () => {
 
       <main className="container">
         <Routes>
-          <Route path="/authors" element={<Authors result={result} />} />
-          <Route path="/books" element={<Books />} />
+          <Route
+            path="/authors"
+            element={<Authors result={allPersonResult} />}
+          />
+          <Route path="/books" element={<Books result={allBooksResult} />} />
           <Route path="/newbook" element={<NewBook />} />
         </Routes>
       </main>

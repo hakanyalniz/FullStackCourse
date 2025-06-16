@@ -1,5 +1,11 @@
-const Books = () => {
-  const books = [];
+const Books = ({ result }) => {
+  let books = [];
+
+  if (result.loading) {
+    return <div>loading...</div>;
+  } else {
+    books = result.data.allBooks;
+  }
 
   return (
     <div>
