@@ -1,5 +1,11 @@
-const Authors = () => {
-  const authors = [];
+const Authors = ({ result }) => {
+  let authors = [];
+
+  if (result.loading) {
+    return <div>loading...</div>;
+  } else {
+    authors = result.data.allAuthors;
+  }
 
   return (
     <div>
