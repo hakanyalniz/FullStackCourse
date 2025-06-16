@@ -4,20 +4,24 @@ import NewBook from "./components/NewBook";
 
 import { Routes, Route, Link } from "react-router-dom";
 
+import "./style.css";
+
 const App = () => {
   return (
     <div>
-      <div className="navigation">
+      <nav className="navigation">
         <Link to={"/authors"}>authors</Link>
         <Link to={"/books"}>books</Link>
         <Link to={"/newbook"}>add book</Link>
-      </div>
+      </nav>
 
-      <Routes>
-        <Route path="/authors" element={<Authors />} />
-        <Route path="/books" element={<Books />} />
-        <Route path="/newbook" element={<NewBook />} />
-      </Routes>
+      <main className="container">
+        <Routes>
+          <Route path="/authors" element={<Authors />} />
+          <Route path="/books" element={<Books />} />
+          <Route path="/newbook" element={<NewBook />} />
+        </Routes>
+      </main>
     </div>
   );
 };
