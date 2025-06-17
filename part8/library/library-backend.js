@@ -2,7 +2,7 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v4: uuidv4 } = require("uuid");
 
-const { authors, books } = require("./dummy-db.js");
+const { authors, books, addBook, addAuthor } = require("./dummy-db.js");
 
 const typeDefs = `
   type Authors {
@@ -69,15 +69,21 @@ const resolvers = {
     addBook: (root, args) => {
       // create the book to add, update the database and return the added book
       const tempBook = { ...args, id: uuidv4() };
-      books = books.concat(tempBook);
+      addBook(tempBook);
+      // books = books.concat(tempBook);
 
       // If author is not found in the author database, add it
       if (!authors.find((author) => author.name === tempBook.author)) {
-        authors = authors.concat({
+        addAuthor({
           name: tempBook.author,
           born: undefined,
           id: uuidv4(),
         });
+        // authors = authors.concat({
+        //   name: tempBook.author,
+        //   born: undefined,
+        //   id: uuidv4(),
+        // });
       }
       // return the newly added book
       return tempBook;

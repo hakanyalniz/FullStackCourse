@@ -94,3 +94,11 @@ export let books = [
     genres: ["classic", "revolution"],
   },
 ];
+
+export function addBook(toAddBook) {
+  books.concat(toAddBook);
+}
+
+export function addAuthor(toAddAuthor) {
+  authors.concat(toAddAuthor);
+}
