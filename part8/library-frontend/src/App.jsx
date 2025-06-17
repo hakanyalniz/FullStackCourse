@@ -1,8 +1,9 @@
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
+import Home from "./components/Home";
 
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { ALL_PERSONS, ALL_BOOKS } from "./queries";
 
@@ -22,12 +23,16 @@ const App = () => {
 
       <main className="container">
         <Routes>
+          <Route path="/" element={<Home />} />
+
           <Route
             path="/authors"
             element={<Authors result={allPersonResult} />}
           />
           <Route path="/books" element={<Books result={allBooksResult} />} />
           <Route path="/newbook" element={<NewBook />} />
+
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
     </div>
