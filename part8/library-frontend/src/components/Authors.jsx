@@ -52,11 +52,18 @@ const Authors = ({ result }) => {
       <form action="">
         <div>
           Name:
-          <input
-            type="text"
-            value={authorName}
+          <select
             onChange={(e) => setAuthorName(e.target.value)}
-          />
+            value={authorName}
+          >
+            {authors.map((author, index) => {
+              return (
+                <option key={index} value={author.name}>
+                  {author.name}
+                </option>
+              );
+            })}
+          </select>
         </div>
 
         <div>
