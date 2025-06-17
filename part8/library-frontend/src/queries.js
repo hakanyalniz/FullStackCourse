@@ -22,3 +22,25 @@ export const ALL_BOOKS = gql`
     }
   }
 `;
+
+export const ADD_BOOK = gql`
+  mutation Mutation(
+    $genres: [String]
+    $author: String
+    $published: Int
+    $title: String
+  ) {
+    addBook(
+      genres: $genres
+      author: $author
+      published: $published
+      title: $title
+    ) {
+      author
+      genres
+      id
+      published
+      title
+    }
+  }
+`;

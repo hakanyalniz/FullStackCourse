@@ -102,3 +102,7 @@ export function addBook(toAddBook) {
 export function addAuthor(toAddAuthor) {
   authors.concat(toAddAuthor);
 }
+
+export function editAuthor(updatedAuthor) {
+  authors = updatedAuthor;
+}
