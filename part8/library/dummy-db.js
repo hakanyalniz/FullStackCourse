@@ -96,13 +96,29 @@ export let books = [
 ];
 
 export function addBook(toAddBook) {
-  books.concat(toAddBook);
+  books = books.concat(toAddBook);
+
+  // add plus one to the bookcount of the author
+  authors = authors.map((author) => {
+    if (author.name === toAddBook.author) {
+      const updatedBookCount = author.bookCount + 1;
+      return { ...author, bookCount: updatedBookCount };
+    } else {
+      return author;
+    }
+  });
+
+  return books;
 }
 
 export function addAuthor(toAddAuthor) {
-  authors.concat(toAddAuthor);
+  authors = authors.concat(toAddAuthor);
+
+  return authors;
 }
 
 export function editAuthor(updatedAuthor) {
   authors = updatedAuthor;
+
+  return authors;
 }

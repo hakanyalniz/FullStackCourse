@@ -10,6 +10,9 @@ import { ALL_PERSONS, ALL_BOOKS } from "./queries";
 import "./style.css";
 
 const App = () => {
+  // const allPersonResult = useQuery(ALL_PERSONS, {
+  //   pollInterval: 2000,
+  // });
   const allPersonResult = useQuery(ALL_PERSONS);
   const allBooksResult = useQuery(ALL_BOOKS);
 

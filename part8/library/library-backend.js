@@ -2,13 +2,12 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v4: uuidv4 } = require("uuid");
 
-const {
-  authors,
-  books,
-  addBook,
-  addAuthor,
-  editAuthor,
-} = require("./dummy-db.js");
+// authors,
+// books,
+// addBook: addBookMutation,
+// addAuthor,
+// editAuthor,
+const data = require("./dummy-db.js");
 
 const typeDefs = `
   type Authors {
@@ -46,10 +45,11 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    bookCount: () => authors.length,
-    authorCount: () => books.length,
+    bookCount: () => data.authors.length,
+    authorCount: () => data.books.length,
     allBooks: (root, args) => {
-      let tempBooks = books;
+      let tempBooks = data.books;
+      // Get only the books with the argument author given
       if (args.author) {
         tempBooks = tempBooks.filter((book) => book.author === args.author);
       }
@@ -65,9 +65,9 @@ const resolvers = {
     },
     allAuthors: (root, args) => {
       if (!args.author) {
-        return authors;
+        return data.authors;
       }
-      return authors.filter((author) => author.name === args.author);
+      return data.authors.filter((author) => author.name === args.author);
     },
   },
 
@@ -75,14 +75,15 @@ const resolvers = {
     addBook: (root, args) => {
       // create the book to add, update the database and return the added book
       const tempBook = { ...args, id: uuidv4() };
-      addBook(tempBook);
+      data.addBook(tempBook);
 
       // If author is not found in the author database, add it
-      if (!authors.find((author) => author.name === tempBook.author)) {
-        addAuthor({
+      if (!data.authors.find((author) => author.name === tempBook.author)) {
+        data.addAuthor({
           name: tempBook.author,
           born: undefined,
           id: uuidv4(),
+          bookCount: 1,
         });
       }
       // return the newly added book
@@ -91,10 +92,10 @@ const resolvers = {
 
     editAuthor: (root, args) => {
       // Map through the authors array, find the correct author by name, change the born field, otherwise let author be
-      const updatedAuthors = authors.map((author) =>
+      const updatedAuthors = data.authors.map((author) =>
         author.name === args.name ? { ...author, born: args.setBorn } : author
       );
-      editAuthor(updatedAuthors);
+      data.editAuthor(updatedAuthors);
 
       return updatedAuthors.filter((author) => author.name === args.name)[0];
     },
