@@ -86,11 +86,9 @@ const resolvers = {
       const tempBook = { ...args };
 
       const authorDoc = await Authors.findOne({ name: tempBook.author });
-      console.log(authorDoc);
 
       // // If author is not found in the author database, add it
       let newAuthor;
-
       if (!authorDoc) {
         console.log("inside if");
 
@@ -101,8 +99,6 @@ const resolvers = {
         });
         await newAuthor.save();
       }
-      console.log(tempBook);
-
       const books = new Books({
         ...tempBook,
         author: authorDoc._id || newAuthor._id,
