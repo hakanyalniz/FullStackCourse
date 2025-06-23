@@ -2,7 +2,9 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v4: uuidv4 } = require("uuid");
 
-const Books = require("./models/books-schema.js");
+const { connectMongooseDB, mongoose } = require("./library-backend.js");
+
+const Books = require("./models/books-schema");
 const Authors = require("./models/authors-schema.js");
 
 // authors,
@@ -50,7 +52,11 @@ const resolvers = {
   Query: {
     bookCount: () => data.authors.length,
     authorCount: () => data.books.length,
-    allBooks: (root, args) => {
+    allBooks: async (root, args) => {
+      console.log(Books.find({}));
+
+      return Books.find({});
+
       let tempBooks = data.books;
       // Get only the books with the argument author given
       if (args.author) {
@@ -75,22 +81,34 @@ const resolvers = {
   },
 
   Mutation: {
-    addBook: (root, args) => {
+    addBook: async (root, args) => {
       // create the book to add, update the database and return the added book
-      const tempBook = { ...args, id: uuidv4() };
-      data.addBook(tempBook);
+      const tempBook = { ...args };
 
-      // If author is not found in the author database, add it
-      if (!data.authors.find((author) => author.name === tempBook.author)) {
-        data.addAuthor({
+      const authorDoc = await Authors.findOne({ name: tempBook.author });
+      console.log(authorDoc);
+
+      // // If author is not found in the author database, add it
+      let newAuthor;
+
+      if (!authorDoc) {
+        console.log("inside if");
+
+        newAuthor = new Authors({
           name: tempBook.author,
           born: undefined,
-          id: uuidv4(),
           bookCount: 1,
         });
+        await newAuthor.save();
       }
-      // return the newly added book
-      return tempBook;
+      console.log(tempBook);
+
+      const books = new Books({
+        ...tempBook,
+        author: authorDoc._id || newAuthor._id,
+      });
+
+      return books.save();
     },
 
     editAuthor: (root, args) => {
@@ -105,13 +123,22 @@ const resolvers = {
   },
 };
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
+async function startApolloServer() {
+  await connectMongooseDB();
 
-startStandaloneServer(server, {
-  listen: { port: 4000 },
-}).then(({ url }) => {
-  console.log(`Server ready at ${url}`);
-});
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+  });
+
+  startStandaloneServer(server, {
+    listen: { port: 4000 },
+  }).then(({ url }) => {
+    console.log(`Server ready at ${url}`);
+  });
+}
+
+startApolloServer();
+
+// Wasted 2 hours bug hunting, turns out different Node servers can't communicate properly,
+// so Mongoose instances were different and statements like Authors.find() did not work
