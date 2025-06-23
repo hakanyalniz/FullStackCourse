@@ -2,6 +2,9 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v4: uuidv4 } = require("uuid");
 
+const Books = require("./models/books-schema.js");
+const Authors = require("./models/authors-schema.js");
+
 // authors,
 // books,
 // addBook: addBookMutation,

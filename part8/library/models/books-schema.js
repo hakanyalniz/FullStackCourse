@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const uniqueValidator = require("mongoose-unique-validator");
 
 const schema = new mongoose.Schema({
@@ -23,7 +22,7 @@ schema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("Book", schema);
 
-export let books = [
+let books = [
   {
     title: "Clean Code",
     published: 2008,

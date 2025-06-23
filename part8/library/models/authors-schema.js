@@ -18,7 +18,7 @@ schema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("Author", schema);
 
-export let authors = [
+let authors = [
   {
     name: "Robert Martin",
     id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
