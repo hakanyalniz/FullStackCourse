@@ -2,6 +2,7 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { GraphQLError } = require("graphql");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const { connectMongooseDB } = require("./library-backend.js");
 
@@ -126,8 +127,10 @@ const resolvers = {
       return result.filter((author) => author.name === args.author);
     },
 
-    me: async (root, args) => {
-      return 0;
+    me: async (root, args, context) => {
+      console.log(context);
+
+      return context.currentUser;
     },
   },
 
@@ -221,6 +224,21 @@ async function startApolloServer() {
 
   startStandaloneServer(server, {
     listen: { port: 4000 },
+    context: async ({ req, res }) => {
+      // Extract the auth header from the request
+      const auth = req ? req.headers.authorization : null;
+
+      if (auth && auth.startsWith("Bearer ")) {
+        const decodedToken = jwt.verify(
+          auth.substring(7),
+          process.env.JWT_SECRET
+        );
+
+        const currentUser = await Users.findById(decodedToken.id);
+
+        return { currentUser };
+      }
+    },
   }).then(({ url }) => {
     console.log(`Server ready at ${url}`);
   });
