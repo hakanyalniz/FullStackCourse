@@ -125,13 +125,14 @@ const resolvers = {
     },
 
     editAuthor: async (root, args) => {
-      // Map through the authors array, find the correct author by name, change the born field, otherwise let author be
-      const updatedAuthors = data.authors.map((author) =>
-        author.name === args.name ? { ...author, born: args.setBorn } : author
+      // find the author by name, update the born field and return the updated document
+      const updatedAuthors = await Authors.findOneAndUpdate(
+        { name: args.name },
+        { $set: { born: args.setBorn } },
+        { new: true }
       );
-      data.editAuthor(updatedAuthors);
 
-      return updatedAuthors.filter((author) => author.name === args.name)[0];
+      return updatedAuthors;
     },
   },
 };
