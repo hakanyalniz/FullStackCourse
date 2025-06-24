@@ -79,10 +79,13 @@ const resolvers = {
       return tempBooks;
     },
     allAuthors: async (root, args) => {
+      const result = await Authors.find({});
+
       if (!args.author) {
-        return Authors.find({});
+        return result;
       }
-      return data.authors.filter((author) => author.name === args.author);
+
+      return result.filter((author) => author.name === args.author);
     },
   },
 
