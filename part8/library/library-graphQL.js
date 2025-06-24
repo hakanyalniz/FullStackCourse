@@ -6,13 +6,7 @@ const { connectMongooseDB } = require("./library-backend.js");
 
 const Books = require("./models/books-schema");
 const Authors = require("./models/authors-schema.js");
-
-// authors,
-// books,
-// addBook: addBookMutation,
-// addAuthor,
-// editAuthor,
-const data = require("./dummy-db.js");
+const Users = require("./models/users-schema.js");
 
 const typeDefs = `
   type Authors {
@@ -30,21 +24,43 @@ const typeDefs = `
     genres: [String]
   }
 
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
+
   type Query {
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Books]
     allAuthors(author: String): [Authors]
+    me: User
   }
 
   type Mutation {
     addBook(
-    title: String,
-    published: Int,
-    author: String,
-    genres: [String]): Books
+      title: String,
+      published: Int,
+      author: String,
+      genres: [String]
+    ): Books
 
     editAuthor(name: String, setBorn: Int): Authors
+
+    createUser(
+      username: String!
+      favoriteGenre: String!
+    ): User
+
+    login(
+      username: String!
+      password: String!
+    ): Token
   }
 `;
 
@@ -108,6 +124,10 @@ const resolvers = {
 
       return result.filter((author) => author.name === args.author);
     },
+
+    me: async (root, args) => {
+      return 0;
+    },
   },
 
   Books: {
@@ -154,6 +174,16 @@ const resolvers = {
       );
 
       return updatedAuthors;
+    },
+
+    createUser: async (root, args) => {
+      const result = await new Users({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre,
+      });
+      result.save();
+
+      return result;
     },
   },
 };
