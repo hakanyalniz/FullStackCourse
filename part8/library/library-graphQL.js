@@ -142,7 +142,15 @@ const resolvers = {
   // There is a bug where you need to do two mutation queries to add books
 
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
+      // check login token
+      if (!context.currentUser) {
+        throw new GraphQLError("Not logged in", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+          },
+        });
+      }
       // create the book to add, update the database and return the added book
       const tempBook = { ...args };
       const authorDoc = await Authors.findOne({ name: tempBook.author });
@@ -169,7 +177,14 @@ const resolvers = {
       return books.save();
     },
 
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
+      if (!context.currentUser) {
+        throw new GraphQLError("Not logged in", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+          },
+        });
+      }
       // find the author by name, update the born field and return the updated document
       const updatedAuthors = await Authors.findOneAndUpdate(
         { name: args.name },
