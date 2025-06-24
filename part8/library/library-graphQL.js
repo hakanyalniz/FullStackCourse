@@ -59,14 +59,14 @@ const resolvers = {
       return result.length;
     },
     allBooks: async (root, args) => {
-      // console.log(Books.find({}));
-
-      return Books.find({});
-
-      let tempBooks = data.books;
       // Get only the books with the argument author given
+      let tempBooks = await Books.find({});
+
       if (args.author) {
-        tempBooks = tempBooks.filter((book) => book.author === args.author);
+        const authorDB = await Authors.findOne({ name: args.author });
+        tempBooks = tempBooks.filter(
+          (book) => book.author.toString() === authorDB.id
+        );
       }
 
       // Go to each book, go to genre one by one and find ones that match. If find, it is truthy, if false it returns undefined, which is falsy
@@ -91,6 +91,7 @@ const resolvers = {
       return Authors.findOne({ _id: root.author });
     },
   },
+  // There is a bug where you need to do two mutation queries to add books
 
   Mutation: {
     addBook: async (root, args) => {
