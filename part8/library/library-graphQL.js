@@ -1,6 +1,7 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { GraphQLError } = require("graphql");
+const jwt = require("jsonwebtoken");
 
 const { connectMongooseDB } = require("./library-backend.js");
 
@@ -184,6 +185,28 @@ const resolvers = {
       result.save();
 
       return result;
+    },
+
+    login: async (root, args) => {
+      // Check if the username/password is right (for now, we skip password)
+      // If they are, return a token, which will be used for operations that require a login
+      const newUser = await Users.findOne({ username: args.username });
+
+      if (!newUser || args.password !== "sekret") {
+        throw new GraphQLError("Username or password not correct", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.username,
+          },
+        });
+      }
+
+      const userForToken = {
+        username: newUser.username,
+        id: newUser._id,
+      };
+
+      return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
     },
   },
 };
