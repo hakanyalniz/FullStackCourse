@@ -1,8 +1,8 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
-const { v4: uuidv4 } = require("uuid");
+const { GraphQLError } = require("graphql");
 
-const { connectMongooseDB, mongoose } = require("./library-backend.js");
+const { connectMongooseDB } = require("./library-backend.js");
 
 const Books = require("./models/books-schema");
 const Authors = require("./models/authors-schema.js");
@@ -64,9 +64,20 @@ const resolvers = {
 
       if (args.author) {
         const authorDB = await Authors.findOne({ name: args.author });
-        tempBooks = tempBooks.filter(
-          (book) => book.author.toString() === authorDB.id
-        );
+
+        try {
+          tempBooks = tempBooks.filter(
+            (book) => book.author.toString() === authorDB.id
+          );
+        } catch (error) {
+          throw new GraphQLError("Could not find the author.", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              invalidArgs: args.author,
+              error,
+            },
+          });
+        }
       }
 
       // Go to each book, go to genre one by one and find ones that match. If find, it is truthy, if false it returns undefined, which is falsy
@@ -83,6 +94,16 @@ const resolvers = {
 
       if (!args.author) {
         return result;
+      }
+
+      // Throw error if author argument is too short
+      if (args.author.length < 3) {
+        throw new GraphQLError("Author name too short", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.author,
+          },
+        });
       }
 
       return result.filter((author) => author.name === args.author);
