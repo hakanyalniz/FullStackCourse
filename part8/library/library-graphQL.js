@@ -82,12 +82,7 @@ const resolvers = {
 
   Books: {
     author: async (root, args) => {
-      const result = await Authors.find({ _id: root.author });
-      const authorresult = await Authors.find({});
-
-      console.log("testing book quyery", result);
-
-      return Authors.find({ _id: root.author });
+      return Authors.findOne({ _id: root.author });
     },
   },
 
