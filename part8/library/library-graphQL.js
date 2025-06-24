@@ -50,10 +50,10 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    bookCount: () => data.authors.length,
-    authorCount: () => data.books.length,
+    bookCount: async () => Books.find({}).length,
+    authorCount: async () => Authors.find({}).length,
     allBooks: async (root, args) => {
-      console.log(Books.find({}));
+      // console.log(Books.find({}));
 
       return Books.find({});
 
@@ -72,11 +72,22 @@ const resolvers = {
 
       return tempBooks;
     },
-    allAuthors: (root, args) => {
+    allAuthors: async (root, args) => {
       if (!args.author) {
-        return data.authors;
+        return Authors.find({});
       }
       return data.authors.filter((author) => author.name === args.author);
+    },
+  },
+
+  Books: {
+    author: async (root, args) => {
+      const result = await Authors.find({ _id: root.author });
+      const authorresult = await Authors.find({});
+
+      console.log("testing book quyery", result);
+
+      return Authors.find({ _id: root.author });
     },
   },
 
@@ -84,7 +95,6 @@ const resolvers = {
     addBook: async (root, args) => {
       // create the book to add, update the database and return the added book
       const tempBook = { ...args };
-
       const authorDoc = await Authors.findOne({ name: tempBook.author });
 
       // // If author is not found in the author database, add it
@@ -97,6 +107,8 @@ const resolvers = {
           born: undefined,
           bookCount: 1,
         });
+        console.log(newAuthor);
+
         await newAuthor.save();
       }
       const books = new Books({
@@ -107,7 +119,7 @@ const resolvers = {
       return books.save();
     },
 
-    editAuthor: (root, args) => {
+    editAuthor: async (root, args) => {
       // Map through the authors array, find the correct author by name, change the born field, otherwise let author be
       const updatedAuthors = data.authors.map((author) =>
         author.name === args.name ? { ...author, born: args.setBorn } : author
