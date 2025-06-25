@@ -11,7 +11,6 @@ const Login = ({ setToken, setError }) => {
   const [login, result] = useMutation(LOGIN_USER, {
     onError: (error) => {
       console.log(error);
-
       setError(error.graphQLErrors[0].message);
     },
   });

@@ -23,9 +23,6 @@ const App = () => {
     localStorage.clear();
     client.resetStore();
   };
-  useEffect(() => {
-    console.log(token);
-  });
 
   // Check the local storage to see if token is available and if it expired
   useEffect(() => {
