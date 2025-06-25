@@ -35,7 +35,10 @@ const App = () => {
             element={<Authors result={allPersonResult} />}
           />
           <Route path="/books" element={<Books result={allBooksResult} />} />
-          <Route path="/newbook" element={<NewBook />} />
+          <Route
+            path="/newbook"
+            element={token ? <NewBook /> : <Navigate to="/login" />}
+          />
           <Route
             path="/login"
             element={<Login setToken={setToken} setError={setErrorMessage} />}
