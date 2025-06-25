@@ -168,6 +168,9 @@ const resolvers = {
 
         await newAuthor.save();
       }
+      // This seems to work in increasing bookcount by one, but I suspect it might sometimes increase it more then 1
+      authorDoc.bookCount += 1;
+      await authorDoc.save();
 
       const books = new Books({
         ...tempBook,

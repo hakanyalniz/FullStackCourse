@@ -27,6 +27,21 @@ const App = () => {
     console.log(token);
   });
 
+  // Check the local storage to see if token is available and if it expired
+  useEffect(() => {
+    const tokenData = JSON.parse(localStorage.getItem("library-user-token"));
+    const now = new Date();
+
+    if (tokenData) {
+      if (now.getTime() > tokenData.expiry) {
+        localStorage.removeItem("library-user-token"); // Remove expired token
+        setToken(null);
+      }
+      // if it didn't expire assign the token to state
+      setToken(tokenData.token);
+    }
+  }, []);
+
   return (
     <div>
       <nav className="navigation">

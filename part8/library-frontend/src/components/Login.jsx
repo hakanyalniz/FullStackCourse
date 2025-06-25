@@ -10,6 +10,8 @@ const Login = ({ setToken, setError }) => {
 
   const [login, result] = useMutation(LOGIN_USER, {
     onError: (error) => {
+      console.log(error);
+
       setError(error.graphQLErrors[0].message);
     },
   });
@@ -19,7 +21,15 @@ const Login = ({ setToken, setError }) => {
       const token = result.data.login.value;
       setToken(token);
 
-      localStorage.setItem("library-user-token", token);
+      const now = new Date();
+      const expiry = now.getTime() + 60 * 60 * 1000; // 1 hour
+
+      const tokenData = {
+        token: token,
+        expiry: expiry,
+      };
+
+      localStorage.setItem("library-user-token", JSON.stringify(tokenData));
       navigate("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
