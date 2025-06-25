@@ -165,13 +165,13 @@ const resolvers = {
           born: undefined,
           bookCount: 1,
         });
-        console.log(newAuthor);
 
         await newAuthor.save();
       }
+
       const books = new Books({
         ...tempBook,
-        author: authorDoc._id || newAuthor._id,
+        author: authorDoc ? authorDoc._id : newAuthor._id,
       });
 
       return books.save();
