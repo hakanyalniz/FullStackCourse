@@ -59,3 +59,11 @@ export const EDIT_AUTHOR_BIRTHDAY = gql`
     }
   }
 `;
+
+export const LOGIN_USER = gql`
+  mutation Mutation($password: String!, $username: String!) {
+    login(password: $password, username: $username) {
+      value
+    }
+  }
+`;

@@ -2,7 +2,9 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Home from "./components/Home";
+import Login from "./components/Login";
 
+import { useState } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { ALL_PERSONS, ALL_BOOKS } from "./queries";
@@ -10,9 +12,8 @@ import { ALL_PERSONS, ALL_BOOKS } from "./queries";
 import "./style.css";
 
 const App = () => {
-  // const allPersonResult = useQuery(ALL_PERSONS, {
-  //   pollInterval: 2000,
-  // });
+  const [token, setToken] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const allPersonResult = useQuery(ALL_PERSONS);
   const allBooksResult = useQuery(ALL_BOOKS);
 
@@ -22,6 +23,7 @@ const App = () => {
         <Link to={"/authors"}>authors</Link>
         <Link to={"/books"}>books</Link>
         <Link to={"/newbook"}>add book</Link>
+        <Link to={"/login"}>login</Link>
       </nav>
 
       <main className="container">
@@ -34,6 +36,10 @@ const App = () => {
           />
           <Route path="/books" element={<Books result={allBooksResult} />} />
           <Route path="/newbook" element={<NewBook />} />
+          <Route
+            path="/login"
+            element={<Login setToken={setToken} setError={setErrorMessage} />}
+          />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
