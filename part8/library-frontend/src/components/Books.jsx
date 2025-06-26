@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const Books = ({ result }) => {
   const [genreList, setGenreList] = useState([]);
   const [books, setBooks] = useState([]);
-  const [currentGenre, setCurrentGenre] = useState("");
+  const [currentGenre, setCurrentGenre] = useState("ALL");
 
   useEffect(() => {
     // Go through the books and list all the genres
@@ -19,10 +19,6 @@ const Books = ({ result }) => {
     setGenreList(temporaryList);
   }, [books]);
 
-  useEffect(() => {
-    console.log("genreList", genreList);
-  }, [genreList]);
-
   if (result.loading) {
     return <div>loading...</div>;
   } else {
@@ -31,8 +27,6 @@ const Books = ({ result }) => {
       setBooks(result.data.allBooks);
     }
   }
-
-  console.log(books);
 
   return (
     <div>
@@ -45,23 +39,35 @@ const Books = ({ result }) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a) => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))}
+          {books.map((a) => {
+            if (currentGenre === "ALL") {
+              return (
+                <tr key={a.title}>
+                  <td>{a.title}</td>
+                  <td>{a.author.name}</td>
+                  <td>{a.published}</td>
+                </tr>
+              );
+            } else if (a.genres.includes(currentGenre)) {
+              return (
+                <tr key={a.title}>
+                  <td>{a.title}</td>
+                  <td>{a.author.name}</td>
+                  <td>{a.published}</td>
+                </tr>
+              );
+            }
+          })}
         </tbody>
       </table>
       <div>
+        <button onClick={() => setCurrentGenre("ALL")}>All</button>
+
         {genreList.map((genre, index) => {
           return (
-            <>
-              <button onClick={() => setCurrentGenre(genre)} key={index}>
-                {genre}
-              </button>{" "}
-            </>
+            <button onClick={() => setCurrentGenre(genre)} key={index}>
+              {genre}
+            </button>
           );
         })}
       </div>
