@@ -56,3 +56,11 @@ nav a:hover {
 .logout-button:hover {
   background-color: #555;
 }
+
+.notification-message {
+  background-color: rgb(192, 192, 192);
+  margin: 10px;
+  padding: 10px;
+  font-size: 21px;
+  border-radius: 10px;
+}

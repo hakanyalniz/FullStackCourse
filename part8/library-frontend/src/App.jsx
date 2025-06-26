@@ -13,7 +13,7 @@ import "./style.css";
 
 const App = () => {
   const [token, setToken] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [notificationMessage, setNotificationMessage] = useState(null);
   const allPersonResult = useQuery(ALL_PERSONS);
   const allBooksResult = useQuery(ALL_BOOKS);
   const client = useApolloClient();
@@ -55,6 +55,11 @@ const App = () => {
       </nav>
 
       <main className="container">
+        {/* If notifMessage exists, render the div which contains the message or render null */}
+        {notificationMessage ? (
+          <div className="notification-message">{notificationMessage}</div>
+        ) : null}
+
         <Routes>
           <Route path="/" element={<Home />} />
 
@@ -69,7 +74,12 @@ const App = () => {
           />
           <Route
             path="/login"
-            element={<Login setToken={setToken} setError={setErrorMessage} />}
+            element={
+              <Login
+                setToken={setToken}
+                setNotification={setNotificationMessage}
+              />
+            }
           />
 
           <Route path="*" element={<Navigate to="/" />} />

@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../queries";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setToken, setError }) => {
+const Login = ({ setToken, setNotification }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -11,7 +11,10 @@ const Login = ({ setToken, setError }) => {
   const [login, result] = useMutation(LOGIN_USER, {
     onError: (error) => {
       console.log(error);
-      setError(error.graphQLErrors[0].message);
+      setNotification(error.graphQLErrors[0].message);
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     },
   });
 
