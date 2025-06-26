@@ -78,13 +78,7 @@ const App = () => {
           />
           <Route
             path="/recommendation"
-            element={
-              token ? (
-                <Recommendation allBooks={allBooksResult} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
+            element={token ? <Recommendation /> : <Navigate to="/login" />}
           />
           <Route
             path="/login"

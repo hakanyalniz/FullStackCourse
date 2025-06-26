@@ -27,6 +27,18 @@ export const ALL_BOOKS = gql`
   }
 `;
 
+export const RECOMMENDED_BOOKS = gql`
+  query Query($genre: String) {
+    allBooks(genre: $genre) {
+      published
+      title
+      author {
+        name
+      }
+    }
+  }
+`;
+
 export const CURRENT_USER = gql`
   query Query {
     me {

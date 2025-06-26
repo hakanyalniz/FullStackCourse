@@ -1,21 +1,22 @@
 import { useQuery } from "@apollo/client";
 
-import { CURRENT_USER } from "../queries";
+import { CURRENT_USER, RECOMMENDED_BOOKS } from "../queries";
 
-const Recommendation = ({ allBooks }) => {
+const Recommendation = () => {
   const curentUserResult = useQuery(CURRENT_USER);
-  console.log(curentUserResult);
-
   const favoriteGenre = curentUserResult.data
     ? curentUserResult.data.me.favoriteGenre
     : null;
+  const recommendedBookResult = useQuery(RECOMMENDED_BOOKS, {
+    variables: { genre: favoriteGenre },
+  });
 
-  let books = allBooks.data;
+  let books;
 
-  if (allBooks.loading) {
+  if (recommendedBookResult.loading) {
     return <div>loading...</div>;
   } else {
-    books = allBooks.data.allBooks;
+    books = recommendedBookResult.data.allBooks;
   }
 
   return (
@@ -29,15 +30,13 @@ const Recommendation = ({ allBooks }) => {
             <th>published</th>
           </tr>
           {books.map((book) => {
-            if (book.genres.includes(favoriteGenre)) {
-              return (
-                <tr key={book.title}>
-                  <td>{book.title}</td>
-                  <td>{book.author.name}</td>
-                  <td>{book.published}</td>
-                </tr>
-              );
-            }
+            return (
+              <tr key={book.title}>
+                <td>{book.title}</td>
+                <td>{book.author.name}</td>
+                <td>{book.published}</td>
+              </tr>
+            );
           })}
         </tbody>
       </table>

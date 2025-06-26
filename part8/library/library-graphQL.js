@@ -100,6 +100,8 @@ const resolvers = {
 
       // Go to each book, go to genre one by one and find ones that match. If find, it is truthy, if false it returns undefined, which is falsy
       if (args.genre) {
+        console.log(args.genre);
+
         tempBooks = tempBooks.filter((book) =>
           book.genres.find((genre) => genre === args.genre)
         );
