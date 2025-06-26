@@ -3,6 +3,7 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Home from "./components/Home";
 import Login from "./components/Login";
+import Recommendation from "./components/Recommendation";
 
 import { useEffect, useState } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
@@ -25,6 +26,7 @@ const App = () => {
   };
 
   // Check the local storage to see if token is available and if it expired
+
   useEffect(() => {
     const tokenData = JSON.parse(localStorage.getItem("library-user-token"));
     const now = new Date();
@@ -45,6 +47,8 @@ const App = () => {
         <Link to={"/authors"}>Authors</Link>
         <Link to={"/books"}>Books</Link>
         <Link to={"/newbook"}>Add Book</Link>
+        <Link to={"/recommendation "}>Recommendation</Link>
+
         {token ? (
           <button onClick={logout} className="logout-button">
             Logout
@@ -71,6 +75,16 @@ const App = () => {
           <Route
             path="/newbook"
             element={token ? <NewBook /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/recommendation"
+            element={
+              token ? (
+                <Recommendation allBooks={allBooksResult} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           />
           <Route
             path="/login"

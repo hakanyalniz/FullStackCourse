@@ -35,7 +35,7 @@ const Books = ({ result }) => {
       <table>
         <tbody>
           <tr>
-            <th></th>
+            <th>Title</th>
             <th>author</th>
             <th>published</th>
           </tr>
