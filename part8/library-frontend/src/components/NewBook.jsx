@@ -1,6 +1,12 @@
 import { useState } from "react";
-import { ADD_BOOK, ALL_BOOKS, ALL_PERSONS } from "../queries";
-import { useMutation } from "@apollo/client";
+import {
+  ADD_BOOK,
+  ALL_BOOKS,
+  ALL_PERSONS,
+  RECOMMENDED_BOOKS,
+  CURRENT_USER,
+} from "../queries";
+import { useMutation, useQuery } from "@apollo/client";
 
 const NewBook = () => {
   const [title, setTitle] = useState("");
@@ -9,8 +15,21 @@ const NewBook = () => {
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
 
+  // The below code was taken from the recommendation component so we can include the favoriteGenre variable in the mutation update
+  const curentUserResult = useQuery(CURRENT_USER);
+  const favoriteGenre = curentUserResult.data
+    ? curentUserResult.data.me.favoriteGenre
+    : null;
+
   const [addBookMutation] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_PERSONS }],
+    refetchQueries: [
+      { query: ALL_BOOKS },
+      { query: ALL_PERSONS },
+      {
+        query: RECOMMENDED_BOOKS,
+        variables: { genre: favoriteGenre },
+      },
+    ],
   });
 
   const submit = async (event) => {
