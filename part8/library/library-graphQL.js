@@ -153,28 +153,26 @@ const resolvers = {
       }
       // create the book to add, update the database and return the added book
       const tempBook = { ...args };
-      const authorDoc = await Authors.findOne({ name: tempBook.author });
+      let authorDoc = await Authors.findOne({ name: tempBook.author });
 
       // // If author is not found in the author database, add it
-      let newAuthor;
       if (!authorDoc) {
-        console.log("inside if");
-
-        newAuthor = new Authors({
+        authorDoc = new Authors({
           name: tempBook.author,
           born: undefined,
           bookCount: 1,
         });
 
-        await newAuthor.save();
+        await authorDoc.save();
+      } else {
+        // This seems to work in increasing bookcount by one, but I suspect it might sometimes increase it more then 1
+        authorDoc.bookCount += 1;
+        await authorDoc.save();
       }
-      // This seems to work in increasing bookcount by one, but I suspect it might sometimes increase it more then 1
-      authorDoc.bookCount += 1;
-      await authorDoc.save();
 
       const books = new Books({
         ...tempBook,
-        author: authorDoc ? authorDoc._id : newAuthor._id,
+        author: authorDoc._id,
       });
 
       return books.save();
