@@ -9,7 +9,7 @@ const { connectMongooseDB } = require("./library-backend.js");
 const Users = require("./models/users-schema.js");
 
 // Express and GraphQL Subscribe stuff
-const { expressMiddleware } = require("@apollo/server/express4");
+const { expressMiddleware } = require("@as-integrations/express5");
 const {
   ApolloServerPluginDrainHttpServer,
 } = require("@apollo/server/plugin/drainHttpServer");
@@ -44,6 +44,7 @@ async function startServer() {
   // Changed the way ApolloServer is written by dividing it into schema and plugins objects, so we can make use of plugins
   const server = new ApolloServer({
     schema,
+    introspection: true, // Enable introspection here
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
       {
@@ -63,6 +64,7 @@ async function startServer() {
   // this prevented us from using subscribe with it
   // Now, we are setting the GraphQL server on top of express server
   // The context that was listed is here too
+
   app.use(
     "/",
     cors(),
@@ -75,9 +77,7 @@ async function startServer() {
             auth.substring(7),
             process.env.JWT_SECRET
           );
-          const currentUser = await Users.findById(decodedToken.id).populate(
-            "friends"
-          );
+          const currentUser = await Users.findById(decodedToken.id);
           return { currentUser };
         }
       },

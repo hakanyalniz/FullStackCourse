@@ -181,9 +181,11 @@ const resolvers = {
   Subscription: {
     bookAdded: {
       // Anyone that sends a request to this query gets subscribed to BOOK_ADDED
-      subscribe: () => pubsub.asyncIterator("BOOK"),
+      subscribe: () => pubsub.asyncIterableIterator("BOOK_ADDED"),
     },
   },
 };
 
 module.exports = resolvers;
+
+// Spent hours trying to find a bug with pubsub library, seems the problem was the incorrect use of asyncIterator, which was wrongly used in the official doc
