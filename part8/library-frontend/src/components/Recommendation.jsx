@@ -13,7 +13,7 @@ const Recommendation = () => {
 
   let books;
 
-  if (recommendedBookResult.loading) {
+  if (recommendedBookResult.loading && !recommendedBookResult.data) {
     return <div>loading...</div>;
   } else {
     books = recommendedBookResult.data.allBooks;
