@@ -4,8 +4,8 @@ require("dotenv").config();
 const typeDefs = require("./graphQL-schemas.js");
 const resolvers = require("./graphQL-resolvers.js");
 
+// For mongoose
 const { connectMongooseDB } = require("./library-backend.js");
-
 const Users = require("./models/users-schema.js");
 
 // Express and GraphQL Subscribe stuff
@@ -18,6 +18,10 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 
+// Websocket libraries to make the subscription run
+const { WebSocketServer } = require("ws");
+const { useServer } = require("graphql-ws/lib/use/ws");
+
 async function startServer() {
   await connectMongooseDB();
 
@@ -25,10 +29,33 @@ async function startServer() {
   const app = express();
   const httpServer = http.createServer(app);
 
+  // The websocket server that will be built on top of express/httpServer server
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: "/",
+  });
+
+  // The schema part of the ApolloServer was written seperately here for sake of readability
+  // serverCleanup, first the useServer executes a websocket server from the schema and wsServer we created
+  // it also works as cleanup, so the requests that are already being sent can be processed before it closes
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const serverCleanup = useServer({ schema }, wsServer);
+
   // Changed the way ApolloServer is written by dividing it into schema and plugins objects, so we can make use of plugins
   const server = new ApolloServer({
-    schema: makeExecutableSchema({ typeDefs, resolvers }),
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    schema,
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
   });
 
   await server.start();
