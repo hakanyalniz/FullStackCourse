@@ -20,7 +20,7 @@ const http = require("http");
 
 // Websocket libraries to make the subscription run
 const { WebSocketServer } = require("ws");
-const { useServer } = require("graphql-ws/lib/use/ws");
+const { useServer } = require("graphql-ws/use/ws");
 
 async function startServer() {
   await connectMongooseDB();

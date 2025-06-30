@@ -4,6 +4,11 @@ const Authors = require("./models/authors-schema.js");
 const Users = require("./models/users-schema.js");
 const jwt = require("jsonwebtoken");
 
+// for subscribe
+// PubSub is publish and subscribe
+const { PubSub } = require("graphql-subscriptions");
+const pubsub = new PubSub();
+
 const resolvers = {
   Query: {
     bookCount: async () => {
@@ -115,6 +120,10 @@ const resolvers = {
         author: authorDoc._id,
       });
 
+      // Under the title BOOK_ADDED, publish these changes { bookAdded: books }
+      // Now, anyone listening into BOOK_ADDED, will get these changes
+      pubsub.publish("BOOK_ADDED", { bookAdded: books });
+
       return books.save();
     },
 
@@ -166,6 +175,13 @@ const resolvers = {
       };
 
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
+    },
+  },
+
+  Subscription: {
+    bookAdded: {
+      // Anyone that sends a request to this query gets subscribed to BOOK_ADDED
+      subscribe: () => pubsub.asyncIterator("BOOK"),
     },
   },
 };
