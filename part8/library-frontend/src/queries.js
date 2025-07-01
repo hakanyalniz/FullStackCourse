@@ -9,13 +9,21 @@ const AUTHOR_DETAILS = gql`
   }
 `;
 
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Books {
+    title
+    published
+    id
+    genres
+  }
+`;
+
 export const ALL_PERSONS = gql`
   query {
     allAuthors {
       ...AuthorDetails
     }
   }
-
   ${AUTHOR_DETAILS}
 `;
 
@@ -104,8 +112,8 @@ export const LOGIN_USER = gql`
 export const BOOK_ADDED = gql`
   subscription {
     bookAdded {
-      ...AuthorDetails
+      ...BookDetails
     }
   }
-  ${AUTHOR_DETAILS}
+  ${BOOK_DETAILS}
 `;

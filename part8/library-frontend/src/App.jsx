@@ -7,8 +7,13 @@ import Recommendation from "./components/Recommendation";
 
 import { useEffect, useState } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
-import { useQuery, useApolloClient } from "@apollo/client";
-import { ALL_PERSONS, ALL_BOOKS } from "./queries";
+import {
+  useQuery,
+  useApolloClient,
+  useMutation,
+  useSubscription,
+} from "@apollo/client";
+import { ALL_PERSONS, ALL_BOOKS, BOOK_ADDED } from "./queries";
 
 import "./style.css";
 
@@ -18,6 +23,12 @@ const App = () => {
   const allPersonResult = useQuery(ALL_PERSONS);
   const allBooksResult = useQuery(ALL_BOOKS);
   const client = useApolloClient();
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      console.log(data);
+    },
+  });
 
   const logout = () => {
     setToken(null);
