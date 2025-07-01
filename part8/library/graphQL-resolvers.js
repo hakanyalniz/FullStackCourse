@@ -13,6 +13,7 @@ const resolvers = {
   Query: {
     bookCount: async () => {
       const result = await Books.find({});
+
       return result.length;
     },
     authorCount: async () => {
@@ -58,6 +59,7 @@ const resolvers = {
       if (!args.author) {
         return result;
       }
+      console.log("allAuthors");
 
       // Throw error if author argument is too short
       if (args.author.length < 3) {

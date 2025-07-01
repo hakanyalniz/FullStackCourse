@@ -21,4 +21,6 @@ async function connectMongooseDB() {
   }
 }
 
+mongoose.set("debug", true);
+
 module.exports = { connectMongooseDB, mongoose };
