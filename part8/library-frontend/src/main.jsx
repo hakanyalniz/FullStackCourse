@@ -8,8 +8,14 @@ import {
   ApolloProvider,
   InMemoryCache,
   createHttpLink,
+  split,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+
+// Libraries for graphQL express and subscription
+import { getMainDefinition } from "@apollo/client/utilities";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { createClient } from "graphql-ws";
 
 const authLink = setContext((_, { headers }) => {
   const tokenData = JSON.parse(localStorage.getItem("library-user-token"));
@@ -22,14 +28,31 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+// Create link for http requests
 const httpLink = createHttpLink({
   uri: "http://localhost:4000",
 });
 
+// Create link for websocket for subscription
+const wsLink = new GraphQLWsLink(createClient({ url: "ws://localhost:4000" }));
+
+// Split allows us to seperate ordinary http requests and websocket requests
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  authLink.concat(httpLink)
+);
+
 // The link way of adding the URI allows us to more specifically deal with sending whatever we want
 // Therefore we can send the headers we want
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: splitLink,
   cache: new InMemoryCache(),
 });
 
