@@ -7,12 +7,7 @@ import Recommendation from "./components/Recommendation";
 
 import { useEffect, useState } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
-import {
-  useQuery,
-  useApolloClient,
-  useMutation,
-  useSubscription,
-} from "@apollo/client";
+import { useQuery, useApolloClient, useSubscription } from "@apollo/client";
 import { ALL_PERSONS, ALL_BOOKS, BOOK_ADDED } from "./queries";
 
 import "./style.css";
@@ -26,7 +21,19 @@ const App = () => {
 
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
-      console.log(data);
+      const newBook = data.data.bookAdded;
+      window.alert(`New book added: ${newBook.title}`);
+
+      // Manually update the cache
+      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+        // Check if the book is already in the cache
+        if (allBooks.find((book) => book.id === newBook.id)) {
+          return { allBooks }; // If it exists, return the original array
+        }
+        return {
+          allBooks: allBooks.concat(newBook),
+        };
+      });
     },
   });
 

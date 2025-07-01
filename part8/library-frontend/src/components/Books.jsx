@@ -19,6 +19,13 @@ const Books = ({ result }) => {
     setGenreList(temporaryList);
   }, [books]);
 
+  // Updates the books when cache is updated
+  useEffect(() => {
+    if (!result.loading) {
+      setBooks(result.data.allBooks);
+    }
+  }, [result]);
+
   if (result.loading) {
     return <div>loading...</div>;
   } else {
