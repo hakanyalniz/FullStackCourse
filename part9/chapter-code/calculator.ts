@@ -17,10 +17,7 @@ const calculator = (a: number, b: number, op: Operation): number => {
   }
 };
 
-const args = process.argv.slice(2); // Skip the first 2 node path and script path
 try {
-  console.log(args[0], args[1], args[2]);
-
   console.log(calculator(1, 5, "divide"));
 } catch (error: unknown) {
   let errorMessage = "Something went wrong: ";
