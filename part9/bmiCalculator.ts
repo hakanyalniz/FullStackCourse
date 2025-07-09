@@ -19,4 +19,7 @@ function calculateBmi(height: number, weight: number) {
   }
 }
 
-console.log(calculateBmi(180, 74));
+const { values } = parseArguments(process.argv);
+
+console.log(calculateBmi(values[0], values[1]));
+// 180, 74
