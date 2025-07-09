@@ -10,7 +10,7 @@ interface exerciseInterface {
   average: number;
 }
 
-function calculateExercises(
+export function calculateExercises(
   exerciseList: number[],
   trainingTarget: number
 ): exerciseInterface {
@@ -52,13 +52,15 @@ function calculateExercises(
   };
 }
 
-const { values } = parseArguments(process.argv);
+if (require.main === module) {
+  const { values } = parseArguments(process.argv);
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
-// console.log(calculateExercises([5, 5, 5, 6, 5, 5, 5], 2));
-// console.log(calculateExercises([0, 1, 1, 0, 0, 2, 1], 2));
-// console.log(calculateExercises([0, 0, 0, 0, 0, 0, 0], 2));
+  console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+  // console.log(calculateExercises([5, 5, 5, 6, 5, 5, 5], 2));
+  // console.log(calculateExercises([0, 1, 1, 0, 0, 2, 1], 2));
+  // console.log(calculateExercises([0, 0, 0, 0, 0, 0, 0], 2));
 
-// Using slice, we get all the arguments except the first one, which is the target
-// we then use the first one as second argument
-console.log(calculateExercises([...values.slice(1)], values[0]));
+  // Using slice, we get all the arguments except the first one, which is the target
+  // we then use the first one as second argument
+  console.log(calculateExercises([...values.slice(1)], values[0]));
+}

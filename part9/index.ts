@@ -2,6 +2,9 @@ import express from "express";
 const app = express();
 
 import { calculateBmi } from "./bmiCalculator";
+import { calculateExercises } from "./exerciseCalculator";
+
+app.use(express.json()); // for application/json
 
 app.get("/hello", (_req, res) => {
   res.send("Hello Full Stack!");
@@ -22,6 +25,30 @@ app.get("/bmi", (req, res) => {
   const calculationResult = calculateBmi(height, weight);
 
   return res.json({ height, weight, bmi: calculationResult });
+});
+
+interface RequestBody {
+  daily_exercises: number[];
+  target: number;
+}
+app.post("/exercises", (req, res) => {
+  const body = req.body as RequestBody;
+
+  const daily_exercises: number[] = body.daily_exercises;
+  const target: number = body.target;
+
+  // Checks if the request is made up of array and number
+  if (
+    !Array.isArray(daily_exercises) ||
+    typeof target !== "number" ||
+    isNaN(target)
+  ) {
+    return res.status(400).send("Bad Request");
+  }
+
+  const exerciseResults = calculateExercises(daily_exercises, target);
+
+  return res.json(exerciseResults);
 });
 
 const PORT = 3003;
