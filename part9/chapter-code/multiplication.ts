@@ -4,12 +4,14 @@ const multiplicator = (a: number, b: number, printText: string) => {
   console.log(printText, a * b);
 };
 
-const { value1, value2 } = parseArguments(process.argv);
+// We receive an object values: number
+// using {} allows us to deconstruct it and get the number
+const { values } = parseArguments(process.argv);
 
 multiplicator(
-  value1,
-  value2,
-  `Multiplied numbers ${value1} and ${value2}, the result is:`
+  values[0],
+  values[1],
+  `Multiplied numbers ${values[0]} and ${values[1]}, the result is:`
 );
 
 // Results in an error because does not match the type

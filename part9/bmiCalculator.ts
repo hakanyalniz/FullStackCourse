@@ -1,3 +1,5 @@
+import { parseArguments } from "./helper";
+
 function calculateBmi(height: number, weight: number) {
   // Convert centimeter to meter
   // 150 => 1.50
