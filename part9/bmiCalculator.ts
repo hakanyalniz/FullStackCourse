@@ -1,6 +1,6 @@
 import { parseArguments } from "./helper";
 
-function calculateBmi(height: number, weight: number): String {
+export function calculateBmi(height: number, weight: number): String {
   // Convert centimeter to meter
   // 150 => 1.50
   const meterHeight: number = height / 100;
@@ -21,7 +21,10 @@ function calculateBmi(height: number, weight: number): String {
   }
 }
 
-const { values } = parseArguments(process.argv);
+if (require.main === module) {
+  const { values } = parseArguments(process.argv);
 
-console.log(calculateBmi(values[0], values[1]));
-// 180, 74
+  console.log(calculateBmi(values[0], values[1]));
+}
+
+// 180, 74;
