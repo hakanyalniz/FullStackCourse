@@ -22,7 +22,6 @@ function calculateExercises(
   exerciseList.forEach((exercise) => {
     totalHours += exercise;
   });
-
   const averageTime = totalHours / periodLength;
   const success = averageTime >= targetValue;
   let rating = 0;
