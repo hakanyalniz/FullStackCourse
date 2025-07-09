@@ -1,6 +1,6 @@
 import { parseArguments } from "./helper";
 
-function calculateBmi(height: number, weight: number) {
+function calculateBmi(height: number, weight: number): String {
   // Convert centimeter to meter
   // 150 => 1.50
   const meterHeight: number = height / 100;
@@ -16,6 +16,8 @@ function calculateBmi(height: number, weight: number) {
     return "Underweight";
   } else if (bmiResult > 25.0) {
     return "Overweight";
+  } else {
+    return "An error occured";
   }
 }
 
