@@ -4,7 +4,10 @@
   "description": "A program that logs diaries about various plane flights.",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "dev": "ts-node-dev index.ts",
+    "start": "node build/index.js",
+    "lint": "eslint ."
   },
   "author": "Hakan",
   "license": "ISC",
