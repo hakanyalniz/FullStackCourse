@@ -2,10 +2,10 @@
   "name": "patientor",
   "version": "0.0.1",
   "description": "Backend for the medical software patientor.",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "tsc": "tsc",
-    "dev": "ts-node-dev index.ts",
+    "dev": "ts-node-dev ./src/index.ts",
     "start": "node build/index.js",
     "lint": "eslint ."
   },
