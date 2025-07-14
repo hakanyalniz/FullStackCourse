@@ -9,3 +9,6 @@ export interface DiaryEntry {
   visibility: Visibility;
   comment: string;
 }
+
+// It is diary entry but omits the id field
+export type NewDiaryEntry = Omit<DiaryEntry, "id">;

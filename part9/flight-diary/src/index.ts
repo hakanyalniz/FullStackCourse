@@ -11,6 +11,10 @@ app.get("/ping", (_req, res) => {
 
 app.use("/api/diaries", diaryRouter);
 
+app.get("/", (_req, res) => {
+  res.send("Current routes are: /ping, /api/diaries");
+});
+
 const PORT = 3000;
 
 app.listen(PORT, () => {
