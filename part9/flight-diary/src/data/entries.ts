@@ -1,6 +1,7 @@
 import { DiaryEntry } from "../types";
+import util from "../services/utils";
 
-const diaryEntries: DiaryEntry[] = [
+const diaryData = [
   {
     id: 1,
     date: "2017-01-01",
@@ -30,5 +31,12 @@ const diaryEntries: DiaryEntry[] = [
     comment: "I almost failed the landing but I survived",
   },
 ];
+
+const diaryEntries: DiaryEntry[] = diaryData.map((obj) => {
+  // toNewDiaryEntry returns NewDiaryEntry type, so we assert it to DiaryEntry and add id to it
+  const object = util.toNewDiaryEntry(obj) as DiaryEntry;
+  object.id = obj.id;
+  return object;
+});
 
 export default diaryEntries;

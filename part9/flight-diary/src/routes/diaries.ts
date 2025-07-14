@@ -1,5 +1,6 @@
 import express from "express";
 import diaryServices from "../services/diaryServices";
+import utils from "../services/utils";
 
 const router = express.Router();
 
@@ -20,16 +21,23 @@ router.get("/:id", (req, res) => {
   }
 });
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 router.post("/", (req, res) => {
-  const { date, weather, visibility, comment } = req.body;
-  const addedEntry = diaryServices.addDiary({
-    date,
-    weather,
-    visibility,
-    comment,
-  });
-  res.json(addedEntry);
+  console.log("POST request received!");
+
+  try {
+    // Makes sure that the post request we get is validated and verified
+    const newDiaryEntry = utils.toNewDiaryEntry(req.body);
+
+    const addedEntry = diaryServices.addDiary(newDiaryEntry);
+    res.json(addedEntry);
+  } catch (error: unknown) {
+    let errorMessage = "Something went wrong.";
+    if (error instanceof Error) {
+      errorMessage +=
+        " Error: " + error.message + ". Received data: " + req.body;
+    }
+    res.status(400).send(errorMessage);
+  }
 });
 
 export default router;
