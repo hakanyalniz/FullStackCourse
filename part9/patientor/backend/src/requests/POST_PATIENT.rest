@@ -1,0 +1,11 @@
+http://localhost:3001/api/patients
+Content-Type: application/json
+
+
+{
+    "name": "Rose Ruby",
+    "dateOfBirth": "1999-02-09",
+    "ssn": "020388-154X",
+    "gender": "female",
+    "occupation": "hunter",
+}
