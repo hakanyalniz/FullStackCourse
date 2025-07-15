@@ -1,5 +1,6 @@
 import express from "express";
 import { getAllPatients, postOnePatient } from "../services/patientServices";
+import patientEntryUtil from "../util/patientEntryUtil";
 
 const router = express.Router();
 
@@ -8,8 +9,10 @@ router.get("/patients", (_req, res) => {
 });
 
 router.post("/patients", (req, res) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const newPatient = postOnePatient(req.body);
+  // validates the POST request data against the various types
+  const newPatientEntry = patientEntryUtil.processNewPatientEntry(req.body);
+
+  const newPatient = postOnePatient(newPatientEntry);
 
   res.json(newPatient);
 });
