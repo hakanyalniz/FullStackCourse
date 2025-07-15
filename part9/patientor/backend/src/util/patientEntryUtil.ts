@@ -1,4 +1,4 @@
-import { NewPatient } from "../types";
+import { NewPatient, Gender } from "../types";
 
 // Custom type guards
 
@@ -11,12 +11,14 @@ const isDate = (date: string): boolean => {
 };
 
 function isValidSSNFormat(input: string): boolean {
-  const pattern = /^\d{6}-\d{2,}$/;
+  const pattern = /^\d{6}-\d{2,}[A-Za-z]*$/;
   return pattern.test(input);
 }
 
-function isGender(input: string): boolean {
-  return ["male", "female", "unknown"].includes(input);
+function isGender(input: string): input is Gender {
+  return Object.values(Gender)
+    .map((gender: string) => gender.toString())
+    .includes(input);
 }
 
 // Parsers for type checking and narrowing
@@ -42,7 +44,7 @@ function parsePatientSsn(patientSsn: unknown): string {
   return patientSsn;
 }
 
-function parsePatientGender(patientGender: unknown): string {
+function parsePatientGender(patientGender: unknown): Gender {
   if (!isString(patientGender) || !isGender(patientGender)) {
     throw new Error("Incorrect or missing data.");
   }

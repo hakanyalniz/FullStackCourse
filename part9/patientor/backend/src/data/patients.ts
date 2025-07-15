@@ -1,6 +1,7 @@
 import { Patient } from "../types";
+import patientEntryUtil from "../util/patientEntryUtil";
 
-const data: Patient[] = [
+const data = [
   {
     id: "d2773336-f723-11e9-8f0b-362b9e155667",
     name: "John McClane",
@@ -43,4 +44,17 @@ const data: Patient[] = [
   },
 ];
 
-export default data;
+// process each array member
+const patientData: Patient[] = data.map((patient) => {
+  // define types for each of them, then also add id, since processNewPatient does not use type for id
+  const newProcessedPatientData = {
+    id: patient.id,
+    ...patientEntryUtil.processNewPatientEntry(patient),
+  };
+  // return, which will make this the map array
+  return newProcessedPatientData;
+});
+
+// at the end, we will get an array of the results
+
+export default patientData;
