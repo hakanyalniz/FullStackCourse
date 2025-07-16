@@ -1,3 +1,5 @@
+import z from "zod";
+
 export enum Weather {
   Sunny = "sunny",
   Rainy = "rainy",
@@ -17,8 +19,15 @@ export interface DiaryEntry {
   date: string;
   weather: Weather;
   visibility: Visibility;
-  comment: string;
+  comment?: string;
 }
+
+export const newEntrySchema = z.object({
+  weather: z.enum(Weather),
+  visibility: z.enum(Visibility),
+  date: z.iso.date(),
+  comment: z.string().optional(),
+});
 
 // It is diary entry but omits the id field
 export type NewDiaryEntry = Omit<DiaryEntry, "id">;
