@@ -1,3 +1,5 @@
+import z from "zod";
+
 export interface Diagnoses {
   code: string;
   name: string;
@@ -26,3 +28,11 @@ export type filteredPatient = Pick<
   Patient,
   "name" | "dateOfBirth" | "gender" | "occupation"
 >;
+
+export const newPatientEntrySchema = z.object({
+  name: z.string(),
+  dateOfBirth: z.iso.date(),
+  ssn: z.string().regex(/^\d{6}-\d{2,}[A-Za-z]*$/),
+  gender: z.enum(Gender),
+  occupation: z.string(),
+});
