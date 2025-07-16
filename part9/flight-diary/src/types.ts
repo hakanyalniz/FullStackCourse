@@ -22,7 +22,8 @@ export interface DiaryEntry {
   comment?: string;
 }
 
-export const newEntrySchema = z.object({
+// Zod is used to verify and parse types against variables and data
+export const NewEntrySchema = z.object({
   weather: z.enum(Weather),
   visibility: z.enum(Visibility),
   date: z.iso.date(),
@@ -30,4 +31,7 @@ export const newEntrySchema = z.object({
 });
 
 // It is diary entry but omits the id field
-export type NewDiaryEntry = Omit<DiaryEntry, "id">;
+// export type NewDiaryEntry = Omit<DiaryEntry, "id">;
+
+// infer the type from schema
+export type NewDiaryEntry = z.infer<typeof NewEntrySchema>;
