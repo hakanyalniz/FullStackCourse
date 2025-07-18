@@ -74,3 +74,7 @@ The ideal node express project structure is:
 ├── package-lock.json
 ├── package.json
 ```
+
+Resource for React TypeScript:
+
+https://react-typescript-cheatsheet.netlify.app/
