@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { fetchAllDiaries } from "../services/diary-services";
-import type { DiaryEntry } from "../types";
+import type { AddDiaryProps } from "../types";
 
-function Diaries() {
-  const [allDiaries, setAllDiaries] = useState<DiaryEntry[]>([]);
-
+function Diaries({ allDiaries, setAllDiaries }: AddDiaryProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -16,11 +14,10 @@ function Diaries() {
     };
 
     fetchData();
-  }, []);
+  }, [setAllDiaries]);
 
   return (
     <>
-      <h1>Vite + React</h1>
       <table>
         <thead>
           <tr>
@@ -31,9 +28,9 @@ function Diaries() {
           </tr>
         </thead>
         <tbody>
-          {allDiaries.map((diary) => {
+          {allDiaries.map((diary, index) => {
             return (
-              <tr>
+              <tr key={index}>
                 <td>{diary.date}</td>
                 <td>{diary.visibility}</td>
                 <td>{diary.weather}</td>

@@ -53,6 +53,8 @@ router.post(
     req: Request<unknown, unknown, NewDiaryEntry>,
     res: Response<DiaryEntry>
   ) => {
+    console.log(req.body);
+
     const addedEntry = diaryServices.addDiary(req.body);
     res.json(addedEntry);
   }

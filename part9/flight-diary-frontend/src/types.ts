@@ -1,3 +1,5 @@
+import React from "react";
+
 const Weather = {
   Sunny: "sunny",
   Rainy: "rainy",
@@ -23,3 +25,10 @@ export interface DiaryEntry {
   visibility: Visibility;
   comment?: string;
 }
+
+export interface AddDiaryProps {
+  allDiaries: DiaryEntry[];
+  setAllDiaries: React.Dispatch<React.SetStateAction<DiaryEntry[]>>;
+}
+
+export type AddDiaryWithoutSet = Omit<AddDiaryProps, "allDiaries">;

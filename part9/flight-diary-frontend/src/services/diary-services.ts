@@ -15,3 +15,17 @@ export async function fetchAllDiaries() {
     return errorMessage;
   }
 }
+
+export async function postDiary(postData: unknown) {
+  try {
+    const postDiaryResult = await axios.post(`${BASEURL}/diaries`, postData);
+
+    return postDiaryResult.data;
+  } catch (error: unknown) {
+    let errorMessage = "Something went wrong.";
+    if (error instanceof Error) {
+      errorMessage += " Error: " + error.message;
+    }
+    return errorMessage;
+  }
+}
