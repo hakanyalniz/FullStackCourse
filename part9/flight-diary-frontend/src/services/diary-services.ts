@@ -22,10 +22,21 @@ export async function postDiary(postData: unknown) {
 
     return postDiaryResult.data;
   } catch (error: unknown) {
-    let errorMessage = "Something went wrong.";
-    if (error instanceof Error) {
-      errorMessage += " Error: " + error.message;
+    const errorMessage = {
+      statusText: "Something went wrong. ",
+      status: 0,
+      errors: [],
+    };
+
+    if (axios.isAxiosError(error) && error.status && error.response) {
+      errorMessage.statusText += error.response?.statusText;
+      errorMessage.status = error.status;
+      errorMessage.errors = error.response.data.error;
+      return errorMessage;
+
+      // throw new Error(error.message);
+    } else {
+      throw new Error("Unknown error");
     }
-    return errorMessage;
   }
 }

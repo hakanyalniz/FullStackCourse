@@ -1,8 +1,8 @@
 import { postDiary, fetchAllDiaries } from "../services/diary-services";
 import { useState, useEffect } from "react";
-import type { AddDiaryWithoutSet } from "../types";
+import type { AddDiariesProps } from "../types";
 
-function AddDiary({ setAllDiaries }: AddDiaryWithoutSet) {
+function AddDiary({ setAllDiaries, setErrorMessage }: AddDiariesProps) {
   const [diaryObject, setDiaryObject] = useState({
     date: "",
     weather: "",
@@ -10,14 +10,29 @@ function AddDiary({ setAllDiaries }: AddDiaryWithoutSet) {
     comment: "",
   });
 
-  const handleSend = () => {
+  const handleSend = async () => {
     console.log("Sending:", diaryObject);
-    postDiary({
+
+    const postDiaryResult = await postDiary({
       date: diaryObject.date,
       weather: diaryObject.weather,
       visibility: diaryObject.visibility,
       comment: diaryObject.comment,
     });
+
+    if (postDiaryResult.statusText) {
+      let message = "An error occured. ";
+      postDiaryResult.errors.map(
+        (error: { code: string; message: string }) =>
+          (message += `\n Code: ${error.code} Message: ${error.message}.`)
+      );
+      console.log(message);
+
+      setErrorMessage(message);
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 30000);
+    }
   };
 
   useEffect(() => {

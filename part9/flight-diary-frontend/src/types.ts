@@ -26,9 +26,12 @@ export interface DiaryEntry {
   comment?: string;
 }
 
-export interface AddDiaryProps {
+export interface DiariesProps {
   allDiaries: DiaryEntry[];
   setAllDiaries: React.Dispatch<React.SetStateAction<DiaryEntry[]>>;
 }
 
-export type AddDiaryWithoutSet = Omit<AddDiaryProps, "allDiaries">;
+export interface AddDiariesProps {
+  setAllDiaries: React.Dispatch<React.SetStateAction<DiaryEntry[]>>;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>;
+}

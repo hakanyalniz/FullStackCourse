@@ -7,13 +7,18 @@ import type { DiaryEntry } from "./types";
 
 function App() {
   const [allDiaries, setAllDiaries] = useState<DiaryEntry[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   return (
     <>
       <h1>Flight Diaries</h1>
       <Diaries allDiaries={allDiaries} setAllDiaries={setAllDiaries} />
 
-      <AddDiary setAllDiaries={setAllDiaries} />
+      <div className="error-notification">{errorMessage}</div>
+      <AddDiary
+        setAllDiaries={setAllDiaries}
+        setErrorMessage={setErrorMessage}
+      />
     </>
   );
 }

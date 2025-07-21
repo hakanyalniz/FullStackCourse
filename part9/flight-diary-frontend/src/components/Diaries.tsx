@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { fetchAllDiaries } from "../services/diary-services";
-import type { AddDiaryProps } from "../types";
+import type { DiariesProps } from "../types";
 
-function Diaries({ allDiaries, setAllDiaries }: AddDiaryProps) {
+function Diaries({ allDiaries, setAllDiaries }: DiariesProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
