@@ -1,6 +1,7 @@
 import { postDiary, fetchAllDiaries } from "../services/diary-services";
 import { useState, useEffect } from "react";
 import type { AddDiariesProps } from "../types";
+import { Visibility, Weather } from "../types";
 
 function AddDiary({ setAllDiaries, setErrorMessage }: AddDiariesProps) {
   const [diaryObject, setDiaryObject] = useState({
@@ -18,6 +19,13 @@ function AddDiary({ setAllDiaries, setErrorMessage }: AddDiariesProps) {
       weather: diaryObject.weather,
       visibility: diaryObject.visibility,
       comment: diaryObject.comment,
+    });
+
+    setDiaryObject({
+      date: "",
+      weather: "",
+      visibility: "",
+      comment: "",
     });
 
     if (postDiaryResult.statusText) {
@@ -54,7 +62,7 @@ function AddDiary({ setAllDiaries, setErrorMessage }: AddDiariesProps) {
       <div>
         Date:
         <input
-          type="text"
+          type="date"
           value={diaryObject.date}
           onChange={(e) =>
             setDiaryObject({ ...diaryObject, date: e.target.value })
@@ -63,25 +71,35 @@ function AddDiary({ setAllDiaries, setErrorMessage }: AddDiariesProps) {
       </div>
 
       <div>
-        Visibility:
-        <input
-          type="text"
-          value={diaryObject.visibility}
-          onChange={(e) =>
-            setDiaryObject({ ...diaryObject, visibility: e.target.value })
-          }
-        />
+        {Object.values(Visibility).map((v) => (
+          <label key={v}>
+            {v}
+            <input
+              type="radio"
+              name="visibility"
+              value={v}
+              onChange={(e) =>
+                setDiaryObject({ ...diaryObject, visibility: e.target.value })
+              }
+            />
+          </label>
+        ))}
       </div>
 
       <div>
-        Weather:
-        <input
-          type="text"
-          value={diaryObject.weather}
-          onChange={(e) =>
-            setDiaryObject({ ...diaryObject, weather: e.target.value })
-          }
-        />
+        {Object.values(Weather).map((v) => (
+          <label key={v}>
+            {v}
+            <input
+              type="radio"
+              name="weather"
+              value={v}
+              onChange={(e) =>
+                setDiaryObject({ ...diaryObject, weather: e.target.value })
+              }
+            />
+          </label>
+        ))}
       </div>
 
       <div>

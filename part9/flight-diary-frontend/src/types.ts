@@ -1,6 +1,6 @@
 import React from "react";
 
-const Weather = {
+export const Weather = {
   Sunny: "sunny",
   Rainy: "rainy",
   Cloudy: "cloudy",
@@ -8,7 +8,7 @@ const Weather = {
   Windy: "windy",
 } as const;
 
-const Visibility = {
+export const Visibility = {
   Great: "great",
   Good: "good",
   Ok: "ok",
