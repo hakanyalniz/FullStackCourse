@@ -21,6 +21,13 @@ function isGender(input: string): input is Gender {
     .includes(input);
 }
 
+// Checks if input is array then checks if the items inside it are string
+function isArray(input: unknown): input is string[] {
+  return (
+    Array.isArray(input) && input.every((item) => typeof item === "string")
+  );
+}
+
 // Parsers for type checking and narrowing
 
 function parsePatientName(patientName: unknown): string {
@@ -59,6 +66,14 @@ function parsePatientOccupation(patientOccupation: unknown): string {
   return patientOccupation;
 }
 
+function parseEntries(patientEntries: unknown): string[] {
+  if (!patientEntries || !isArray(patientEntries)) {
+    throw new Error("Incorrect or missing data.");
+  }
+
+  return patientEntries;
+}
+
 // This is the function that processes the POST data and validates and verifies them
 function processNewPatientEntry(newPatient: unknown): NewPatient {
   // Check if the data exists or is type object
@@ -70,7 +85,8 @@ function processNewPatientEntry(newPatient: unknown): NewPatient {
     !("dateOfBirth" in newPatient) ||
     !("ssn" in newPatient) ||
     !("gender" in newPatient) ||
-    !("occupation" in newPatient)
+    !("occupation" in newPatient) ||
+    !("entries" in newPatient)
   ) {
     throw new Error("Incorrect or missing data.");
   }
@@ -82,6 +98,7 @@ function processNewPatientEntry(newPatient: unknown): NewPatient {
     ssn: parsePatientSsn(newPatient.ssn),
     gender: parsePatientGender(newPatient.gender),
     occupation: parsePatientOccupation(newPatient.occupation),
+    entries: parseEntries(newPatient.entries),
   };
 }
 

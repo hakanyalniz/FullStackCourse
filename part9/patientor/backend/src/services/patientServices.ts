@@ -1,6 +1,6 @@
 import diognesisData from "../data/diagnoses";
 import patientData from "../data/patients";
-import { Diagnoses, filteredPatient, NewPatient } from "../types";
+import { Diagnoses, filteredPatient, NewPatient, Patient } from "../types";
 
 import { v1 as uuid } from "uuid";
 
@@ -16,6 +16,13 @@ export function getAllPatients(): filteredPatient[] {
     gender: patient.gender,
     occupation: patient.occupation,
   }));
+}
+
+// Get the patient with the correct given parameter ID
+export function getOnePatient(paramID: string): Patient {
+  console.log(patientData.filter((patient) => patient.id === paramID)[0]);
+
+  return patientData.filter((patient) => patient.id === paramID)[0];
 }
 
 export function postOnePatient(dataObject: NewPatient) {
