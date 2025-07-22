@@ -1,5 +1,8 @@
 import z from "zod";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface Entry {}
+
 export interface Diagnoses {
   code: string;
   name: string;
@@ -13,6 +16,7 @@ export interface Patient {
   ssn: string;
   gender: Gender;
   occupation: string;
+  entries: Entry[];
 }
 
 export enum Gender {
@@ -24,10 +28,7 @@ export enum Gender {
 // Since the id is added server side, the POST request from user does not have id
 export type NewPatient = Omit<Patient, "id">;
 
-export type filteredPatient = Pick<
-  Patient,
-  "name" | "dateOfBirth" | "gender" | "occupation"
->;
+export type filteredPatient = Omit<Patient, "ssn" | "entries">;
 
 export const newPatientEntrySchema = z.object({
   name: z.string(),

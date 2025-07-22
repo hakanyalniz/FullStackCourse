@@ -10,6 +10,7 @@ export function getAllDiagnoses(): Diagnoses[] {
 
 export function getAllPatients(): filteredPatient[] {
   return patientData.map((patient) => ({
+    id: patient.id,
     name: patient.name,
     dateOfBirth: patient.dateOfBirth,
     gender: patient.gender,
