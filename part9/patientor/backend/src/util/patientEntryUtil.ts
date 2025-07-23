@@ -1,4 +1,7 @@
-import { NewPatient, Gender } from "../types";
+// This file has two jobs. Validate data sent from users through POST
+// and validate and confirm types for the data in the server
+
+import { NewPatient, Gender, Entry } from "../types";
 
 // Custom type guards
 
@@ -21,11 +24,35 @@ function isGender(input: string): input is Gender {
     .includes(input);
 }
 
-// Checks if input is array then checks if the items inside it are string
-function isArray(input: unknown): input is string[] {
-  return (
-    Array.isArray(input) && input.every((item) => typeof item === "string")
-  );
+// Checks and validates Entry data
+function isEntry(input: unknown): input is Entry {
+  if (
+    typeof input === "object" &&
+    input !== null &&
+    typeof (input as Entry).id === "string" &&
+    typeof (input as Entry).description === "string" &&
+    typeof (input as Entry).date === "string" &&
+    typeof (input as Entry).specialist === "string"
+  )
+    return true;
+  else {
+    return false;
+  }
+}
+
+function isEntryArray(input: unknown): input is Entry[] {
+  // Is an array and has items inside it
+  if (Array.isArray(input)) {
+    // Each item inside the array is a legible entry
+    // If they are not, return false, if they are, return true
+    for (const entry of input) {
+      if (!isEntry(entry)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
 }
 
 // Parsers for type checking and narrowing
@@ -66,8 +93,8 @@ function parsePatientOccupation(patientOccupation: unknown): string {
   return patientOccupation;
 }
 
-function parseEntries(patientEntries: unknown): string[] {
-  if (!patientEntries || !isArray(patientEntries)) {
+function parseEntries(patientEntries: unknown): Entry[] {
+  if (!patientEntries || !isEntryArray(patientEntries)) {
     throw new Error("Incorrect or missing data.");
   }
 
