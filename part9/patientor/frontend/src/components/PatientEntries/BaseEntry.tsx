@@ -3,6 +3,10 @@
 import type { PatientProps } from "../../types";
 
 const BaseEntry = ({ entry, diagnosisDescription }: PatientProps) => {
+  if (diagnosisDescription.length === 0) {
+    return <>Loading ...</>;
+  }
+
   return (
     <div>
       <div>Date: {entry.date}</div>
