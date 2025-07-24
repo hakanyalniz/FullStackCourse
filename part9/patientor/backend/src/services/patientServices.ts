@@ -20,8 +20,6 @@ export function getAllPatients(): filteredPatient[] {
 
 // Get the patient with the correct given parameter ID
 export function getOnePatient(paramID: string): Patient {
-  console.log(patientData.filter((patient) => patient.id === paramID)[0]);
-
   return patientData.filter((patient) => patient.id === paramID)[0];
 }
 
