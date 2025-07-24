@@ -29,26 +29,30 @@ const PatientDetails = () => {
       <div>Date of Birth: {patient.dateOfBirth}</div>
       <div>SSN: {patient.ssn}</div>
       <h3>Entries:</h3>
-      <div>
-        {patient.entries.map((entry, index) => {
-          return (
-            <div key={index}>
-              <div>Date: {entry.date}</div>
-              <div>Description: {entry.description}</div>
-              <span>Diagnosis Code: </span>
-              {typeof entry.diagnosisCodes !== "undefined" ? ( // If diagnosis code are not found check
-                <ul>
-                  {entry.diagnosisCodes.map((diagnosis) => (
-                    <li>{diagnosis}</li>
-                  ))}
-                </ul>
-              ) : (
-                <span>No code found</span>
-              )}
-            </div>
-          );
-        })}
-      </div>
+      {patient.entries.length !== 0 ? (
+        <div>
+          {patient.entries.map((entry, index) => {
+            return (
+              <div key={index}>
+                <div>Date: {entry.date}</div>
+                <div>Description: {entry.description}</div>
+                <span>Diagnosis Code: </span>
+                {typeof entry.diagnosisCodes !== "undefined" ? ( // If diagnosis code are not found check
+                  <ul>
+                    {entry.diagnosisCodes.map((diagnosis, index) => (
+                      <li key={index}>{diagnosis}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span>No code found</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <>No Entry found</>
+      )}
     </div>
   );
 };
