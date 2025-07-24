@@ -58,7 +58,12 @@ export interface Patient {
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
 
-export interface PatientProps {
+export interface BasePatientProps {
   patient: Patient;
+  diagnosisDescription: Diagnosis[];
+}
+
+export interface PatientProps {
+  entry: Entry;
   diagnosisDescription: Diagnosis[];
 }

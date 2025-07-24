@@ -1,32 +1,38 @@
-import type { Entry, PatientProps } from "../../types";
+import type { Entry, BasePatientProps } from "../../types";
 import OccupationalHealthcare from "./OccupationalHealthcare";
 import HealthCheck from "./HealthCheck";
 import Hospital from "./Hospital";
 
-const PatientEntries = ({ patient, diagnosisDescription }: PatientProps) => {
-  const entryTypeSwitch = (entry: Entry) => {
+const PatientEntries = ({
+  patient,
+  diagnosisDescription,
+}: BasePatientProps) => {
+  const entryTypeSwitch = (entry: Entry, index: number) => {
     switch (entry.type) {
       case "Hospital":
         return (
           <Hospital
-            patient={patient}
+            entry={entry}
             diagnosisDescription={diagnosisDescription}
+            key={index}
           />
         );
 
       case "HealthCheck":
         return (
           <HealthCheck
-            patient={patient}
+            entry={entry}
             diagnosisDescription={diagnosisDescription}
+            key={index}
           />
         );
 
       case "OccupationalHealthcare":
         return (
           <OccupationalHealthcare
-            patient={patient}
+            entry={entry}
             diagnosisDescription={diagnosisDescription}
+            key={index}
           />
         );
 
@@ -40,7 +46,7 @@ const PatientEntries = ({ patient, diagnosisDescription }: PatientProps) => {
   }
 
   // The switch function will return the type and we will return that to get the component
-  return patient.entries.map((entry) => entryTypeSwitch(entry));
+  return patient.entries.map((entry, index) => entryTypeSwitch(entry, index));
 };
 
 export default PatientEntries;

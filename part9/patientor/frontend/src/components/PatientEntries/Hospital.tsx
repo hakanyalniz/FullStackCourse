@@ -2,13 +2,10 @@ import BaseEntry from "./baseEntry";
 
 import type { PatientProps } from "../../types";
 
-const Hospital = ({ patient, diagnosisDescription }: PatientProps) => {
+const Hospital = ({ entry, diagnosisDescription }: PatientProps) => {
   return (
     <div>
-      <BaseEntry
-        patient={patient}
-        diagnosisDescription={diagnosisDescription}
-      />
+      <BaseEntry entry={entry} diagnosisDescription={diagnosisDescription} />
     </div>
   );
 };
