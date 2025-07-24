@@ -1,6 +1,9 @@
 // This file has two jobs. Validate data sent from users through POST
 // and validate and confirm types for the data in the server
 
+// It seems, due to following the exercise, this file no longer is used for validating POST data but rather to validate
+// server side data and assign types to them
+
 import { NewPatient, Gender, Entry } from "../types";
 
 // Custom type guards

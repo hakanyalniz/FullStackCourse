@@ -15,6 +15,8 @@ const PatientDetails = () => {
     fetchPatienceData();
   }, [id]);
 
+  console.log(patient);
+
   if (!patient) {
     return <div>Loading...</div>;
   }
@@ -26,6 +28,23 @@ const PatientDetails = () => {
       <div>Occupation: {patient.occupation}</div>
       <div>Date of Birth: {patient.dateOfBirth}</div>
       <div>SSN: {patient.ssn}</div>
+      <h3>Entries:</h3>
+      <div>
+        {patient.entries.map((entry, index) => {
+          return (
+            <div key={index}>
+              <div>Date: {entry.date}</div>
+              <div>Description: {entry.description}</div>
+              <div>Diagnosis Code: </div>
+              <ul>
+                {entry.diagnosisCodes?.map((diagnosis) => (
+                  <li>{diagnosis}</li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
