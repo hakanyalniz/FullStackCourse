@@ -35,12 +35,16 @@ const PatientDetails = () => {
             <div key={index}>
               <div>Date: {entry.date}</div>
               <div>Description: {entry.description}</div>
-              <div>Diagnosis Code: </div>
-              <ul>
-                {entry.diagnosisCodes?.map((diagnosis) => (
-                  <li>{diagnosis}</li>
-                ))}
-              </ul>
+              <span>Diagnosis Code: </span>
+              {typeof entry.diagnosisCodes !== "undefined" ? ( // If diagnosis code are not found check
+                <ul>
+                  {entry.diagnosisCodes.map((diagnosis) => (
+                    <li>{diagnosis}</li>
+                  ))}
+                </ul>
+              ) : (
+                <span>No code found</span>
+              )}
             </div>
           );
         })}
