@@ -4,7 +4,13 @@ import {
   postOnePatient,
   getOnePatient,
 } from "../services/patientServices";
-import { newPatientEntrySchema, NewPatient, Patient } from "../types";
+import {
+  newPatientEntrySchema,
+  EntrySchema,
+  NewPatient,
+  Patient,
+  Entry,
+} from "../types";
 import z from "zod";
 
 const router = express.Router();
@@ -22,6 +28,19 @@ router.get("/patients/:id", (req, res) => {
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
   try {
     newPatientEntrySchema.parse(req.body);
+    next();
+  } catch (error: unknown) {
+    next(error);
+  }
+};
+
+const newPatientEntryParser = (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
+  try {
+    req.body = EntrySchema.parse(req.body);
     next();
   } catch (error: unknown) {
     next(error);
@@ -48,6 +67,16 @@ router.post(
     // validates the POST request data against the various types
     const newPatient = postOnePatient(req.body);
     res.json(newPatient);
+  }
+);
+
+router.post(
+  "/patients/:id/entries",
+  newPatientEntryParser,
+  (req: Request<unknown, unknown, Entry>, res: Response) => {
+    console.log(req.body);
+
+    res.send("Added patient entry");
   }
 );
 
