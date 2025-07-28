@@ -3,6 +3,7 @@ import {
   getAllPatients,
   postOnePatient,
   getOnePatient,
+  addEntryToPatient,
 } from "../services/patientServices";
 import {
   newPatientEntrySchema,
@@ -73,10 +74,15 @@ router.post(
 router.post(
   "/patients/:id/entries",
   newPatientEntryParser,
-  (req: Request<unknown, unknown, Entry>, res: Response) => {
-    console.log(req.body);
+  (req: Request<{ id: string }, unknown, Entry>, res: Response) => {
+    if (req.params && !req.params.id) {
+      res.status(400).send("Missing Data!");
+      return;
+    }
 
-    res.send("Added patient entry");
+    const userID = req.params.id;
+    const addEntryResult = addEntryToPatient(req.body, userID);
+    res.send(addEntryResult);
   }
 );
 

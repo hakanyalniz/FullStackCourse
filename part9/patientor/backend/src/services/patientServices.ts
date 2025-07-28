@@ -1,6 +1,12 @@
 import diognesisData from "../data/diagnoses";
 import patientData from "../data/patients";
-import { Diagnoses, filteredPatient, NewPatient, Patient } from "../types";
+import {
+  Diagnoses,
+  Entry,
+  filteredPatient,
+  NewPatient,
+  Patient,
+} from "../types";
 
 import { v1 as uuid } from "uuid";
 
@@ -31,4 +37,16 @@ export function postOnePatient(dataObject: NewPatient) {
   patientData.push(newPatient);
 
   return newPatient;
+}
+
+export function addEntryToPatient(
+  entry: Entry,
+  userID: string
+): Patient | undefined {
+  const foundPatientData = patientData.find((patient) => patient.id === userID);
+  if (foundPatientData) {
+    foundPatientData.entries.push(entry);
+    return foundPatientData;
+  }
+  return undefined;
 }
