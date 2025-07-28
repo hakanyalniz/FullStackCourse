@@ -71,6 +71,18 @@ export interface PatientProps {
   diagnosisDescription: Diagnosis[];
 }
 
+export interface HospitalEntryProps extends PatientProps {
+  entry: HospitalEntry;
+}
+
+export interface OccupationalHealthcareEntryProps extends PatientProps {
+  entry: OccupationalHealthcareEntry;
+}
+
+export interface HealthCheckEntryProps extends PatientProps {
+  entry: HealthCheckEntry;
+}
+
 export interface BaseEntryProps extends PatientProps {
   MedicalIcon: OverridableComponent<
     SvgIconTypeMap<NonNullable<unknown>, "svg">
