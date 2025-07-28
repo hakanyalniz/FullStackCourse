@@ -1,3 +1,6 @@
+import { SvgIconTypeMap } from "@mui/material";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
+
 interface BaseEntry {
   id: string;
   description: string;
@@ -66,4 +69,12 @@ export interface BasePatientProps {
 export interface PatientProps {
   entry: Entry;
   diagnosisDescription: Diagnosis[];
+}
+
+export interface BaseEntryProps extends PatientProps {
+  MedicalIcon: OverridableComponent<
+    SvgIconTypeMap<NonNullable<unknown>, "svg">
+  > & {
+    muiName: string;
+  };
 }

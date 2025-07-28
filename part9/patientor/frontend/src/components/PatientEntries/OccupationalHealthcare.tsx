@@ -1,4 +1,5 @@
 import BaseEntry from "./BaseEntry";
+import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 
 import type { PatientProps } from "../../types";
 
@@ -8,7 +9,11 @@ const OccupationalHealthcare = ({
 }: PatientProps) => {
   return (
     <div>
-      <BaseEntry entry={entry} diagnosisDescription={diagnosisDescription} />
+      <BaseEntry
+        entry={entry}
+        diagnosisDescription={diagnosisDescription}
+        MedicalIcon={MedicalInformationIcon}
+      />
     </div>
   );
 };

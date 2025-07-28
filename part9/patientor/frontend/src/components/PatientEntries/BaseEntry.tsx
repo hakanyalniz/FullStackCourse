@@ -1,17 +1,22 @@
 // A base entry file so we don't repeat the same parts
 
-import type { PatientProps } from "../../types";
+import type { BaseEntryProps } from "../../types";
 
-const BaseEntry = ({ entry, diagnosisDescription }: PatientProps) => {
+const BaseEntry = ({
+  entry,
+  diagnosisDescription,
+  MedicalIcon,
+}: BaseEntryProps) => {
   if (diagnosisDescription.length === 0) {
     return <>Loading ...</>;
   }
 
   return (
     <div>
-      <div>Date: {entry.date}</div>
-      <div>Description: {entry.description}</div>
-      <span>Diagnosis Code: </span>
+      <div>
+        {entry.date} <MedicalIcon />
+      </div>
+      <div>{entry.description}</div>
       {typeof entry.diagnosisCodes !== "undefined" ? ( // check if diagnosis code are not found
         <ul>
           {entry.diagnosisCodes.map(
