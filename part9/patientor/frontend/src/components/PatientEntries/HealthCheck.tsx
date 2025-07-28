@@ -1,4 +1,4 @@
-import BaseEntry from "./baseEntry";
+import BaseEntry from "./BaseEntry";
 
 import type { PatientProps } from "../../types";
 
