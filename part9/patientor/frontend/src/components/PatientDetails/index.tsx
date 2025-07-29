@@ -2,6 +2,9 @@ import { useParams } from "react-router-dom";
 import patientService from "../../services/patients";
 import diagnosisService from "../../services/diagnosis";
 import { useEffect, useState } from "react";
+import "./style.css";
+
+import { Button } from "@mui/material";
 
 import { Patient, Diagnosis } from "../../types";
 
@@ -42,10 +45,16 @@ const PatientDetails = () => {
       <div>Date of Birth: {patient.dateOfBirth}</div>
       <div>SSN: {patient.ssn}</div>
       <h3>Entries:</h3>
-      <PatientEntries
-        patient={patient}
-        diagnosisDescription={diagnosisDescription}
-      />
+      <div className="entry-container">
+        <PatientEntries
+          patient={patient}
+          diagnosisDescription={diagnosisDescription}
+        />
+      </div>
+
+      <Button variant="contained" color="primary">
+        Add Entry
+      </Button>
     </div>
   );
 };
