@@ -9,6 +9,7 @@ import { Button } from "@mui/material";
 import { Patient, Diagnosis } from "../../types";
 
 import PatientEntries from "../PatientEntries";
+import EntryForm from "./EntryForm";
 
 const PatientDetails = () => {
   const { id } = useParams();
@@ -31,7 +32,20 @@ const PatientDetails = () => {
 
     fetchDiagnosisData();
   }, []);
-  console.log(patient);
+
+  const handleEntryFormVisibility = () => {
+    const entryFormElement = document.querySelector(
+      ".entry-form-container"
+    ) as HTMLElement;
+    if (!entryFormElement) {
+      throw new Error("Missing Entry Form");
+    }
+    if (entryFormElement.style.display === "none") {
+      entryFormElement.style.display = "block";
+    } else {
+      entryFormElement.style.display = "none";
+    }
+  };
 
   if (!patient) {
     return <div>Loading...</div>;
@@ -52,9 +66,17 @@ const PatientDetails = () => {
         />
       </div>
 
-      <Button variant="contained" color="primary">
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => handleEntryFormVisibility()}
+      >
         Add Entry
       </Button>
+
+      <div className="entry-form-container">
+        <EntryForm />
+      </div>
     </div>
   );
 };

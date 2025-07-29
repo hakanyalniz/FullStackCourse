@@ -1,3 +1,7 @@
 .entry-container {
   margin: 10px 0;
 }
+
+.entry-form-container {
+  display: none;
+}
