@@ -7,10 +7,10 @@ import {
 } from "../services/patientServices";
 import {
   newPatientEntrySchema,
-  EntrySchema,
+  NewEntrySchema,
   NewPatient,
   Patient,
-  Entry,
+  NewEntry,
 } from "../types";
 import z from "zod";
 
@@ -41,7 +41,7 @@ const newPatientEntryParser = (
   next: NextFunction
 ) => {
   try {
-    req.body = EntrySchema.parse(req.body);
+    req.body = NewEntrySchema.parse(req.body);
     next();
   } catch (error: unknown) {
     next(error);
@@ -74,7 +74,7 @@ router.post(
 router.post(
   "/patients/:id/entries",
   newPatientEntryParser,
-  (req: Request<{ id: string }, unknown, Entry>, res: Response) => {
+  (req: Request<{ id: string }, unknown, NewEntry>, res: Response) => {
     if (req.params && !req.params.id) {
       res.status(400).send("Missing Data!");
       return;

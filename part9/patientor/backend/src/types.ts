@@ -1,3 +1,5 @@
+// Some of the types and validation does not use zod because of the way the exercises went
+
 import z from "zod";
 
 interface BaseEntry {
@@ -73,10 +75,10 @@ export const newPatientEntrySchema = z.object({
 
 // Schema for entries
 const patientBaseEntrySchema = z.object({
-  id: z.string(),
-  description: z.string(),
-  date: z.string(),
-  specialist: z.string(),
+  id: z.string().min(3),
+  description: z.string().min(3),
+  date: z.string().min(3),
+  specialist: z.string().min(3),
   diagnosisCodes: z.array(z.string()).optional(),
 });
 
@@ -101,3 +103,34 @@ export const EntrySchema = z.discriminatedUnion("type", [
   HealthCheckEntrySchema,
   OccupationalHealthcareEntry,
 ]);
+
+// The above entry schema are for complete Entry field that is available on data
+// the below are for the one sent by the user, here the ID field is missing
+// since the field is added in the backend
+// so when we receive the entry data, we validate it while ommiting id
+// then we will add id and change the type from new to the above entry type
+const NewPatientBaseEntryschema = patientBaseEntrySchema.omit({ id: true });
+
+const NewHealthCheckEntrySchema = NewPatientBaseEntryschema.extend({
+  type: z.literal("HealthCheck"),
+  healthCheckRating: z.enum(HealthCheckRating),
+});
+
+const NewHospitalEntrySchema = NewPatientBaseEntryschema.extend({
+  type: z.literal("Hospital"),
+  discharge: z.object({ date: z.string(), criteria: z.string() }),
+});
+
+const NewOccupationalHealthcareEntry = NewPatientBaseEntryschema.extend({
+  type: z.literal("OccupationalHealthcare"),
+  employerName: z.string(),
+  sickLeave: z.object({ startDate: z.string(), endDate: z.string() }),
+});
+
+export const NewEntrySchema = z.discriminatedUnion("type", [
+  NewHealthCheckEntrySchema,
+  NewHospitalEntrySchema,
+  NewOccupationalHealthcareEntry,
+]);
+
+export type NewEntry = z.infer<typeof NewEntrySchema>;

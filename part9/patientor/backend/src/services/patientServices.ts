@@ -2,7 +2,7 @@ import diognesisData from "../data/diagnoses";
 import patientData from "../data/patients";
 import {
   Diagnoses,
-  Entry,
+  NewEntry,
   filteredPatient,
   NewPatient,
   Patient,
@@ -40,12 +40,12 @@ export function postOnePatient(dataObject: NewPatient) {
 }
 
 export function addEntryToPatient(
-  entry: Entry,
+  entry: NewEntry,
   userID: string
 ): Patient | undefined {
   const foundPatientData = patientData.find((patient) => patient.id === userID);
   if (foundPatientData) {
-    foundPatientData.entries.push(entry);
+    foundPatientData.entries.push({ id: uuid(), ...entry });
     return foundPatientData;
   }
   return undefined;

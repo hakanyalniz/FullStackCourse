@@ -8,7 +8,7 @@ const EntryForm = ({ patient }: { patient: Patient }) => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [healthCheckRating, setHealthCheckRating] = useState("");
+  const [healthCheckRating, setHealthCheckRating] = useState(0);
 
   //   {
   //     "id": "54a8746e-34c4-4cf4-bf72-bfecd039be9a",
@@ -18,13 +18,14 @@ const EntryForm = ({ patient }: { patient: Patient }) => {
   //     "description": "Too much cat bites.",
   //     "healthCheckRating": 0
   // }
-  const handleEntryFormSubmit = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleEntryFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    console.log("test");
+
     event.preventDefault();
 
     patientServices.createEntry(
       {
+        type: "HealthCheck",
         description,
         date,
         specialist,
@@ -37,7 +38,7 @@ const EntryForm = ({ patient }: { patient: Patient }) => {
   return (
     <Box
       component="form"
-      // onSubmit={}
+      onSubmit={(e) => handleEntryFormSubmit(e)}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -53,14 +54,12 @@ const EntryForm = ({ patient }: { patient: Patient }) => {
         variant="outlined"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        required
       />
       <TextField
         type="date"
         variant="outlined"
         value={date}
         onChange={(e) => setDate(e.target.value)}
-        required
       />
       <TextField
         label="Specialist"
@@ -68,22 +67,16 @@ const EntryForm = ({ patient }: { patient: Patient }) => {
         variant="outlined"
         value={specialist}
         onChange={(e) => setSpecialist(e.target.value)}
-        required
       />
       <TextField
         label="Healthcheck rating"
         type="number"
         value={healthCheckRating}
-        onChange={(e) => setHealthCheckRating(e.target.value)}
+        onChange={(e) => setHealthCheckRating(parseInt(e.target.value))}
         variant="outlined"
       />
 
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        onClick={(e) => handleEntryFormSubmit(e)}
-      >
+      <Button type="submit" variant="contained" color="primary">
         Submit
       </Button>
     </Box>
