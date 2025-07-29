@@ -36,11 +36,15 @@ const PatientDetails = () => {
   const handleEntryFormVisibility = () => {
     const entryFormElement = document.querySelector(
       ".entry-form-container"
-    ) as HTMLElement;
+    ) as HTMLElement | null;
+
     if (!entryFormElement) {
       throw new Error("Missing Entry Form");
     }
-    if (entryFormElement.style.display === "none") {
+
+    const computedDisplay = window.getComputedStyle(entryFormElement).display;
+
+    if (computedDisplay === "none") {
       entryFormElement.style.display = "block";
     } else {
       entryFormElement.style.display = "none";
@@ -69,13 +73,13 @@ const PatientDetails = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => handleEntryFormVisibility()}
+        onClick={handleEntryFormVisibility}
       >
         Add Entry
       </Button>
 
       <div className="entry-form-container">
-        <EntryForm />
+        <EntryForm patient={patient} />
       </div>
     </div>
   );

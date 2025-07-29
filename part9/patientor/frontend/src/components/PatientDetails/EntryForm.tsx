@@ -1,6 +1,39 @@
 import { Button, TextField, Box } from "@mui/material";
 
-const EntryForm = () => {
+import patientServices from "../../services/patients";
+import { useState } from "react";
+import { Patient } from "../../types";
+
+const EntryForm = ({ patient }: { patient: Patient }) => {
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [specialist, setSpecialist] = useState("");
+  const [healthCheckRating, setHealthCheckRating] = useState("");
+
+  //   {
+  //     "id": "54a8746e-34c4-4cf4-bf72-bfecd039be9a",
+  //     "date": "2020-03-01",
+  //     "specialist": "Dr Apartment",
+  //     "type": "HealthCheck",
+  //     "description": "Too much cat bites.",
+  //     "healthCheckRating": 0
+  // }
+  const handleEntryFormSubmit = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+
+    patientServices.createEntry(
+      {
+        description,
+        date,
+        specialist,
+        healthCheckRating,
+      },
+      patient.id
+    );
+  };
+
   return (
     <Box
       component="form"
@@ -14,13 +47,43 @@ const EntryForm = () => {
         mt: 4,
       }}
     >
-      <TextField label="First Name" variant="outlined" required />
-      <TextField label="Last Name" variant="outlined" required />
-      <TextField label="Email" type="email" variant="outlined" required />
-      <TextField label="Phone Number" type="tel" variant="outlined" />
-      <TextField label="Message" multiline rows={4} variant="outlined" />
+      <TextField
+        label="Description"
+        type="text"
+        variant="outlined"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        required
+      />
+      <TextField
+        type="date"
+        variant="outlined"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
+      />
+      <TextField
+        label="Specialist"
+        type="text"
+        variant="outlined"
+        value={specialist}
+        onChange={(e) => setSpecialist(e.target.value)}
+        required
+      />
+      <TextField
+        label="Healthcheck rating"
+        type="number"
+        value={healthCheckRating}
+        onChange={(e) => setHealthCheckRating(e.target.value)}
+        variant="outlined"
+      />
 
-      <Button type="submit" variant="contained" color="primary">
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        onClick={(e) => handleEntryFormSubmit(e)}
+      >
         Submit
       </Button>
     </Box>
