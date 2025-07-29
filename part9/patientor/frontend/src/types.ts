@@ -127,3 +127,5 @@ export const NewEntrySchema = z.discriminatedUnion("type", [
 ]);
 
 export type NewEntry = z.infer<typeof NewEntrySchema>;
+
+// Move the validations to their own files
