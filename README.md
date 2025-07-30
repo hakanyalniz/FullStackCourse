@@ -75,6 +75,11 @@ The ideal node express project structure is:
 ├── package.json
 ```
 
-Resource for React TypeScript:
+Resources:
 
 https://react-typescript-cheatsheet.netlify.app/
+https://www.typescriptlang.org/docs/handbook/intro.html
+https://overreacted.io/why-do-hooks-rely-on-call-order/
+https://github.com/rehooks/awesome-react-hooks
+https://redux.js.org/tutorials/essentials/part-1-overview-concepts
+https://validator.w3.org/
