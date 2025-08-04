@@ -21,8 +21,6 @@ const HospitalForm = ({
   });
 
   const handleEntryFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("test");
-
     event.preventDefault();
 
     patientServices.createEntry(

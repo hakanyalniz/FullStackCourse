@@ -20,8 +20,6 @@ const HealthCheckForm = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
   const handleEntryFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("test");
-
     event.preventDefault();
 
     patientServices.createEntry(

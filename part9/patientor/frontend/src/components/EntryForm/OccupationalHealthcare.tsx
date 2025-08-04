@@ -15,20 +15,20 @@ const OccupationalHealthCare = ({
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [healthCheckRating, setHealthCheckRating] = useState(0);
+  const [employerName, setEmployerName] = useState("");
+  const [sickLeave, setSickLeave] = useState({ startDate: "", endDate: "" });
 
   const handleEntryFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("test");
-
     event.preventDefault();
 
     patientServices.createEntry(
       {
-        type: "HealthCheck",
+        type: "OccupationalHealthcare",
         description,
         date,
         specialist,
-        healthCheckRating,
+        employerName,
+        sickLeave,
       },
       patient.id
     );
@@ -61,24 +61,34 @@ const OccupationalHealthCare = ({
       <TextField
         label="Employer name"
         type="string"
-        value={healthCheckRating}
-        onChange={(e) => setHealthCheckRating(parseInt(e.target.value))}
+        value={employerName}
+        onChange={(e) => setEmployerName(e.target.value)}
         variant="outlined"
       />
 
       <TextField
         label="Sick leave start"
         type="string"
-        value={healthCheckRating}
-        onChange={(e) => setHealthCheckRating(parseInt(e.target.value))}
+        value={sickLeave.startDate}
+        onChange={(e) =>
+          setSickLeave((prevState) => ({
+            ...prevState,
+            startDate: e.target.value,
+          }))
+        }
         variant="outlined"
       />
 
       <TextField
         label="Sick leave end"
         type="string"
-        value={healthCheckRating}
-        onChange={(e) => setHealthCheckRating(parseInt(e.target.value))}
+        value={sickLeave.endDate}
+        onChange={(e) =>
+          setSickLeave((prevState) => ({
+            ...prevState,
+            endDate: e.target.value,
+          }))
+        }
         variant="outlined"
       />
 
