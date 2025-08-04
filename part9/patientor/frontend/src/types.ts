@@ -136,6 +136,7 @@ export interface EntryProps {
   setDate: React.Dispatch<React.SetStateAction<string>>;
   specialist: string;
   setSpecialist: React.Dispatch<React.SetStateAction<string>>;
+  setFormType: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // Move the validations to their own files

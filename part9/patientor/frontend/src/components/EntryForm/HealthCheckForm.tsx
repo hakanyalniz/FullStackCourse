@@ -6,11 +6,18 @@ import { Patient } from "../../types";
 
 import EntryForm from "./EntryForm";
 
-const HealthCheckForm = ({ patient }: { patient: Patient }) => {
+const HealthCheckForm = ({
+  patient,
+  setFormType,
+}: {
+  patient: Patient;
+  setFormType: React.Dispatch<React.SetStateAction<string>>;
+}) => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
   const [healthCheckRating, setHealthCheckRating] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
   const handleEntryFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     console.log("test");
@@ -50,6 +57,7 @@ const HealthCheckForm = ({ patient }: { patient: Patient }) => {
         setDate={setDate}
         specialist={specialist}
         setSpecialist={setSpecialist}
+        setFormType={setFormType}
       />
 
       <TextField

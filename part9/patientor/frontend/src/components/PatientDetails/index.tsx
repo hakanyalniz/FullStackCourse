@@ -10,8 +10,11 @@ import { Patient, Diagnosis } from "../../types";
 
 import PatientEntries from "../PatientEntries";
 import HealthCheckForm from "../EntryForm/HealthCheckForm";
+import HospitalForm from "../EntryForm/HospitalForm";
+import OccupationalHealthCare from "../EntryForm/OccupationalHealthcare";
 
 const PatientDetails = () => {
+  const [formType, setFormType] = useState("healthCheck");
   const { id } = useParams();
   const [patient, setPatient] = useState<Patient>();
   const [diagnosisDescription, setDiagnosisDescription] = useState<Diagnosis[]>(
@@ -77,9 +80,15 @@ const PatientDetails = () => {
       >
         Add Entry
       </Button>
-
+      {/* Decide the entry form type and render the selected one */}
       <div className="entry-form-container">
-        <HealthCheckForm patient={patient} />
+        {formType === "healthCheck" ? (
+          <HealthCheckForm patient={patient} setFormType={setFormType} />
+        ) : formType === "hospital" ? (
+          <HospitalForm patient={patient} setFormType={setFormType} />
+        ) : formType === "occupationalHealthcare" ? (
+          <OccupationalHealthCare patient={patient} setFormType={setFormType} />
+        ) : null}
       </div>
     </div>
   );

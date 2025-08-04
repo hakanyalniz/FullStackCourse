@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Patient } from "../../types";
 import EntryForm from "./EntryForm";
 
-const HospitalForm = ({
+const OccupationalHealthCare = ({
   patient,
   setFormType,
 }: {
@@ -59,15 +59,23 @@ const HospitalForm = ({
       />
 
       <TextField
-        label="Discharge date"
-        type="date"
+        label="Employer name"
+        type="string"
         value={healthCheckRating}
         onChange={(e) => setHealthCheckRating(parseInt(e.target.value))}
         variant="outlined"
       />
 
       <TextField
-        label="Discharge criteria"
+        label="Sick leave start"
+        type="string"
+        value={healthCheckRating}
+        onChange={(e) => setHealthCheckRating(parseInt(e.target.value))}
+        variant="outlined"
+      />
+
+      <TextField
+        label="Sick leave end"
         type="string"
         value={healthCheckRating}
         onChange={(e) => setHealthCheckRating(parseInt(e.target.value))}
@@ -81,4 +89,4 @@ const HospitalForm = ({
   );
 };
 
-export default HospitalForm;
+export default OccupationalHealthCare;
