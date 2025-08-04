@@ -137,6 +137,8 @@ export interface EntryProps {
   specialist: string;
   setSpecialist: React.Dispatch<React.SetStateAction<string>>;
   setFormType: React.Dispatch<React.SetStateAction<string>>;
+  diagnosisCodes: string[];
+  setDiagnosisCodes: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 // Move the validations to their own files

@@ -14,6 +14,7 @@ const HospitalForm = ({
 }) => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+  const [diagnosisCodes, setDiagnosisCodes] = useState<Array<string>>([]);
   const [specialist, setSpecialist] = useState("");
   const [dischargeInformation, setDischargeInformation] = useState({
     date: "",
@@ -28,6 +29,7 @@ const HospitalForm = ({
         type: "Hospital",
         description,
         date,
+        diagnosisCodes,
         specialist,
         discharge: {
           date: dischargeInformation.date,
@@ -60,6 +62,8 @@ const HospitalForm = ({
         specialist={specialist}
         setSpecialist={setSpecialist}
         setFormType={setFormType}
+        diagnosisCodes={diagnosisCodes}
+        setDiagnosisCodes={setDiagnosisCodes}
       />
 
       <TextField

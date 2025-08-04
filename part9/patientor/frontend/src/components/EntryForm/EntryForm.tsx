@@ -10,7 +10,28 @@ const EntryForm = ({
   specialist,
   setSpecialist,
   setFormType,
+  diagnosisCodes,
+  setDiagnosisCodes,
 }: EntryProps) => {
+  // Assign the array into a temp variable so we can push into it then reassign into the state
+  // take the event value and turn it into an array, then add each one by one to the temp variable
+  const handleDiagnosisCode = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const tempDiagnosisCodes: string[] = [];
+    // Split by comma to create an array but also trim any space from the string
+    const tempDiagnosisArray = event.target.value
+      .split(",")
+      .map((s) => s.trim());
+
+    tempDiagnosisArray.forEach((diagnosisCode) =>
+      tempDiagnosisCodes.push(diagnosisCode)
+    );
+    console.log("Testing diagnosis handler");
+
+    setDiagnosisCodes(tempDiagnosisCodes);
+  };
+
   return (
     <>
       <select
@@ -48,6 +69,14 @@ const EntryForm = ({
         variant="outlined"
         value={specialist}
         onChange={(e) => setSpecialist(e.target.value)}
+      />
+
+      <TextField
+        label="Diagnosis Codes"
+        type="text"
+        variant="outlined"
+        value={diagnosisCodes}
+        onChange={(e) => handleDiagnosisCode(e)}
       />
     </>
   );

@@ -15,6 +15,7 @@ const HealthCheckForm = ({
 }) => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+  const [diagnosisCodes, setDiagnosisCodes] = useState<Array<string>>([]);
   const [specialist, setSpecialist] = useState("");
   const [healthCheckRating, setHealthCheckRating] = useState(0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,6 +28,7 @@ const HealthCheckForm = ({
         type: "HealthCheck",
         description,
         date,
+        diagnosisCodes,
         specialist,
         healthCheckRating,
       },
@@ -56,6 +58,8 @@ const HealthCheckForm = ({
         specialist={specialist}
         setSpecialist={setSpecialist}
         setFormType={setFormType}
+        diagnosisCodes={diagnosisCodes}
+        setDiagnosisCodes={setDiagnosisCodes}
       />
 
       <TextField

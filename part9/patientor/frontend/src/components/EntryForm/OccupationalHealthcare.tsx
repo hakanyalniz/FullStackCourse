@@ -14,6 +14,7 @@ const OccupationalHealthCare = ({
 }) => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+  const [diagnosisCodes, setDiagnosisCodes] = useState<Array<string>>([]);
   const [specialist, setSpecialist] = useState("");
   const [employerName, setEmployerName] = useState("");
   const [sickLeave, setSickLeave] = useState({ startDate: "", endDate: "" });
@@ -26,6 +27,7 @@ const OccupationalHealthCare = ({
         type: "OccupationalHealthcare",
         description,
         date,
+        diagnosisCodes,
         specialist,
         employerName,
         sickLeave,
@@ -56,6 +58,8 @@ const OccupationalHealthCare = ({
         specialist={specialist}
         setSpecialist={setSpecialist}
         setFormType={setFormType}
+        diagnosisCodes={diagnosisCodes}
+        setDiagnosisCodes={setDiagnosisCodes}
       />
 
       <TextField
