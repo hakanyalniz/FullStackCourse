@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 import { Patient, Diagnosis } from "../../types";
 
 import PatientEntries from "../PatientEntries";
-import EntryForm from "./EntryForm";
+import HealthCheckForm from "../EntryForm/HealthCheckForm";
 
 const PatientDetails = () => {
   const { id } = useParams();
@@ -79,7 +79,7 @@ const PatientDetails = () => {
       </Button>
 
       <div className="entry-form-container">
-        <EntryForm patient={patient} />
+        <HealthCheckForm patient={patient} />
       </div>
     </div>
   );

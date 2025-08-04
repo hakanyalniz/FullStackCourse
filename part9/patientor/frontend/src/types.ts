@@ -128,4 +128,14 @@ export const NewEntrySchema = z.discriminatedUnion("type", [
 
 export type NewEntry = z.infer<typeof NewEntrySchema>;
 
+export interface EntryProps {
+  handleEntryFormSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  description: string;
+  setDescription: React.Dispatch<React.SetStateAction<string>>;
+  date: string;
+  setDate: React.Dispatch<React.SetStateAction<string>>;
+  specialist: string;
+  setSpecialist: React.Dispatch<React.SetStateAction<string>>;
+}
+
 // Move the validations to their own files

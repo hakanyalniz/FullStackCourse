@@ -4,7 +4,7 @@ import patientServices from "../../services/patients";
 import { useState } from "react";
 import { Patient } from "../../types";
 
-const EntryForm = ({ patient }: { patient: Patient }) => {
+const HospitalForm = ({ patient }: { patient: Patient }) => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
@@ -83,4 +83,4 @@ const EntryForm = ({ patient }: { patient: Patient }) => {
   );
 };
 
-export default EntryForm;
+export default HospitalForm;
