@@ -15,7 +15,10 @@ const HospitalForm = ({
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [healthCheckRating, setHealthCheckRating] = useState(0);
+  const [dischargeInformation, setDischargeInformation] = useState({
+    date: "0",
+    criteria: "",
+  });
 
   const handleEntryFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     console.log("test");
@@ -24,11 +27,14 @@ const HospitalForm = ({
 
     patientServices.createEntry(
       {
-        type: "HealthCheck",
+        type: "Hospital",
         description,
         date,
         specialist,
-        healthCheckRating,
+        discharge: {
+          date: dischargeInformation.date,
+          criteria: dischargeInformation.criteria,
+        },
       },
       patient.id
     );
@@ -61,16 +67,26 @@ const HospitalForm = ({
       <TextField
         label="Discharge date"
         type="date"
-        value={healthCheckRating}
-        onChange={(e) => setHealthCheckRating(parseInt(e.target.value))}
+        value={dischargeInformation.date}
+        onChange={(e) =>
+          setDischargeInformation((prevState) => ({
+            ...prevState, // spread the previous state and only update date
+            date: e.target.value,
+          }))
+        }
         variant="outlined"
       />
 
       <TextField
         label="Discharge criteria"
         type="string"
-        value={healthCheckRating}
-        onChange={(e) => setHealthCheckRating(parseInt(e.target.value))}
+        value={dischargeInformation.criteria}
+        onChange={(e) =>
+          setDischargeInformation((prevState) => ({
+            ...prevState, // spread the previous state and only update criteria
+            criteria: e.target.value,
+          }))
+        }
         variant="outlined"
       />
 
