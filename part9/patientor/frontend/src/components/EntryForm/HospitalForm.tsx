@@ -16,7 +16,7 @@ const HospitalForm = ({
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
   const [dischargeInformation, setDischargeInformation] = useState({
-    date: "0",
+    date: "",
     criteria: "",
   });
 
@@ -73,6 +73,7 @@ const HospitalForm = ({
           }))
         }
         variant="outlined"
+        InputLabelProps={{ shrink: true }}
       />
 
       <TextField
